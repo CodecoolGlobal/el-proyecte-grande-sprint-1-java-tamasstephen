@@ -3,14 +3,17 @@ package com.example.demo.dao.implementation;
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.User;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Component("beanSoup")
 public class UserDaoMem implements UserDao {
 
-    private List<User> users;
+    private static final ArrayList<User> users = new ArrayList<>();
 
     @Override
     public List<User> get(String name) {
