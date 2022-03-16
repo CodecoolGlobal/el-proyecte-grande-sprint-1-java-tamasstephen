@@ -41,4 +41,10 @@ public class UserDaoMem implements UserDao {
     public List<User> getAll() {
         return users;
     }
+
+    @Override
+    public void deleteUser(long id) {
+        User userStream = users.stream().filter(user -> user.hasSameId(id)).collect(Collectors.toList()).get(0);
+        users.remove(userStream);
+    }
 }
