@@ -3,21 +3,28 @@ package com.example.demo.model;
 import java.util.Objects;
 
 public class User {
-    private long id;
+    private final long id;
     private Content userContent;
     private String userName;
     private String email;
     private String password;
     private String profileImage;
 
-    // TODO: 16/03/2022 Add constructor after merge
+    public User(long id, Content userContent, String userName, String email, String password, String profileImage) {
+        this.id = id;
+        this.userContent = userContent;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.profileImage = profileImage;
+    }
 
     public boolean isSameCategory(Category category){
         return userContent.getCategory() == category;
     }
 
     public String getEndpoint(){
-        return "";
+        return userContent.getPageLink();
     }
 
     public boolean isUserHasSameName(String name){
