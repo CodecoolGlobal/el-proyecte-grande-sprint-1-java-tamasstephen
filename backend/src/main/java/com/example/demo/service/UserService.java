@@ -34,4 +34,9 @@ public class UserService {
     public Optional<User> getUserByPageLink(String pageLink){
         return userDao.getUserByPageLink(pageLink);
     }
+
+    public void deleteUser(long id){
+        userDao.deleteUser(id);
+    }
+
 }
