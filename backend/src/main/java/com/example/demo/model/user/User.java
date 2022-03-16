@@ -3,20 +3,14 @@ package com.example.demo.model.user;
 import java.util.Objects;
 
 public class User {
-    private final long id;
+    private long id;
     private Content userContent;
-    private String userName;
     private String email;
     private String password;
-    private String profileImage;
 
-    public User(long id, Content userContent, String userName, String email, String password, String profileImage) {
-        this.id = id;
-        this.userContent = userContent;
-        this.userName = userName;
+    public User(String userName, String email, String password) {
         this.email = email;
         this.password = password;
-        this.profileImage = profileImage;
     }
 
     public boolean isSameCategory(Category category){
@@ -32,7 +26,7 @@ public class User {
     }
 
     public boolean isUserHasSameName(String name){
-        return Objects.equals(userName, name);
+        return Objects.equals(userContent.getUserName(), name);
     }
 
     public void payUser(){
@@ -44,6 +38,19 @@ public class User {
     }
 
     public String getUserName() {
-        return userName;
+        return userContent.getUserName();
+    }
+
+    public void setContent(Content content){
+        this.userContent = content;
+    }
+
+    public void setId(long id){
+        this.id = id;
+    }
+
+    public String getEmail(){
+        return this.email;
     }
 }
+
