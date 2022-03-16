@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Component("componentMem")
 public class ContentDaoMem implements ContentDao {
 
     private static final ArrayList<Content> contents = new ArrayList<>();
