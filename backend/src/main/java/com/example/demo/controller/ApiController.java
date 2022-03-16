@@ -67,6 +67,12 @@ public class ApiController {
         return contentService.getContentsByCategory(category);
     }
 
+    @GetMapping("/user/")
+    public boolean isUserContentSet(@RequestParam long id){
+        Optional<User> userOption = userService.getUser(id);
+        return userOption.map(User::isCreatorProfileAvailable).orElse(false);
+    }
+
     private boolean isCreatorAvailableForCreation(Long userId, String pageLink){
         System.out.println(pageLink);
        return userId != null

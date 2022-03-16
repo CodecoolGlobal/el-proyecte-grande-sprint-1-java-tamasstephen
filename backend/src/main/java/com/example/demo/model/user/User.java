@@ -13,32 +13,13 @@ public class User {
         this.password = password;
     }
 
-    public boolean isSameCategory(Category category){
-        return userContent.getCategory() == category;
-    }
-
-    public String getEndpoint(){
-        return userContent.getPageLink();
-    }
-
-    public boolean hasSameEndpoint(String pageLink){
-        return userContent.getPageLink().equals(pageLink);
-    }
-
-    public boolean isUserHasSameName(String name){
-        return Objects.equals(userContent.getUserName(), name);
-    }
 
     public void payUser(){
-
+        //TODO: implement payment
     }
 
     public boolean hasSameId(long id){
         return this.id == id;
-    }
-
-    public String getUserName() {
-        return userContent.getUserName();
     }
 
     public void setContent(Content content){
@@ -51,6 +32,14 @@ public class User {
 
     public String getEmail(){
         return this.email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isCreatorProfileAvailable(){
+        return userContent != null;
     }
 }
 
