@@ -27,6 +27,10 @@ public class User {
         return userContent.getPageLink();
     }
 
+    public boolean hasSameEndpoint(String pageLink){
+        return userContent.getPageLink().equals(pageLink);
+    }
+
     public boolean isUserHasSameName(String name){
         return Objects.equals(userName, name);
     }
@@ -35,4 +39,11 @@ public class User {
 
     }
 
+    public boolean hasSameId(long id){
+        return this.id == id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
 }
