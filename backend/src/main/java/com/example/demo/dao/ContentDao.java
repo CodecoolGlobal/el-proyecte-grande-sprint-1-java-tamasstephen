@@ -20,4 +20,6 @@ public interface ContentDao {
     void add(Content content);
 
     List<Content> getAll();
+
+    boolean isPageLinkUnique(String pageLink);
 }
