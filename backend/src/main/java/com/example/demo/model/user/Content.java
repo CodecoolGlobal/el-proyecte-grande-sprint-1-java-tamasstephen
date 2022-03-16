@@ -43,4 +43,20 @@ public class Content {
     public String getProfileImage() {
         return profileImage;
     }
+
+    public boolean hasCreatorSameName(String name){
+        return name.equals(userName);
+    }
+
+    public boolean hasSameId(long id){
+        return id == userId;
+    }
+
+    public boolean hasSamePageLink(String link){
+        return this.pageLink.equals(link);
+    }
+
+    public boolean hasSameCategory(Category category){
+        return this.category == category;
+    }
 }
