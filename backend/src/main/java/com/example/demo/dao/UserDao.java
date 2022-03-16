@@ -4,14 +4,15 @@ import com.example.demo.model.user.Category;
 import com.example.demo.model.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao {
 
-    User get(String name);
+    List<User> get(String name);
 
-    User get(long id);
+    Optional<User> get(long id);
 
-    User getUserByPageLink(String pageLink);
+    Optional<User> getUserByPageLink(String pageLink);
 
     List<User> getUsersByCategory(Category category);
 
