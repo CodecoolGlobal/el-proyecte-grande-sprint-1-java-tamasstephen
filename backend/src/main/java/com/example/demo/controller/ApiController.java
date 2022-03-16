@@ -5,10 +5,7 @@ import com.example.demo.model.user.User;
 import com.example.demo.service.ContentService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -49,5 +46,11 @@ public class ApiController {
     @GetMapping("/all-creators")
     public List<Content> getAll(){
         return contentService.getAll();
+    }
+
+    @GetMapping("/creators")
+    public List<Content> get(@RequestParam String name){
+        List<Content> content = contentService.get(name);
+        return content;
     }
 }
