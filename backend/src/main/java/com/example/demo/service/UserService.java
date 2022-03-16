@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.UserDao;
-import com.example.demo.model.user.Category;
 import com.example.demo.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,10 +20,6 @@ public class UserService {
         userDao.add(user);
     }
 
-    public List<User> getUsersByCategory(Category category){
-        return userDao.getUsersByCategory(category);
-    }
-
     public List<User> getAllUsers(){
         return userDao.getAll();
     }
@@ -33,11 +28,4 @@ public class UserService {
         return userDao.get(id);
     }
 
-    public List<User> getUser(String name){
-        return userDao.get(name);
-    }
-
-    public Optional<User> getUserByPageLink(String pageLink){
-        return userDao.getUserByPageLink(pageLink);
-    }
 }
