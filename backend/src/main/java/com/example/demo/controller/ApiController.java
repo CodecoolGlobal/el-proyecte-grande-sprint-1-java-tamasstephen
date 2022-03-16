@@ -15,11 +15,14 @@ import java.util.Optional;
 @RestController
 public class ApiController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final CreatorProfileService creatorProfileService;
 
     @Autowired
-    private CreatorProfileService creatorProfileService;
+    public ApiController(UserService userService, CreatorProfileService creatorProfileService) {
+        this.userService = userService;
+        this.creatorProfileService = creatorProfileService;
+    }
 
     @PostMapping("/add-creator")
     public void add(@RequestBody User user, HttpSession session){
@@ -62,8 +65,6 @@ public class ApiController {
 
     @GetMapping("/creators/category")
     public List<CreatorProfile> getCreatorsByCategory(@RequestParam Category category){
-        System.out.println("hello");
-        System.out.println(category);
         return creatorProfileService.getContentsByCategory(category);
     }
 

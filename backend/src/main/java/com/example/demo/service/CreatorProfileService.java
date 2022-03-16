@@ -4,7 +4,6 @@ import com.example.demo.dao.CreatorProfileDao;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,9 +12,12 @@ import java.util.Optional;
 @Component
 public class CreatorProfileService {
 
+    private final CreatorProfileDao creatorProfileDao;
+
     @Autowired
-    @Qualifier("componentMem")
-    private CreatorProfileDao creatorProfileDao;
+    public CreatorProfileService(CreatorProfileDao creatorProfileDao) {
+        this.creatorProfileDao = creatorProfileDao;
+    }
 
     public List<CreatorProfile> get(String creatorName){
         return creatorProfileDao.get(creatorName);

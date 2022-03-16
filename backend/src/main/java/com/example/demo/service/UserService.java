@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,9 +11,12 @@ import java.util.Optional;
 @Component
 public class UserService {
 
+    private final UserDao userDao;
+
     @Autowired
-    @Qualifier("userMem")
-    private UserDao userDao;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public void add(User user){
         userDao.add(user);
