@@ -6,7 +6,7 @@ import com.example.demo.model.user.CreatorProfile;
 import java.util.List;
 import java.util.Optional;
 
-public interface ContentDao {
+public interface CreatorProfileDao {
 
     List<CreatorProfile> get(String creatorName);
 

@@ -1,6 +1,6 @@
 package com.example.demo.dao.implementation;
 
-import com.example.demo.dao.ContentDao;
+import com.example.demo.dao.CreatorProfileDao;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component("componentMem")
-public class ContentDaoMem implements ContentDao {
+public class CreatorProfileDaoMem implements CreatorProfileDao {
 
     private static final ArrayList<CreatorProfile> CREATOR_PROFILES = new ArrayList<>();
 

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.ContentDao;
+import com.example.demo.dao.CreatorProfileDao;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,33 +15,33 @@ public class ContentService {
 
     @Autowired
     @Qualifier("componentMem")
-    private ContentDao contentDao;
+    private CreatorProfileDao creatorProfileDao;
 
     public List<CreatorProfile> get(String creatorName){
-        return contentDao.get(creatorName);
+        return creatorProfileDao.get(creatorName);
     }
 
     public Optional<CreatorProfile> get(long userId){
-        return contentDao.get(userId);
+        return creatorProfileDao.get(userId);
     }
 
     public Optional<CreatorProfile> getCreatorPageByPageLink(String pageLink){
-        return contentDao.getCreatorPageByPageLink(pageLink);
+        return creatorProfileDao.getCreatorPageByPageLink(pageLink);
     }
 
     public List<CreatorProfile> getContentsByCategory(Category category){
-        return contentDao.getContentsByCategory(category);
+        return creatorProfileDao.getContentsByCategory(category);
     }
 
     public void add(CreatorProfile creatorProfile){
-        contentDao.add(creatorProfile);
+        creatorProfileDao.add(creatorProfile);
     }
 
     public List<CreatorProfile> getAll(){
-        return contentDao.getAll();
+        return creatorProfileDao.getAll();
     }
 
     public boolean isPageLinkUnique(String pageLink){
-        return contentDao.isPageLinkUnique(pageLink);
+        return creatorProfileDao.isPageLinkUnique(pageLink);
     }
 }
