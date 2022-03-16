@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component("beanSoup")
+@Component("userMem")
 public class UserDaoMem implements UserDao {
 
     private static final ArrayList<User> users = new ArrayList<>();
