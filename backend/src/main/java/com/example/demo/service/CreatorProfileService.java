@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ContentService {
+public class CreatorProfileService {
 
     @Autowired
     @Qualifier("componentMem")
@@ -44,4 +44,6 @@ public class ContentService {
     public boolean isPageLinkUnique(String pageLink){
         return creatorProfileDao.isPageLinkUnique(pageLink);
     }
+
+    // TODO: create profile update
 }
