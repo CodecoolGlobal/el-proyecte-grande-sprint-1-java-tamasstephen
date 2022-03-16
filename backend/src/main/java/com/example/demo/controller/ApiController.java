@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.user.Category;
 import com.example.demo.model.user.Content;
 import com.example.demo.model.user.User;
 import com.example.demo.service.ContentService;
@@ -32,15 +33,14 @@ public class ApiController {
     @PostMapping("/add-content")
     public boolean add(@RequestBody Content content, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
-        if (userId == null || userService.getUser(userId).isEmpty()){
-            return false;
-        } else {
+        if (isCreatorAvailableForCreation(userId, content.getPageLink())){
             User user = userService.getUser(userId).get();
             content.setUserId(userId);
             user.setContent(content);
             contentService.add(content);
             return true;
         }
+        return false;
     }
 
     @GetMapping("/all-creators")
@@ -58,5 +58,19 @@ public class ApiController {
     public Content getContentByLink(@RequestParam String pageLink){
         Optional<Content> content = contentService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
+    }
+
+    @GetMapping("/creators/category")
+    public List<Content> getCreatorsByCategory(@RequestParam Category category){
+        System.out.println("hello");
+        System.out.println(category);
+        return contentService.getContentsByCategory(category);
+    }
+
+    private boolean isCreatorAvailableForCreation(Long userId, String pageLink){
+        System.out.println(pageLink);
+       return userId != null
+               && userService.getUser(userId).isPresent()
+               && contentService.isPageLinkUnique(pageLink);
     }
 }

@@ -47,6 +47,7 @@ public class ContentDaoMem implements ContentDao {
 
     @Override
     public boolean isPageLinkUnique(String pageLink){
-        return contents.stream().filter(content -> content.hasSamePageLink(pageLink)).findFirst().isEmpty();
+        Optional<Content> cnt = contents.stream().filter(content -> content.hasSamePageLink(pageLink)).findFirst();
+        return cnt.isEmpty();
     }
 }
