@@ -53,4 +53,10 @@ public class ApiController {
         List<Content> content = contentService.get(name);
         return content;
     }
+
+    @GetMapping("/creator")
+    public Content getContentByLink(@RequestParam String pageLink){
+        Optional<Content> content = contentService.getCreatorPageByPageLink(pageLink);
+        return content.isEmpty() ? null : content.get();
+    }
 }
