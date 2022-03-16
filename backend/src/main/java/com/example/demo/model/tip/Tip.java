@@ -18,5 +18,7 @@ public class Tip {
         return userId == this.userId;
     }
 
-
+    public boolean isSameId(long userId) {
+        return id == userId;
+    }
 }
