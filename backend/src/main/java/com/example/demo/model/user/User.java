@@ -1,10 +1,8 @@
 package com.example.demo.model.user;
 
-import java.util.Objects;
-
 public class User {
     private long id;
-    private Content userContent;
+    private CreatorProfile userCreatorProfile;
     private String email;
     private String password;
 
@@ -22,8 +20,8 @@ public class User {
         return this.id == id;
     }
 
-    public void setContent(Content content){
-        this.userContent = content;
+    public void setContent(CreatorProfile creatorProfile){
+        this.userCreatorProfile = creatorProfile;
     }
 
     public void setId(long id){
@@ -39,7 +37,7 @@ public class User {
     }
 
     public boolean isCreatorProfileAvailable(){
-        return userContent != null;
+        return userCreatorProfile != null;
     }
 }
 

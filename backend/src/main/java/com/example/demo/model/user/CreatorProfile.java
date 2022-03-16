@@ -2,7 +2,7 @@ package com.example.demo.model.user;
 
 import java.util.List;
 
-public class Content {
+public class CreatorProfile {
     private Category category;
     private List<String> contentUrls;
     private String description;

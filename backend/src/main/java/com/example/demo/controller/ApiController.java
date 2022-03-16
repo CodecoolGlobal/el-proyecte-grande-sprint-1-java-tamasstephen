@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.user.Category;
-import com.example.demo.model.user.Content;
+import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.User;
 import com.example.demo.service.ContentService;
 import com.example.demo.service.UserService;
@@ -31,37 +31,37 @@ public class ApiController {
     }
 
     @PostMapping("/add-content")
-    public boolean add(@RequestBody Content content, HttpSession session){
+    public boolean add(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
-        if (isCreatorAvailableForCreation(userId, content.getPageLink())){
+        if (isCreatorAvailableForCreation(userId, creatorProfile.getPageLink())){
             User user = userService.getUser(userId).get();
-            content.setUserId(userId);
-            user.setContent(content);
-            contentService.add(content);
+            creatorProfile.setUserId(userId);
+            user.setContent(creatorProfile);
+            contentService.add(creatorProfile);
             return true;
         }
         return false;
     }
 
     @GetMapping("/all-creators")
-    public List<Content> getAll(){
+    public List<CreatorProfile> getAll(){
         return contentService.getAll();
     }
 
     @GetMapping("/creators")
-    public List<Content> get(@RequestParam String name){
-        List<Content> content = contentService.get(name);
-        return content;
+    public List<CreatorProfile> get(@RequestParam String name){
+        List<CreatorProfile> creatorProfile = contentService.get(name);
+        return creatorProfile;
     }
 
     @GetMapping("/creator")
-    public Content getContentByLink(@RequestParam String pageLink){
-        Optional<Content> content = contentService.getCreatorPageByPageLink(pageLink);
+    public CreatorProfile getContentByLink(@RequestParam String pageLink){
+        Optional<CreatorProfile> content = contentService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
     }
 
     @GetMapping("/creators/category")
-    public List<Content> getCreatorsByCategory(@RequestParam Category category){
+    public List<CreatorProfile> getCreatorsByCategory(@RequestParam Category category){
         System.out.println("hello");
         System.out.println(category);
         return contentService.getContentsByCategory(category);
@@ -71,6 +71,12 @@ public class ApiController {
     public boolean isUserContentSet(@RequestParam long id){
         Optional<User> userOption = userService.getUser(id);
         return userOption.map(User::isCreatorProfileAvailable).orElse(false);
+    }
+
+    @PutMapping("/creator")
+    public void changeContent(@RequestBody CreatorProfile creatorProfile){
+        Optional<CreatorProfile> contentOptional = contentService.getCreatorPageByPageLink(creatorProfile.getPageLink());
+        //TODO: finish this
     }
 
     private boolean isCreatorAvailableForCreation(Long userId, String pageLink){

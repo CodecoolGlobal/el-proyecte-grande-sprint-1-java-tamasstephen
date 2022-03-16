@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.ContentDao;
 import com.example.demo.model.user.Category;
-import com.example.demo.model.user.Content;
+import com.example.demo.model.user.CreatorProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -17,27 +17,27 @@ public class ContentService {
     @Qualifier("componentMem")
     private ContentDao contentDao;
 
-    public List<Content> get(String creatorName){
+    public List<CreatorProfile> get(String creatorName){
         return contentDao.get(creatorName);
     }
 
-    public Optional<Content> get(long userId){
+    public Optional<CreatorProfile> get(long userId){
         return contentDao.get(userId);
     }
 
-    public Optional<Content> getCreatorPageByPageLink(String pageLink){
+    public Optional<CreatorProfile> getCreatorPageByPageLink(String pageLink){
         return contentDao.getCreatorPageByPageLink(pageLink);
     }
 
-    public List<Content> getContentsByCategory(Category category){
+    public List<CreatorProfile> getContentsByCategory(Category category){
         return contentDao.getContentsByCategory(category);
     }
 
-    public void add(Content content){
-        contentDao.add(content);
+    public void add(CreatorProfile creatorProfile){
+        contentDao.add(creatorProfile);
     }
 
-    public List<Content> getAll(){
+    public List<CreatorProfile> getAll(){
         return contentDao.getAll();
     }
 

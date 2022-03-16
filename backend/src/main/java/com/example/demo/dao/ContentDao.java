@@ -1,25 +1,24 @@
 package com.example.demo.dao;
 
 import com.example.demo.model.user.Category;
-import com.example.demo.model.user.Content;
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.CreatorProfile;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ContentDao {
 
-    List<Content> get(String creatorName);
+    List<CreatorProfile> get(String creatorName);
 
-    Optional<Content> get(long userId);
+    Optional<CreatorProfile> get(long userId);
 
-    Optional<Content> getCreatorPageByPageLink(String pageLink);
+    Optional<CreatorProfile> getCreatorPageByPageLink(String pageLink);
 
-    List<Content> getContentsByCategory(Category category);
+    List<CreatorProfile> getContentsByCategory(Category category);
 
-    void add(Content content);
+    void add(CreatorProfile creatorProfile);
 
-    List<Content> getAll();
+    List<CreatorProfile> getAll();
 
     boolean isPageLinkUnique(String pageLink);
 }
