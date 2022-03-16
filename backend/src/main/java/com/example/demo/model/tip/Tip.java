@@ -1,9 +1,9 @@
-package com.example.demo.model;
+package com.example.demo.model.tip;
 
 
 import java.time.LocalDate;
 
-public class Donation {
+public class Tip {
     private long id;
     private int amount;
     private long userId;

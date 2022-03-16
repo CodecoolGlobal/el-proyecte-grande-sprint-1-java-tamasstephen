@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.model.tip;
 
 public class Comment {
     private long id;
