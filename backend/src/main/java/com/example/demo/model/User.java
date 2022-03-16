@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class User {
     private long id;
-//    private Content userContent;
+    private Content userContent;
     private String userName;
     private String email;
     private String password;
@@ -13,7 +13,7 @@ public class User {
     // TODO: 16/03/2022 Add constructor after merge
 
     public boolean isSameCategory(Category category){
-        return true;
+        return userContent.getCategory() == category;
     }
 
     public String getEndpoint(){
