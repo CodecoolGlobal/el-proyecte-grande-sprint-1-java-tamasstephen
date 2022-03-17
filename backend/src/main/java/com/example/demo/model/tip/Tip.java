@@ -26,4 +26,20 @@ public class Tip {
     public boolean hasSameLink(String pageLink){
         return this.pageLink.equals(pageLink);
     }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
 }
