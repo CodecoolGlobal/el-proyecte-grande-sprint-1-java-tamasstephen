@@ -43,5 +43,13 @@ public class TipDaoMem implements TipDao {
         return comment.getComment();
     }
 
+    @Override
+    public List<Comment> getCommentsByPageLink(String pageLink) {
+        return tips.stream()
+                .filter(tip -> tip.hasSameLink(pageLink))
+                .map(Tip::getComment)
+                .collect(Collectors.toList());
+    }
+
 
 }

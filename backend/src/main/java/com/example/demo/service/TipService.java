@@ -11,13 +11,16 @@ public class TipService {
 
     TipDao tipDao;
 
-    public Optional<Tip> get(long id) {
-        return tipDao.get(id);
-    }
-
-
     public void add(Tip tip) {
         tipDao.add(tip);
+    }
+
+    public List<Comment> getCommentsByPageLink(String pageLink){
+        return tipDao.getCommentsByPageLink(pageLink);
+    }
+
+    public Optional<Tip> get(long id) {
+        return tipDao.get(id);
     }
 
     public void deleteTip(long id) {

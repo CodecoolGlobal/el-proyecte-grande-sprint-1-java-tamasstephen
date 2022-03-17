@@ -20,4 +20,6 @@ public interface TipDao {
 
     String getCommentString(Comment comment);
 
+    List<Comment> getCommentsByPageLink(String pageLink);
+
 }
