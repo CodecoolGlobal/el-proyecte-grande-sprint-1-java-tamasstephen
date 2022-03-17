@@ -57,6 +57,15 @@ public class ApiController {
         return null;
     }
 
+    @PutMapping("/user/update")
+    public void updateProfile(@RequestBody User user, HttpSession session){
+        if(session.getAttribute("userId") != null){
+            Long id = (Long) session.getAttribute("userId");
+            User prevUser = userService.getUser(id).get();
+            userService.updateUser(prevUser, user);
+        }
+    }
+
     @PostMapping("/creator-profile")
     public boolean addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
