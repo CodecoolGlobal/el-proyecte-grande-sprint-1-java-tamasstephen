@@ -49,7 +49,10 @@ public class UserDaoMem implements UserDao {
 
     @Override
     public void deleteUser(User user) {
-        users.remove(user);
+        Optional<User> userOptional = getUserByEmail(user.getEmail());
+        if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
+            users.remove(userOptional.get());
+        }
     }
 
     @Override
