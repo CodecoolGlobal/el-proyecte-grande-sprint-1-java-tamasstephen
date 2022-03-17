@@ -50,4 +50,9 @@ public class CreatorProfileDaoMem implements CreatorProfileDao {
         Optional<CreatorProfile> cnt = CREATOR_PROFILES.stream().filter(content -> content.hasSamePageLink(pageLink)).findFirst();
         return cnt.isEmpty();
     }
+
+    @Override
+    public void deleteCreatorProfile(CreatorProfile profile){
+        CREATOR_PROFILES.remove(profile);
+    }
 }

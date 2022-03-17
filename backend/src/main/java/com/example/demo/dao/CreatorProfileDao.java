@@ -21,4 +21,6 @@ public interface CreatorProfileDao {
     List<CreatorProfile> getAll();
 
     boolean isPageLinkUnique(String pageLink);
+
+    void deleteCreatorProfile(CreatorProfile profile);
 }

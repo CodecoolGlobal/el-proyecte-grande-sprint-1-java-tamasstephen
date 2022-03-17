@@ -48,4 +48,10 @@ public class CreatorProfileService {
     }
 
     // TODO: create profile update
+
+    public void updateCreatorProfile(CreatorProfile oldProfile, CreatorProfile newProfile){
+        creatorProfileDao.deleteCreatorProfile(oldProfile);
+        creatorProfileDao.add(newProfile);
+    }
+
 }
