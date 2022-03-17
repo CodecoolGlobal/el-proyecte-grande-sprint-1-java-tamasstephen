@@ -36,6 +36,15 @@ public class ApiController {
         return false;
     }
 
+    @DeleteMapping("/user")
+    public void deleteUser(HttpSession session){
+        Long id = (Long) session.getAttribute("userId");
+        if( id != null){
+            userService.deleteUser(userService.getUser(id).get());
+            session.removeAttribute("userId");
+        }
+    }
+
     @PostMapping("/login")
     public long login(@RequestBody User user, HttpSession session){
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
@@ -77,15 +86,6 @@ public class ApiController {
             return true;
         }
         return false;
-    }
-
-    @DeleteMapping("/user")
-    public void deleteUser(HttpSession session){
-        Long id = (Long) session.getAttribute("userId");
-        if( id != null){
-            userService.deleteUser(userService.getUser(id).get());
-            session.removeAttribute("userId");
-        }
     }
 
     @GetMapping("/creator-profile-set/")
