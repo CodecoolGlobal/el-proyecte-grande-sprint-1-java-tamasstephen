@@ -100,7 +100,6 @@ public class ApiController {
         Optional<CreatorProfile> profile;
         if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
             CreatorProfile prevProfile = profile.get();
-            creatorProfile.setUserId(userId);
             creatorProfileService.updateCreatorProfile(prevProfile, creatorProfile);
             return true;
         }
