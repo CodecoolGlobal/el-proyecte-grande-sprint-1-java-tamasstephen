@@ -6,7 +6,7 @@ import com.example.demo.model.tip.Tip;
 import java.util.List;
 import java.util.Optional;
 
-public interface DonationDao {
+public interface TipDao {
 
     Optional<Tip> get(long id);
 
@@ -16,8 +16,6 @@ public interface DonationDao {
 
     List<Tip> getAll();
 
-    Comment get(Tip tip);
-
-    String getCommentString(Comment comment);
+    List<Tip> getCommentsByPageLink(String pageLink);
 
 }
