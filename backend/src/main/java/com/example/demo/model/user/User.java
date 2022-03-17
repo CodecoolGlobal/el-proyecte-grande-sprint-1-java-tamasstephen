@@ -1,49 +1,55 @@
 package com.example.demo.model.user;
 
-import java.util.Objects;
-
 public class User {
-    private final long id;
-    private Content userContent;
-    private String userName;
+    private long id;
+    private CreatorProfile userCreatorProfile;
     private String email;
     private String password;
-    private String profileImage;
 
-    public User(long id, Content userContent, String userName, String email, String password, String profileImage) {
-        this.id = id;
-        this.userContent = userContent;
-        this.userName = userName;
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.profileImage = profileImage;
     }
 
-    public boolean isSameCategory(Category category){
-        return userContent.getCategory() == category;
-    }
-
-    public String getEndpoint(){
-        return userContent.getPageLink();
-    }
-
-    public boolean hasSameEndpoint(String pageLink){
-        return userContent.getPageLink().equals(pageLink);
-    }
-
-    public boolean isUserHasSameName(String name){
-        return Objects.equals(userName, name);
-    }
 
     public void payUser(){
-
+        //TODO: implement payment
     }
 
     public boolean hasSameId(long id){
         return this.id == id;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setContent(CreatorProfile creatorProfile){
+        this.userCreatorProfile = creatorProfile;
+    }
+
+    public void setId(long id){
+        this.id = id;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public boolean isMatchingEmail(String email){
+        return email.equals(this.email);
+    }
+
+    public boolean isValidPassword(String password) {
+        return password.equals(this.password);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public boolean isCreatorProfileAvailable(){
+        return userCreatorProfile != null;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
+

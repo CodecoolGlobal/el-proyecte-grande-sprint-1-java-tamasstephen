@@ -1,20 +1,22 @@
 package com.example.demo.dao.implementation;
 
 import com.example.demo.dao.UserDao;
-import com.example.demo.model.user.Category;
 import com.example.demo.model.user.User;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Component("userMem")
 public class UserDaoMem implements UserDao {
 
-    private List<User> users;
+    private static final ArrayList<User> users = new ArrayList<>();
 
     @Override
-    public List<User> get(String name) {
-        return users.stream().filter(user -> user.getUserName().equals(name)).collect(Collectors.toList());
+    public List<User> get(String email) {
+        return users.stream().filter(user -> user.getEmail().equals(email)).collect(Collectors.toList());
     }
 
     @Override
@@ -22,18 +24,11 @@ public class UserDaoMem implements UserDao {
         return users.stream().filter(user -> user.hasSameId(id)).findFirst();
     }
 
-    @Override
-    public Optional<User> getUserByPageLink(String pageLink) {
-        return users.stream().filter(user -> user.hasSameEndpoint(pageLink)).findFirst();
-    }
-
-    @Override
-    public List<User> getUsersByCategory(Category category) {
-        return users.stream().filter(user -> user.isSameCategory(category)).collect(Collectors.toList());
-    }
 
     @Override
     public void add(User user) {
+        long id = users.size() + 1;
+        user.setId(id);
         users.add(user);
     }
 
@@ -43,8 +38,30 @@ public class UserDaoMem implements UserDao {
     }
 
     @Override
-    public void deleteUser(long id) {
-        User userStream = users.stream().filter(user -> user.hasSameId(id)).collect(Collectors.toList()).get(0);
-        users.remove(userStream);
+    public boolean isEmailAvailable(String email) {
+        return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst().isEmpty();
     }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst();
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        Optional<User> userOptional = getUserByEmail(user.getEmail());
+        if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
+            users.remove(userOptional.get());
+        }
+    }
+
+    @Override
+    public void update(User prevUser, User nextUser){
+        long id = prevUser.getId();
+        nextUser.setId(id);
+        users.remove(prevUser);
+        users.add(nextUser);
+    }
+
+
 }

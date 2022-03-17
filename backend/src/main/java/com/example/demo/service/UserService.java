@@ -1,22 +1,25 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.UserDao;
-import com.example.demo.model.user.Category;
 import com.example.demo.model.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class UserService {
 
-    UserDao userDao;
+    private final UserDao userDao;
+
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public void add(User user){
         userDao.add(user);
-    }
-
-    public List<User> getUsersByCategory(Category category){
-        return userDao.getUsersByCategory(category);
     }
 
     public List<User> getAllUsers(){
@@ -27,16 +30,20 @@ public class UserService {
         return userDao.get(id);
     }
 
-    public List<User> getUser(String name){
-        return userDao.get(name);
+    public boolean isEmailAvailable(String email){
+        return userDao.isEmailAvailable(email);
     }
 
-    public Optional<User> getUserByPageLink(String pageLink){
-        return userDao.getUserByPageLink(pageLink);
+    public Optional<User> getUserByEmail(String email){
+        return userDao.getUserByEmail(email);
     }
 
-    public void deleteUser(long id){
-        userDao.deleteUser(id);
+    public void deleteUser(User user){
+        userDao.deleteUser(user);
+    }
+
+    public void updateUser(User prevUser, User newUser){
+        userDao.update(prevUser, newUser);
     }
 
 }
