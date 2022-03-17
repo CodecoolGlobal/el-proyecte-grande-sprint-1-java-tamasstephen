@@ -26,11 +26,11 @@ public class ApiController {
 
     @PostMapping("/add-creator")
     public void add(@RequestBody User user, HttpSession session){
+        //TODO: we need to check if email exists
         long newId = userService.getAllUsers() == null ? 1 : userService.getAllUsers().size() + 1;
         user.setId(newId);
         userService.add(user);
         session.setAttribute("userId", newId);
-
     }
 
     @PostMapping("/add-content")
@@ -47,18 +47,18 @@ public class ApiController {
     }
 
     @GetMapping("/all-creators")
-    public List<CreatorProfile> getAll(){
+    public List<CreatorProfile> getAllCreatorProfiles(){
         return creatorProfileService.getAll();
     }
 
     @GetMapping("/creators")
-    public List<CreatorProfile> get(@RequestParam String name){
+    public List<CreatorProfile> getAllCreatorsByName(@RequestParam String name){
         List<CreatorProfile> creatorProfile = creatorProfileService.get(name);
         return creatorProfile;
     }
 
     @GetMapping("/creator")
-    public CreatorProfile getContentByLink(@RequestParam String pageLink){
+    public CreatorProfile getCreatorProfileByLink(@RequestParam String pageLink){
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
     }
@@ -75,9 +75,16 @@ public class ApiController {
     }
 
     @PutMapping("/creator")
-    public void changeContent(@RequestBody CreatorProfile creatorProfile){
-        Optional<CreatorProfile> contentOptional = creatorProfileService.getCreatorPageByPageLink(creatorProfile.getPageLink());
-        //TODO: finish this
+    public boolean changeContent(@RequestBody CreatorProfile creatorProfile, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        Optional<CreatorProfile> profile;
+        if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
+            CreatorProfile prevProfile = profile.get();
+            creatorProfile.setUserId(userId);
+            creatorProfileService.updateCreatorProfile(prevProfile, creatorProfile);
+            return true;
+        }
+        return false;
     }
 
     private boolean isCreatorAvailableForCreation(Long userId, String pageLink){
