@@ -1,15 +1,14 @@
 package com.example.demo.dao.implementation;
 
-import com.example.demo.dao.DonationDao;
+import com.example.demo.dao.TipDao;
 import com.example.demo.model.tip.Comment;
 import com.example.demo.model.tip.Tip;
-import com.example.demo.model.user.User;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class DonationDaoMem implements DonationDao {
+public class TipDaoMem implements TipDao {
 
     private static List<Tip> tips;
 

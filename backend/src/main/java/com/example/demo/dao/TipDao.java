@@ -6,7 +6,7 @@ import com.example.demo.model.tip.Tip;
 import java.util.List;
 import java.util.Optional;
 
-public interface DonationDao {
+public interface TipDao {
 
     Optional<Tip> get(long id);
 
