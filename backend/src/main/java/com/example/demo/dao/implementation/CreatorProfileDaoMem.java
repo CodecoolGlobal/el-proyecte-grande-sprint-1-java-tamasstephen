@@ -55,4 +55,11 @@ public class CreatorProfileDaoMem implements CreatorProfileDao {
     public void deleteCreatorProfile(CreatorProfile profile){
         CREATOR_PROFILES.remove(profile);
     }
+
+    @Override
+    public void update(CreatorProfile oldProfile, CreatorProfile newProfile) {
+        newProfile.setUserId(oldProfile.getUserId());
+        CREATOR_PROFILES.remove(oldProfile);
+        CREATOR_PROFILES.add(newProfile);
+    }
 }

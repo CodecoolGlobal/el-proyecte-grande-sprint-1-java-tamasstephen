@@ -23,4 +23,6 @@ public interface CreatorProfileDao {
     boolean isPageLinkUnique(String pageLink);
 
     void deleteCreatorProfile(CreatorProfile profile);
+
+    void update(CreatorProfile oldProfile, CreatorProfile newProfile);
 }

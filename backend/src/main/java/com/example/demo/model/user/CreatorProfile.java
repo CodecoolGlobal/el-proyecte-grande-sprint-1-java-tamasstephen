@@ -11,6 +11,14 @@ public class CreatorProfile {
     private String userName;
     private long userId;
 
+    public CreatorProfile(Category category, List<String> contentUrls, String description, String pageLink, String profileImage, String userName) {
+        this.category = category;
+        this.contentUrls = contentUrls;
+        this.description = description;
+        this.pageLink = pageLink;
+        this.profileImage = profileImage;
+        this.userName = userName;
+    }
 
     public String getPageLink(){
         return pageLink;
