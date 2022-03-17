@@ -14,4 +14,9 @@ public interface UserDao {
     void add(User user);
 
     List<User> getAll();
+
+    boolean isEmailAvailable(String email);
+
+    Optional<User> getUserByEmail(String email);
+
 }

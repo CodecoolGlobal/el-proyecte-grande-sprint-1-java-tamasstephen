@@ -36,4 +36,16 @@ public class UserDaoMem implements UserDao {
     public List<User> getAll() {
         return users;
     }
+
+    @Override
+    public boolean isEmailAvailable(String email) {
+        return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst().isEmpty();
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst();
+    }
+
+
 }

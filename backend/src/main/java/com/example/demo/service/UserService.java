@@ -30,4 +30,12 @@ public class UserService {
         return userDao.get(id);
     }
 
+    public boolean isEmailAvailable(String email){
+        return userDao.isEmailAvailable(email);
+    }
+
+    public Optional<User> getUserByEmail(String email){
+        return userDao.getUserByEmail(email);
+    }
+
 }

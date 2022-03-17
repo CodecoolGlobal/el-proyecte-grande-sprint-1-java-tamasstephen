@@ -32,8 +32,12 @@ public class User {
         return this.email;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isMatchingEmail(String email){
+        return email.equals(this.email);
+    }
+
+    public boolean isValidPassword(String password) {
+        return password.equals(this.password);
     }
 
     public long getId() {
@@ -42,6 +46,10 @@ public class User {
 
     public boolean isCreatorProfileAvailable(){
         return userCreatorProfile != null;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
 
