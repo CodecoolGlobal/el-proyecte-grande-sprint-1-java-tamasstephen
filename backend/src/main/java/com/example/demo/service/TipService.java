@@ -3,13 +3,21 @@ package com.example.demo.service;
 import com.example.demo.dao.TipDao;
 import com.example.demo.model.tip.Comment;
 import com.example.demo.model.tip.Tip;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class TipService {
 
-    TipDao tipDao;
+    private final TipDao tipDao;
+
+    @Autowired
+    public TipService(TipDao tipDao) {
+        this.tipDao = tipDao;
+    }
 
     public void add(Tip tip) {
         tipDao.add(tip);

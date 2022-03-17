@@ -42,4 +42,12 @@ public class Tip {
     public LocalDate getDate() {
         return date;
     }
+
+    public String getPageLink() {
+        return pageLink;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

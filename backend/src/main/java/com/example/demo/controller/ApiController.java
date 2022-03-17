@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
+import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,13 @@ public class ApiController {
 
     private final UserService userService;
     private final CreatorProfileService creatorProfileService;
+    private final TipService tipService;
 
     @Autowired
-    public ApiController(UserService userService, CreatorProfileService creatorProfileService) {
+    public ApiController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
+        this.tipService = tipService;
     }
 
     @PostMapping("/user")
@@ -127,6 +131,14 @@ public class ApiController {
     @GetMapping("/creators/category")
     public List<CreatorProfile> getCreatorsByCategory(@RequestParam Category category){
         return creatorProfileService.getContentsByCategory(category);
+    }
+
+    @PostMapping("/creator/support")
+    public void supportCreator(@RequestBody Tip tip){
+        long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
+                .get().getUserId();
+        tip.setUserId(userId);
+        tipService.add(tip);
     }
 
     private boolean isCreatorAvailableForCreation(Long userId, String pageLink){
