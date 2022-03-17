@@ -36,8 +36,8 @@ public class ApiController {
         return false;
     }
 
-    @GetMapping("/login")
-    public long get(@RequestBody User user, HttpSession session){
+    @PostMapping("/login")
+    public long login(@RequestBody User user, HttpSession session){
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
         if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
             User regUser = userOptional.get();
@@ -48,7 +48,7 @@ public class ApiController {
     }
 
     @PostMapping("/creator-profile")
-    public boolean add(@RequestBody CreatorProfile creatorProfile, HttpSession session){
+    public boolean addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
         if (isCreatorAvailableForCreation(userId, creatorProfile.getPageLink())){
             User user = userService.getUser(userId).get();
