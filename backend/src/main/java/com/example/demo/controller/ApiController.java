@@ -79,6 +79,15 @@ public class ApiController {
         return false;
     }
 
+    @DeleteMapping("/user")
+    public void deleteUser(HttpSession session){
+        Long id = (Long) session.getAttribute("userId");
+        if( id != null){
+            userService.deleteUser(userService.getUser(id).get());
+            session.removeAttribute("userId");
+        }
+    }
+
     @GetMapping("/creator-profile-set/")
     public boolean isUserContentSet(@RequestParam long id){
         Optional<User> userOption = userService.getUser(id);
