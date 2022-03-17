@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.tip.Comment;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
@@ -139,6 +140,11 @@ public class ApiController {
                 .get().getUserId();
         tip.setUserId(userId);
         tipService.add(tip);
+    }
+
+    @GetMapping("/creator/tips")
+    public List<Comment> getTipCommentsByPageLink(String pageLink){
+        return tipService.getCommentsByPageLink(pageLink);
     }
 
     private boolean isCreatorAvailableForCreation(Long userId, String pageLink){

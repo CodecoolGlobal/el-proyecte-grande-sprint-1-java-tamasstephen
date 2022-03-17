@@ -27,24 +27,24 @@ public class TipService {
         return tipDao.getCommentsByPageLink(pageLink);
     }
 
-    public Optional<Tip> get(long id) {
-        return tipDao.get(id);
-    }
-
-    public void deleteTip(long id) {
-        tipDao.deleteTip(id);
-    }
-
-    public List<Tip> getAll() {
-        return tipDao.getAll();
-    }
-
-    public Comment get(Tip tip) {
-        return tipDao.get(tip);
-    }
-
-    public String getCommentString(Comment comment) {
-        return tipDao.getCommentString(comment);
-    }
+//    public Optional<Tip> get(long id) {
+//        return tipDao.get(id);
+//    }
+//
+//    public void deleteTip(long id) {
+//        tipDao.deleteTip(id);
+//    }
+//
+//    public List<Tip> getAll() {
+//        return tipDao.getAll();
+//    }
+//
+//    public Comment get(Tip tip) {
+//        return tipDao.get(tip);
+//    }
+//
+//    public String getCommentString(Comment comment) {
+//        return tipDao.getCommentString(comment);
+//    }
 
 }
