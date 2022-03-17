@@ -1,7 +1,6 @@
 package com.example.demo.dao.implementation;
 
 import com.example.demo.dao.UserDao;
-import com.example.demo.model.user.Category;
 import com.example.demo.model.user.User;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +27,8 @@ public class UserDaoMem implements UserDao {
 
     @Override
     public void add(User user) {
+        long id = users.size() + 1;
+        user.setId(id);
         users.add(user);
     }
 

@@ -15,6 +15,8 @@ import java.util.Optional;
 @RestController
 public class ApiController {
 
+    // TODO: replace if else statements with try catch and return helpful return messages
+
     private final UserService userService;
     private final CreatorProfileService creatorProfileService;
 
@@ -27,10 +29,8 @@ public class ApiController {
     @PostMapping("/add-creator")
     public void add(@RequestBody User user, HttpSession session){
         //TODO: we need to check if email exists
-        long newId = userService.getAllUsers() == null ? 1 : userService.getAllUsers().size() + 1;
-        user.setId(newId);
         userService.add(user);
-        session.setAttribute("userId", newId);
+        session.setAttribute("userId", user.getId());
     }
 
     @PostMapping("/add-content")

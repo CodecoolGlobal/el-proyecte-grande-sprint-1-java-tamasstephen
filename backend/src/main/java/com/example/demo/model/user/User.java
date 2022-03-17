@@ -36,6 +36,10 @@ public class User {
         return password;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public boolean isCreatorProfileAvailable(){
         return userCreatorProfile != null;
     }
