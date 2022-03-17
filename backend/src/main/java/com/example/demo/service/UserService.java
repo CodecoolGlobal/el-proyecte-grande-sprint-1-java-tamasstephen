@@ -38,4 +38,15 @@ public class UserService {
         return userDao.getUserByEmail(email);
     }
 
+    public void deleteUser(User user){
+        userDao.deleteUser(user);
+    }
+
+    public void updateUser(User prevUser, User newUser){
+        long id = prevUser.getId();
+        newUser.setId(id);
+        userDao.deleteUser(prevUser);
+        userDao.add(newUser);
+    }
+
 }

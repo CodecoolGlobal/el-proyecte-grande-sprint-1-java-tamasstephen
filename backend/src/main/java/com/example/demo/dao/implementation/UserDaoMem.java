@@ -47,5 +47,10 @@ public class UserDaoMem implements UserDao {
         return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst();
     }
 
+    @Override
+    public void deleteUser(User user) {
+        users.remove(user);
+    }
+
 
 }

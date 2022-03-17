@@ -19,4 +19,6 @@ public interface UserDao {
 
     Optional<User> getUserByEmail(String email);
 
+    void deleteUser(User user);
+
 }
