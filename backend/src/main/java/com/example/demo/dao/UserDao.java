@@ -21,4 +21,6 @@ public interface UserDao {
 
     void deleteUser(User user);
 
+    void update(User prevUser, User nextUser);
+
 }

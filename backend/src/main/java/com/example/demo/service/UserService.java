@@ -43,10 +43,7 @@ public class UserService {
     }
 
     public void updateUser(User prevUser, User newUser){
-        long id = prevUser.getId();
-        newUser.setId(id);
-        userDao.deleteUser(prevUser);
-        userDao.add(newUser);
+        userDao.update(prevUser, newUser);
     }
 
 }

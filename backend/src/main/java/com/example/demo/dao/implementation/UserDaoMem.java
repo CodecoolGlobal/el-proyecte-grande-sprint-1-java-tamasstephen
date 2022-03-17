@@ -52,5 +52,13 @@ public class UserDaoMem implements UserDao {
         users.remove(user);
     }
 
+    @Override
+    public void update(User prevUser, User nextUser){
+        long id = prevUser.getId();
+        nextUser.setId(id);
+        users.remove(prevUser);
+        users.add(nextUser);
+    }
+
 
 }
