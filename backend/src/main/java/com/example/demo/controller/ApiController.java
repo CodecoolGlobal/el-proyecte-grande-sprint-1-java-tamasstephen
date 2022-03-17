@@ -47,6 +47,16 @@ public class ApiController {
         return 0;
     }
 
+    @GetMapping("/user/profile")
+    public User getUserProfile(HttpSession session){
+        Long id = (Long) session.getAttribute("userId");
+        Optional<User> userOptional;
+        if (id != null && (userOptional = userService.getUser(id)).isPresent()){
+            return userOptional.get();
+        }
+        return null;
+    }
+
     @PostMapping("/creator-profile")
     public boolean addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
