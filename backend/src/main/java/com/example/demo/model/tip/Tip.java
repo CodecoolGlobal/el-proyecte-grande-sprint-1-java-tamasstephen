@@ -5,14 +5,18 @@ import java.time.LocalDate;
 
 public class Tip {
     private long id;
-    private int amount;
+    private final int amount;
     private long userId;
-    private String pageLink;
+    private final String pageLink;
     private LocalDate date;
-    private Comment comment;
+    private String supporter;
+    private String comment;
 
-    public Comment getComment(){
-        return comment;
+    public Tip(int amount, String pageLink, String supporter, String comment) {
+        this.amount = amount;
+        this.pageLink = pageLink;
+        this.supporter = supporter;
+        this.comment = comment;
     }
 
     public boolean isUsersDonation(long userId){
@@ -35,9 +39,6 @@ public class Tip {
         this.date = date;
     }
 
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
 
     public LocalDate getDate() {
         return date;

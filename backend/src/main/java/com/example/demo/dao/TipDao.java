@@ -16,10 +16,6 @@ public interface TipDao {
 
     List<Tip> getAll();
 
-    Comment get(Tip tip);
-
-    String getCommentString(Comment comment);
-
-    List<Comment> getCommentsByPageLink(String pageLink);
+    List<Tip> getCommentsByPageLink(String pageLink);
 
 }

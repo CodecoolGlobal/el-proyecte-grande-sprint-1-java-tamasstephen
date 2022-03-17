@@ -143,7 +143,7 @@ public class ApiController {
     }
 
     @GetMapping("/creator/tips")
-    public List<Comment> getTipCommentsByPageLink(String pageLink){
+    public List<Tip> getTipCommentsByPageLink(String pageLink){
         return tipService.getCommentsByPageLink(pageLink);
     }
 

@@ -23,7 +23,7 @@ public class TipService {
         tipDao.add(tip);
     }
 
-    public List<Comment> getCommentsByPageLink(String pageLink){
+    public List<Tip> getCommentsByPageLink(String pageLink){
         return tipDao.getCommentsByPageLink(pageLink);
     }
 
