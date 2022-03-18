@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class RestRequestController {
+public class CreatorProfileController {
 
     // TODO: replace if else statements with try catch and return helpful return messages
 
@@ -24,7 +24,7 @@ public class RestRequestController {
     private final TipService tipService;
 
     @Autowired
-    public RestRequestController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
+    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
@@ -44,7 +44,7 @@ public class RestRequestController {
     }
 
     @PutMapping("/creator-profile")
-    public boolean changeContent(@RequestBody CreatorProfile creatorProfile, HttpSession session){
+    public boolean updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
         Optional<CreatorProfile> profile;
         if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
