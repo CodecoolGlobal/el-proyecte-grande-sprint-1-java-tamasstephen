@@ -1,11 +1,16 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -19,13 +24,15 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public boolean add(@RequestBody User user, HttpSession session){
+    public Map<String, String> add(@RequestBody User user, HttpSession session){
         if (userService.isEmailAvailable(user.getEmail())){
+            Map<String, String> result = new HashMap<>();
             userService.add(user);
             session.setAttribute("userId", user.getId());
-            return true;
+            result.put("result", "ok");
+            return result;
         }
-        return false;
+        throw new UserStatusException("The provided email is already taken.");
     }
 
     @DeleteMapping("/user")
@@ -65,11 +72,20 @@ public class UserController {
             User prevUser = userService.getUser(id).get();
             userService.updateUser(prevUser, user);
         }
+        throw new UserStatusException("You have to login to update your profile!");
     }
 
     @GetMapping("/creator-profile-set/")
     public boolean isUserContentSet(@RequestParam long id){
         Optional<User> userOption = userService.getUser(id);
         return userOption.map(User::isCreatorProfileAvailable).orElse(false);
+    }
+
+    @ExceptionHandler(UserStatusException.class)
+    public ResponseEntity<Map<String, String>> handleUnavailableEmail(RuntimeException exception){
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "error");
+        result.put("message", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 }
