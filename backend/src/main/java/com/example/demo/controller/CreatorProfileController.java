@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
@@ -47,7 +48,7 @@ public class CreatorProfileController {
             result.put("result", "ok");
             return result;
         }
-        throw new IllegalArgumentException("The provided link is not available, or the profile was already created");
+        throw new UserStatusException("The provided link is not available, or the profile was already created");
     }
 
     @PutMapping("/creator-profile")
@@ -61,7 +62,7 @@ public class CreatorProfileController {
             result.put("result", "ok");
             return result;
         }
-        throw new IllegalArgumentException("You have to log in to change those details!");
+        throw new UserStatusException("You have to log in to change those details!");
     }
 
     @GetMapping("/creator")
@@ -107,7 +108,7 @@ public class CreatorProfileController {
                && creatorProfileService.get(userId).isEmpty();
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(UserStatusException.class)
     private ResponseEntity<Map<String, String>> handleOwnerNotFound(RuntimeException exception, WebRequest request){
         Map<String, String> result = new HashMap<>();
         result.put("result", "error");

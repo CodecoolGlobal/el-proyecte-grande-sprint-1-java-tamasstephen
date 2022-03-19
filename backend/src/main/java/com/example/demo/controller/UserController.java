@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserController {
             result.put("result", "ok");
             return result;
         }
-        throw new IllegalArgumentException("The provided email is already taken.");
+        throw new UserStatusException("The provided email is already taken.");
     }
 
     @DeleteMapping("/user")
@@ -71,7 +72,7 @@ public class UserController {
             User prevUser = userService.getUser(id).get();
             userService.updateUser(prevUser, user);
         }
-        throw new IllegalArgumentException("You have to login to update your profile!");
+        throw new UserStatusException("You have to login to update your profile!");
     }
 
     @GetMapping("/creator-profile-set/")
@@ -80,7 +81,7 @@ public class UserController {
         return userOption.map(User::isCreatorProfileAvailable).orElse(false);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(UserStatusException.class)
     public ResponseEntity<Map<String, String>> handleUnavailableEmail(RuntimeException exception){
         Map<String, String> result = new HashMap<>();
         result.put("result", "error");
