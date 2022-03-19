@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.tip.Comment;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ApiController {
+public class CreatorProfileController {
 
     // TODO: replace if else statements with try catch and return helpful return messages
 
@@ -25,59 +24,10 @@ public class ApiController {
     private final TipService tipService;
 
     @Autowired
-    public ApiController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
+    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
-    }
-
-    @PostMapping("/user")
-    public boolean add(@RequestBody User user, HttpSession session){
-        if (userService.isEmailAvailable(user.getEmail())){
-            userService.add(user);
-            session.setAttribute("userId", user.getId());
-            return true;
-        }
-        return false;
-    }
-
-    @DeleteMapping("/user")
-    public void deleteUser(HttpSession session){
-        Long id = (Long) session.getAttribute("userId");
-        if( id != null){
-            userService.deleteUser(userService.getUser(id).get());
-            session.removeAttribute("userId");
-        }
-    }
-
-    @PostMapping("/login")
-    public long login(@RequestBody User user, HttpSession session){
-        Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
-        if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
-            User regUser = userOptional.get();
-            session.setAttribute("userId", regUser.getId());
-            return regUser.getId();
-        }
-        return 0;
-    }
-
-    @GetMapping("/user/profile")
-    public User getUserProfile(HttpSession session){
-        Long id = (Long) session.getAttribute("userId");
-        Optional<User> userOptional;
-        if (id != null && (userOptional = userService.getUser(id)).isPresent()){
-            return userOptional.get();
-        }
-        return null;
-    }
-
-    @PutMapping("/user/update")
-    public void updateProfile(@RequestBody User user, HttpSession session){
-        if(session.getAttribute("userId") != null){
-            Long id = (Long) session.getAttribute("userId");
-            User prevUser = userService.getUser(id).get();
-            userService.updateUser(prevUser, user);
-        }
     }
 
     @PostMapping("/creator-profile")
@@ -93,14 +43,8 @@ public class ApiController {
         return false;
     }
 
-    @GetMapping("/creator-profile-set/")
-    public boolean isUserContentSet(@RequestParam long id){
-        Optional<User> userOption = userService.getUser(id);
-        return userOption.map(User::isCreatorProfileAvailable).orElse(false);
-    }
-
     @PutMapping("/creator-profile")
-    public boolean changeContent(@RequestBody CreatorProfile creatorProfile, HttpSession session){
+    public boolean updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
         Optional<CreatorProfile> profile;
         if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
