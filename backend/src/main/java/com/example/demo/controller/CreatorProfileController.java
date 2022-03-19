@@ -8,10 +8,15 @@ import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,28 +36,32 @@ public class CreatorProfileController {
     }
 
     @PostMapping("/creator-profile")
-    public boolean addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
+    public Map<String, String> addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
+        Map<String, String> result = new HashMap<>();
         if (isCreatorAvailableForCreation(userId, creatorProfile.getPageLink())){
             User user = userService.getUser(userId).get();
             creatorProfile.setUserId(userId);
             user.setContent(creatorProfile);
             creatorProfileService.add(creatorProfile);
-            return true;
+            result.put("result", "ok");
+            return result;
         }
-        return false;
+        throw new IllegalArgumentException("The provided link is not available, or the profile was already created");
     }
 
     @PutMapping("/creator-profile")
-    public boolean updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
+    public Map<String, String> updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
         Optional<CreatorProfile> profile;
+        Map<String, String> result = new HashMap<>();
         if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
             CreatorProfile prevProfile = profile.get();
             creatorProfileService.updateCreatorProfile(prevProfile, creatorProfile);
-            return true;
+            result.put("result", "ok");
+            return result;
         }
-        return false;
+        throw new IllegalArgumentException("You have to log in to change those details!");
     }
 
     @GetMapping("/creator")
@@ -97,4 +106,14 @@ public class CreatorProfileController {
                && creatorProfileService.isPageLinkUnique(pageLink)
                && creatorProfileService.get(userId).isEmpty();
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    private ResponseEntity<Map<String, String>> handleOwnerNotFound(RuntimeException exception, WebRequest request){
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "error");
+        result.put("message", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
+
 }
