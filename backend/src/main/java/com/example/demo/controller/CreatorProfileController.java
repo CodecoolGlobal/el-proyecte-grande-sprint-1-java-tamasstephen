@@ -8,11 +8,14 @@ import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.FileHandler;
+import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -28,12 +31,14 @@ public class CreatorProfileController {
     private final UserService userService;
     private final CreatorProfileService creatorProfileService;
     private final TipService tipService;
+    private final FileHandler fileHandler;
 
     @Autowired
-    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
+    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService, FileHandler fileHandler) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
+        this.fileHandler = fileHandler;
     }
 
     @PostMapping("/creator-profile")
@@ -49,6 +54,16 @@ public class CreatorProfileController {
             return result;
         }
         throw new UserStatusException("The provided link is not available, or the profile was already created");
+    }
+
+
+    @CrossOrigin
+    @PostMapping("/creator-profile/upload")
+    public Map<String, String> uploadImage(@RequestPart("file") MultipartFile file, @RequestPart("user") String name){
+        fileHandler.createDirectory(name);
+        fileHandler.saveFile(file, name);
+        fileHandler.getFile("gbu.jpg", name);
+        return null;
     }
 
     @PutMapping("/creator-profile")
