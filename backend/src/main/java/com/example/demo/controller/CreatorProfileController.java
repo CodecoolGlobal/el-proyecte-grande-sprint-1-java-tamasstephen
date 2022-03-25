@@ -4,7 +4,6 @@ import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
-import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.file.Files;
@@ -38,9 +36,6 @@ public class CreatorProfileController {
     private final FileHandler fileHandler;
 
     @Autowired
-    ServletContext servletContext;
-
-    @Autowired
     public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService, FileHandler fileHandler) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
@@ -48,24 +43,9 @@ public class CreatorProfileController {
         this.fileHandler = fileHandler;
     }
 
-    @PostMapping("/creator-profile")
-    public Map<String, String> addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
-        Long userId = (Long) session.getAttribute("userId");
-        Map<String, String> result = new HashMap<>();
-        if (isCreatorAvailableForCreation(userId, creatorProfile.getPageLink())){
-            User user = userService.getUser(userId).get();
-            creatorProfile.setUserId(userId);
-            user.setContent(creatorProfile);
-            creatorProfileService.add(creatorProfile);
-            result.put("result", "ok");
-            return result;
-        }
-        throw new UserStatusException("The provided link is not available, or the profile was already created");
-    }
-
-
+//TODO: remove content url from profile class -> we are going to collect for caouses
     @CrossOrigin
-    @PostMapping("/creator-profile/upload")
+    @PostMapping("/creator-profile")
     public Map<String, String> uploadImage(
             @RequestPart("file") MultipartFile file,
             @RequestPart("name") String name,
