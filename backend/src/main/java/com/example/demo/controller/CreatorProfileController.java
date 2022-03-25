@@ -9,15 +9,24 @@ import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.FileHandler;
-import org.apache.tomcat.jni.File;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +41,9 @@ public class CreatorProfileController {
     private final CreatorProfileService creatorProfileService;
     private final TipService tipService;
     private final FileHandler fileHandler;
+
+    @Autowired
+    ServletContext servletContext;
 
     @Autowired
     public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService, FileHandler fileHandler) {
@@ -105,6 +117,20 @@ public class CreatorProfileController {
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
     }
+
+
+    @CrossOrigin
+    @GetMapping(value = "/creator/{pageLink}/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> image(@PathVariable("pageLink") String pageLink) throws IOException {
+        Optional<CreatorProfile> creatorOption = creatorProfileService.getCreatorPageByPageLink(pageLink);
+        String image = creatorOption.get().getProfileImage() ;
+        final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(image)));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentLength(inputStream.contentLength())
+                .body(inputStream);
+    }
+
 
 
     @GetMapping("/all-creators")
