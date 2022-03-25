@@ -59,11 +59,31 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PostMapping("/creator-profile/upload")
-    public Map<String, String> uploadImage(@RequestPart("file") MultipartFile file, @RequestPart("user") String name){
+    public Map<String, String> uploadImage(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("name") String name,
+            @RequestPart("description") String description,
+            @RequestPart("pageLink") String pageLink){
+
+        CreatorProfile profile = CreatorProfile.builder()
+                .userName(name)
+                .description(description)
+                .pageLink(pageLink)
+                .build();
+        Map<String, String> result = new HashMap<>();
         fileHandler.createDirectory(name);
-        fileHandler.saveFile(file, name);
-        fileHandler.getFile("gbu.jpg", name);
-        return null;
+        Optional<String> filePath = fileHandler.saveFile(file, name);
+        if (filePath.isPresent()){
+            profile.setProfileImage(filePath.get());
+            creatorProfileService.add(profile);
+            result.put("result", "ok");
+        } else {
+            result.put("result", "error");
+            result.put("errorMessage", "Failed to save file");
+        }
+        System.out.println(profile.getProfileImage());
+        //fileHandler.getFile("gbu.jpg", name);
+        return result;
     }
 
     @PutMapping("/creator-profile")

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @Component
 public class FileHandler {
@@ -22,18 +23,18 @@ public class FileHandler {
         return myDir;
     }
 
-    public boolean saveFile(MultipartFile file, String user){
+    public Optional<String> saveFile(MultipartFile file, String user){
         Path url = Paths.get("resources", "images", user);
         String absolutePath = url.toFile().getAbsolutePath();
         File fileNew = new File(absolutePath + "/" + file.getOriginalFilename());
-        System.out.println(absolutePath);
+        System.out.println(fileNew.getAbsolutePath());
         try{
             file.transferTo(fileNew);
         } catch (IOException e){
             System.out.println(e.getMessage());
-            return false;
+            return Optional.empty();
         }
-        return true;
+        return Optional.of(fileNew.getAbsolutePath());
     }
 
     public File getFile(String fileName, String user){
