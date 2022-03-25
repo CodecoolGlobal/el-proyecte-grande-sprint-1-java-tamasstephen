@@ -1,10 +1,8 @@
 package com.example.demo.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,18 +12,8 @@ import java.util.Optional;
 @Component
 public class FileHandler {
 
-    @Autowired
-    ServletContext servletContext;
-
     public File createDirectory(String user){
         Path url = Paths.get("resources", "images");
-        try {
-            System.out.println(servletContext.getContextPath());
-            System.out.println("aaaaaaaaaaaa");
-
-        } catch (RuntimeException e){
-
-        }
         String absolutePath = url.toFile().getAbsolutePath();
         File myDir = new File( absolutePath + "/" + user);
         if (!myDir.exists()){
@@ -46,11 +34,5 @@ public class FileHandler {
             return Optional.empty();
         }
         return Optional.of(fileNew.getAbsolutePath());
-    }
-
-    public File getFile(String absolutePath){
-        File file = new File(absolutePath);
-        System.out.println(file.exists() + "The file exists or nout");
-        return file;
     }
 }

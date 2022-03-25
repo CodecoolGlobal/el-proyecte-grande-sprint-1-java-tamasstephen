@@ -9,17 +9,14 @@ import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.FileHandler;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
@@ -34,8 +31,6 @@ import java.util.Optional;
 
 @RestController
 public class CreatorProfileController {
-
-    // TODO: replace if else statements with try catch and return helpful return messages
 
     private final UserService userService;
     private final CreatorProfileService creatorProfileService;
@@ -90,11 +85,8 @@ public class CreatorProfileController {
             creatorProfileService.add(profile);
             result.put("result", "ok");
         } else {
-            result.put("result", "error");
-            result.put("errorMessage", "Failed to save file");
+            throw new UserStatusException("The provided file could not be saved!");
         }
-        System.out.println(profile.getProfileImage());
-        //fileHandler.getFile("gbu.jpg", name);
         return result;
     }
 
@@ -123,6 +115,9 @@ public class CreatorProfileController {
     @GetMapping(value = "/creator/{pageLink}/image", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<Resource> image(@PathVariable("pageLink") String pageLink) throws IOException {
         Optional<CreatorProfile> creatorOption = creatorProfileService.getCreatorPageByPageLink(pageLink);
+        if (creatorOption.isEmpty()){
+            throw new UserStatusException("File not found");
+        }
         String image = creatorOption.get().getProfileImage() ;
         final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(image)));
         return ResponseEntity
