@@ -1,7 +1,9 @@
+import Navigation from "./components/Navigation";
+
 function App() {
   return (
-    <div className="App">
-      <p className="text-7xl">It works</p>
+    <div>
+      <Navigation />
     </div>
   );
 }
