@@ -4,9 +4,9 @@ const Landing = () => {
   return (
     <div className="flex flex-col items-center pt-16 text-sky-900 pb-40 bg-gradient-to-b from-slate-100 via-sky-50 to-slate-200">
       <h1 className="text-center text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-        Support your
+        <span className="text-amber-500">Support</span> your
         <br />
-        favourite cause
+        favourite <span className="text-amber-500">cause</span>
       </h1>
       <p className="text-center text-2xl font-medium tracking-tighter pb-4 pt-4 md:text-3xl md:pt-6 md:pb-6 lg:text-4xl">
         Empower them with unlimited
