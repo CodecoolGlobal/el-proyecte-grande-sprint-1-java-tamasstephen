@@ -1,11 +1,11 @@
-import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
+import Navigation from "./Navigation";
+import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <div className="flex flex-col min-h-screen justify-between">
+      <div className="flex flex-col min-h-screen justify-between bg-slate-100">
         <div>
           <Navigation />
           <Outlet />

@@ -14,22 +14,27 @@ export const Navigation = () => {
   }
 
   return (
-    <nav className="flex justify-center relative">
+    <nav className="flex justify-center relative ">
       <MenuDrawer menuState={drawerState} stateChanger={changeMenuState} />
-      <div className="p-4 flex justify-between container mx-xl xl:px-[5rem] content-center">
+      <div className="p-4 flex justify-between container mx-xl xl:px-[5rem] content-center ">
         <div className="logo">
-          <a href="/">DropCoin</a>
+          <a
+            href="/"
+            className="text-xl font-bold text-sky-900 tracking-tighter md:text-2xl"
+          >
+            CoinDrop
+          </a>
         </div>
-        <ul className="hidden md:flex">
-          <li className="pl-4">Explore</li>
-          <li className="pl-4">Login</li>
-          <li className="pl-4">Sign Up</li>
+        <ul className="hidden md:flex text-sky-900 font-bold text-lg">
+          <li className="pl-5">Explore</li>
+          <li className="pl-5">Login</li>
+          <li className="pl-5">Sign Up</li>
         </ul>
         <div
           className="flex items-center hamburger md:hidden"
           onClick={changeMenuState}
         >
-          <HiMenu />
+          <HiMenu className="text-xl text-stone-700" />
         </div>
       </div>
     </nav>
