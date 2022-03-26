@@ -1,7 +1,18 @@
 package com.example.demo.model.user;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import jdk.jfr.DataAmount;
+import lombok.*;
+
 import java.util.List;
 
+
+@Data
+@Builder
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreatorProfile {
     private Category category;
     private List<String> contentUrls;

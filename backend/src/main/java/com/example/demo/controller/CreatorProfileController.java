@@ -4,17 +4,24 @@ import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
-import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,32 +30,44 @@ import java.util.Optional;
 @RestController
 public class CreatorProfileController {
 
-    // TODO: replace if else statements with try catch and return helpful return messages
-
     private final UserService userService;
     private final CreatorProfileService creatorProfileService;
     private final TipService tipService;
+    private final FileHandler fileHandler;
 
     @Autowired
-    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService) {
+    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService, FileHandler fileHandler) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
+        this.fileHandler = fileHandler;
     }
 
+//TODO: remove content url from profile class -> we are going to collect for caouses
+    @CrossOrigin
     @PostMapping("/creator-profile")
-    public Map<String, String> addCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
-        Long userId = (Long) session.getAttribute("userId");
+    public Map<String, String> uploadImage(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("name") String name,
+            @RequestPart("description") String description,
+            @RequestPart("pageLink") String pageLink){
+
+        CreatorProfile profile = CreatorProfile.builder()
+                .userName(name)
+                .description(description)
+                .pageLink(pageLink)
+                .build();
         Map<String, String> result = new HashMap<>();
-        if (isCreatorAvailableForCreation(userId, creatorProfile.getPageLink())){
-            User user = userService.getUser(userId).get();
-            creatorProfile.setUserId(userId);
-            user.setContent(creatorProfile);
-            creatorProfileService.add(creatorProfile);
+        fileHandler.createDirectory(name);
+        Optional<String> filePath = fileHandler.saveFile(file, name);
+        if (filePath.isPresent()){
+            profile.setProfileImage(filePath.get());
+            creatorProfileService.add(profile);
             result.put("result", "ok");
-            return result;
+        } else {
+            throw new UserStatusException("The provided file could not be saved!");
         }
-        throw new UserStatusException("The provided link is not available, or the profile was already created");
+        return result;
     }
 
     @PutMapping("/creator-profile")
@@ -70,6 +89,23 @@ public class CreatorProfileController {
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
     }
+
+
+    @CrossOrigin
+    @GetMapping(value = "/creator/{pageLink}/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> image(@PathVariable("pageLink") String pageLink) throws IOException {
+        Optional<CreatorProfile> creatorOption = creatorProfileService.getCreatorPageByPageLink(pageLink);
+        if (creatorOption.isEmpty()){
+            throw new UserStatusException("File not found");
+        }
+        String image = creatorOption.get().getProfileImage() ;
+        final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(image)));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentLength(inputStream.contentLength())
+                .body(inputStream);
+    }
+
 
 
     @GetMapping("/all-creators")
