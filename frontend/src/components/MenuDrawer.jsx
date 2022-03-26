@@ -1,0 +1,28 @@
+import React from "react";
+import { HiX } from "react-icons/hi";
+
+const MenuDrawer = ({ menuState, stateChanger }) => {
+  function closeModal() {
+    stateChanger();
+  }
+
+  return (
+    <div
+      className={
+        menuState +
+        " h-screen w-screen absolute flex items-center justify-center bg-yellow-100 transition-all duration-500 ease-in-out delay-75"
+      }
+    >
+      <div className="absolute top-6 right-6" onClick={closeModal}>
+        <HiX className="text-xl" />
+      </div>
+      <ul>
+        <li>Explore</li>
+        <li>Login</li>
+        <li>Sign Up</li>
+      </ul>
+    </div>
+  );
+};
+
+export default MenuDrawer;
