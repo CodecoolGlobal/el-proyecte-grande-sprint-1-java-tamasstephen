@@ -4,7 +4,7 @@ import ReasonBox from "./ReasonBox";
 
 const Reasons = () => {
   return (
-    <section className="bg-gradient-to-b from-slate-200 px-4 md:px-0">
+    <section className="bg-gradient-to-b from-slate-200 px-4 md:px-0 pb-20 md:pb-40">
       <div className="flex flex-col items-center">
         <div className="flex justify-center pb-6">
           <Headline isTitle={false} title={"Your support matters!"} />

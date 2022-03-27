@@ -6,7 +6,7 @@ const Hero = () => {
       <h1 className="text-center text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
         <span className="text-purple-500">Support</span> your
         <br />
-        favourite <span className="text-orange-500">caouse</span>
+        favourite <span className="text-orange-500">cause</span>
       </h1>
       <p className="text-center text-xl tracking-tight pb-4 pt-4 md:text-3xl md:pt-6 md:pb-6  text-slate-600">
         Drop a coin for a cause and
