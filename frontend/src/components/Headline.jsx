@@ -2,7 +2,7 @@ import React from "react";
 
 const Headline = ({ isTitle, title, titleFollow }) => {
   const classes =
-    "text-3xl w-8/12 md:w-max md:text-4xl lg:text-5xl text-sky-800 font-bold tracking-tighter";
+    "text-3xl w-8/12 md:w-max md:text-4xl lg:text-5xl text-indigo-900 font-bold tracking-tighter";
   return isTitle ? (
     <h1 className={classes}>
       {title}
