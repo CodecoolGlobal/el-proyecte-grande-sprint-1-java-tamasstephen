@@ -20,12 +20,12 @@ export const Navigation = () => {
         <div className="logo">
           <a
             href="/"
-            className="text-xl font-bold text-indigo-700 tracking-tighter md:text-2xl"
+            className="text-xl font-bold text-indigo-900 tracking-tighter md:text-2xl"
           >
             CoinDrop
           </a>
         </div>
-        <ul className="hidden md:flex text-indigo-700 font-bold tracking-tight">
+        <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">Explore</li>
           <li className="pl-7">Login</li>
           <li className="pl-7">Sign Up</li>

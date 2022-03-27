@@ -15,7 +15,7 @@ const Hero = () => {
       </p>
       <input
         type="text"
-        className="h-10 rounded-full drop-shadow-[0_8px_8px_rgba(0,0,0,0.15)] pl-4 focus:outline-indigo-500 lg:h-12 lg:w-96"
+        className="h-10 rounded-full shadow-lg shadow-indigo-400/30 pl-4 border border-indigo-300 focus:outline-indigo-500 lg:h-12 lg:w-96"
       />
     </div>
   );
