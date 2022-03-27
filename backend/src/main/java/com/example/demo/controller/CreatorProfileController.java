@@ -4,6 +4,7 @@ import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
+import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.UserService;
@@ -50,24 +51,32 @@ public class CreatorProfileController {
             @RequestPart("file") MultipartFile file,
             @RequestPart("name") String name,
             @RequestPart("description") String description,
-            @RequestPart("pageLink") String pageLink){
+            @RequestPart("pageLink") String pageLink,
+            HttpSession session){
 
-        CreatorProfile profile = CreatorProfile.builder()
-                .userName(name)
-                .description(description)
-                .pageLink(pageLink)
-                .build();
+        Long userId = (Long) session.getAttribute("userId");
         Map<String, String> result = new HashMap<>();
-        fileHandler.createDirectory(name);
-        Optional<String> filePath = fileHandler.saveFile(file, name);
-        if (filePath.isPresent()){
-            profile.setProfileImage(filePath.get());
-            creatorProfileService.add(profile);
-            result.put("result", "ok");
-        } else {
-            throw new UserStatusException("The provided file could not be saved!");
+        Optional<User> userOptional = userService.getUser(userId);
+        if (userOptional.isPresent()){
+            CreatorProfile profile = CreatorProfile.builder()
+                    .userName(name)
+                    .description(description)
+                    .pageLink(pageLink)
+                    .userId(userId)
+                    .build();
+            fileHandler.createDirectory(name);
+            Optional<String> filePath = fileHandler.saveFile(file, name);
+            if (filePath.isPresent()){
+                profile.setProfileImage(filePath.get());
+                creatorProfileService.add(profile);
+                result.put("result", "ok");
+                userOptional.get().setContent(profile);
+                return result;
+            } else {
+                throw new UserStatusException("The provided file could not be saved!");
+            }
         }
-        return result;
+        throw new UserStatusException("The provided file could not be saved!");
     }
 
     @PutMapping("/creator-profile")
