@@ -18,7 +18,6 @@ public class FileHandler {
         File myDir = new File( absolutePath + "/" + user);
         if (!myDir.exists()){
             boolean isCreated =  myDir.mkdirs();
-            System.out.println(isCreated ? "It was created" : "It was not created");
         }
         return myDir;
     }
