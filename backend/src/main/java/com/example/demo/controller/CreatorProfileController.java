@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.configuration.InitData;
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
@@ -42,6 +43,7 @@ public class CreatorProfileController {
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
         this.fileHandler = fileHandler;
+        new InitData(userService, creatorProfileService).initUsers();
     }
 
 //TODO: remove content url from profile class -> we are going to collect for caouses
