@@ -28,7 +28,7 @@ export const Navigation = () => {
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">Explore</li>
           <li className="pl-7">Login</li>
-          <li className="pl-7">Sign Up</li>
+          <li className="pl-7">Create a Cause</li>
         </ul>
         <div
           className="flex items-center hamburger md:hidden"
