@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Landing from "./landing/Landing";
-import App from "./App";
+import Landing from "../components/landing/Landing";
+import App from "../components/App";
 
 const Router = () => {
   return (

@@ -118,7 +118,7 @@ public class CreatorProfileController {
     }
 
 
-
+    @CrossOrigin
     @GetMapping("/all-creators")
     public List<CreatorProfile> getAllCreatorProfiles(){
         return creatorProfileService.getAll();
