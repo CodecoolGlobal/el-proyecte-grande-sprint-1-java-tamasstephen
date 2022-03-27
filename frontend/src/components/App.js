@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 function App() {
   return (
     <>
-      <div className="flex flex-col min-h-screen justify-between bg-slate-100">
+      <div className="flex flex-col min-h-screen justify-between bg-slate-100 overflow-hidden">
         <div>
           <Navigation />
           <Outlet />
