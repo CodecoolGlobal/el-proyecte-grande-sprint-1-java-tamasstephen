@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Image = () => {
+const Image = (props) => {
+  console.log(props.jpgName)
   return (
-    <img src={require('./Konohafalu.jpg')} alt="meal" width="500" height="600"></img>
+    <img src={require(`${props.jpgName}`)} width="500" height="600"></img>
   )
 }
 
