@@ -1,13 +1,20 @@
 import React, { useRef } from "react";
+import { dataHandler } from "../data/dataHandler";
 
 const UserRegistration = () => {
   const email = useRef(null);
   const password = useRef(null);
 
-  function registerUser(event) {
+  async function registerUser(event) {
     event.preventDefault();
     const email = event.target["email"].value;
     const password = event.target["password"].value;
+    const payLoad = {
+      email: email,
+      password: password,
+    };
+    const result = await dataHandler.registerUser(payLoad);
+    console.group(result);
   }
 
   return (
