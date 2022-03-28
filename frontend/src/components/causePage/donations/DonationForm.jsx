@@ -9,6 +9,8 @@ const DonationForm = () => {
 
   const [comment, setComment] = useState('');
 
+  const [coinAmount, setCoinAmount] = useState(1);
+
   return (
     <>
       <SubHeadline name={"Drop Those Coins"} />
