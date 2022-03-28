@@ -1,10 +1,13 @@
-import React from 'react'
+import React from "react";
 
-const CoinAmount = ({amount, setCoinAmount}) => {
-    const coinText = amount == 1 ? "coin" : "coins";
+const CoinAmount = ({ amount, setCoinAmount }) => {
+  const coinText = amount === 1 ? "coin" : "coins";
+
   return (
-    <button onClick={(amount) => setCoinAmount(amount)}>{amount} {coinText}</button>
-  )
-}
+    <button onClick={() => setCoinAmount(amount)}>
+      {amount} {coinText}
+    </button>
+  );
+};
 
-export default CoinAmount
+export default CoinAmount;

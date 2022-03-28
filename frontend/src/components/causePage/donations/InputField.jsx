@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 
 const InputField = ({ setState, placeholder }) => {
   function handleChange(event) {

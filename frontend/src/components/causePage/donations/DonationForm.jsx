@@ -11,14 +11,15 @@ const DonationForm = () => {
   const [comment, setComment] = useState('');
 
   const [coinAmount, setCoinAmount] = useState(1);
+  console.log(coinAmount)
 
   return (
     <>
       <SubHeadline name={"Drop Those Coins"} />
       <div>
-        <CoinAmount amount={1} />
-        <CoinAmount amount={5} />
-        <CoinAmount amount={10} />
+        <CoinAmount amount={1} setCoinAmount={setCoinAmount}/>
+        <CoinAmount amount={5} setCoinAmount={setCoinAmount}/>
+        <CoinAmount amount={10} setCoinAmount={setCoinAmount}/>
       </div>
       <InputField setstate={setName} placeholder={'Add your name'}/>
       <InputField setstate={setComment} placeholder={'Add a comment if you want'}/>
