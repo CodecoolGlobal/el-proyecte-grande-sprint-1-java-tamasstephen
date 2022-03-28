@@ -1,13 +1,13 @@
 import React from "react";
 
-const Cause = ({ name, description, category }) => {
-
+const Cause = ({ cause }) => {
+  const category = cause?.category ? cause.category : "general";
   return (
     <div>
-      <img src="" alt="" />
+      <img src={cause?.imageLink} alt="" />
       <div>
-        <h3>{name}</h3>
-        <p>{description}</p>
+        <h3>{cause?.causeName}</h3>
+        <p>{cause?.description}</p>
         <div>
           <span>{category}</span>
         </div>

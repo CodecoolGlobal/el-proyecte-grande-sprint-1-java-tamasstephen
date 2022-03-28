@@ -12,14 +12,25 @@ const Highlighted = () => {
       return await dataHandler.getHighlights();
     };
 
-    const fetchImages = async (link) => {};
+    const fetchImages = async (listOfCauses) => {
+      const newCauses = [];
+      for (const cause of listOfCauses) {
+        const cardImageBlob = await dataHandler.getImageForCard(cause.pageLink);
+        const imageUrl = URL.createObjectURL(cardImageBlob);
+        const myCause = { ...cause };
+        myCause["imageLink"] = imageUrl;
+        newCauses.push(myCause);
+      }
+      console.log(newCauses);
+      setCause(() => [...newCauses]);
+    };
 
     fetchCauses().then((data) => {
       const myData = [...data];
       myData.forEach((data) => {
         data.description = shortenDescription(data.description);
       });
-      setCause(data);
+      fetchImages(myData);
     });
   }, []);
 
@@ -29,14 +40,10 @@ const Highlighted = () => {
         <Headline isTitle={false} title="Highlighted Causes" />
       </div>
       <div>
-        {causes.map((cause, index) => (
-          <Cause
-            key={index}
-            name={causes[index]?.causeName}
-            description={causes[index]?.description}
-            category={causes[index]?.category}
-          />
-        ))}
+        {causes.map((cause, index) => {
+          console.log(cause.imageLink);
+          return <Cause key={index} cause={cause} />;
+        })}
       </div>
     </div>
   );
