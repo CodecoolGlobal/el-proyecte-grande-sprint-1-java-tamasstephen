@@ -11,7 +11,6 @@ const DonationForm = () => {
   const [comment, setComment] = useState('');
 
   const [coinAmount, setCoinAmount] = useState(1);
-  console.log(coinAmount)
 
   return (
     <>
