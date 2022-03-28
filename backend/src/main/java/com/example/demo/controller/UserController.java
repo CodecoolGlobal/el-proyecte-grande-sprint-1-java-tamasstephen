@@ -23,6 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @PostMapping("/user")
     public Map<String, String> add(@RequestBody User user, HttpSession session){
         if (userService.isEmailAvailable(user.getEmail())){
@@ -44,6 +45,7 @@ public class UserController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public long login(@RequestBody User user, HttpSession session){
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
@@ -75,6 +77,7 @@ public class UserController {
         throw new UserStatusException("You have to login to update your profile!");
     }
 
+    @CrossOrigin
     @GetMapping("/creator-profile-set/")
     public boolean isUserContentSet(@RequestParam long id){
         Optional<User> userOption = userService.getUser(id);
