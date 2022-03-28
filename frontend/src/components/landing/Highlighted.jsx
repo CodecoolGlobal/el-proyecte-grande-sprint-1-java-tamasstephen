@@ -23,13 +23,12 @@ const Highlighted = () => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center">
-      <div className="flex justify-center">
+    <div className="flex flex-col justify-center items-center px-4 md:py-0 pb-20 md:pb-40">
+      <div className="flex justify-center pb-4 md:pb-12">
         <Headline isTitle={false} title="Highlighted Causes" />
       </div>
-      <div>
+      <div className="flex flex-col md:grid grid-flow-col gap-4 container mx-xl">
         {causes.map((cause, index) => {
-          console.log(cause.imageLink);
           return <Cause key={index} cause={cause} />;
         })}
       </div>
