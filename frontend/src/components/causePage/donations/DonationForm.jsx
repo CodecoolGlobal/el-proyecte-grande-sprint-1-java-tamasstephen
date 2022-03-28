@@ -21,6 +21,7 @@ const DonationForm = () => {
       </div>
       <InputField setstate={setName} placeholder={'Add your name'}/>
       <InputField setstate={setComment} placeholder={'Add a comment if you want'}/>
+      <p>I want to drop $ {coinAmount} for the cause</p>
     </>
   );
 };
