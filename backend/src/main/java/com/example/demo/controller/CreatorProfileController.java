@@ -81,6 +81,7 @@ public class CreatorProfileController {
         throw new UserStatusException("The provided file could not be saved!");
     }
 
+    @CrossOrigin
     @PutMapping("/creator-profile")
     public Map<String, String> updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
@@ -95,6 +96,7 @@ public class CreatorProfileController {
         throw new UserStatusException("You have to log in to change those details!");
     }
 
+    @CrossOrigin
     @GetMapping("/creator")
     public CreatorProfile getCreatorProfileByLink(@RequestParam String pageLink){
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
@@ -124,17 +126,20 @@ public class CreatorProfileController {
         return creatorProfileService.getAll();
     }
 
+    @CrossOrigin
     @GetMapping("/creators")
     public List<CreatorProfile> getAllCreatorsByName(@RequestParam String name){
         List<CreatorProfile> creatorProfile = creatorProfileService.get(name);
         return creatorProfile;
     }
 
+    @CrossOrigin
     @GetMapping("/creators/category")
     public List<CreatorProfile> getCreatorsByCategory(@RequestParam Category category){
         return creatorProfileService.getContentsByCategory(category);
     }
 
+    @CrossOrigin
     @PostMapping("/creator/support")
     public void supportCreator(@RequestBody Tip tip){
         long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
@@ -143,6 +148,7 @@ public class CreatorProfileController {
         tipService.add(tip);
     }
 
+    @CrossOrigin
     @GetMapping("/creator/tips")
     public List<Tip> getTipCommentsByPageLink(String pageLink){
         return tipService.getCommentsByPageLink(pageLink);
