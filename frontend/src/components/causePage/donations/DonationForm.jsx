@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import CoinAmount from "./CoinAmount";
-import SubHeadline from "./SubHeadline";
+import SubHeadline from "../SubHeadline";
 
 const DonationForm = () => {
+
+  const [name, setName] = useState({name : ''});
+
+  const [comment, setComment] = useState({comment : ''});
+
   return (
     <>
       <SubHeadline name={"Drop Those Coins"} />
