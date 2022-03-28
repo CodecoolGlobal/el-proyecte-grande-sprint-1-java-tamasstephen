@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import Cause from "../model/Cause";
 import Headline from "../Headline";
 import { shortenDescription } from "../../utils/util.js";
+import { dataHandler } from "../../data/dataHandler";
 
 const Highlighted = () => {
   const [causes, setCause] = useState([]);
 
   useEffect(() => {
     const fetchCauses = async () => {
-      const result = await fetch("http://localhost:8080/highlighted");
-      return await result.json();
+      return await dataHandler.getHighlights();
     };
+
+    const fetchImages = async (link) => {};
 
     fetchCauses().then((data) => {
       const myData = [...data];
