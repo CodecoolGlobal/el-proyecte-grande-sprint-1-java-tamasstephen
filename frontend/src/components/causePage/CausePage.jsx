@@ -7,7 +7,7 @@ const CausePage = () => {
   return (
     <>
     <SubHeadline name={"Help Konoha"}/>
-    <Image/>
+    <Image jpgName={"./Konohafalu.jpg"}/>
     <Description/>
     </>
   )
