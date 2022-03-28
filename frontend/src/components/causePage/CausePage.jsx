@@ -5,7 +5,6 @@ import Image from './Image'
 const CausePage = () => {
   return (
     <>
-    {/* <Navigation/> */}
     <Headline isTitle={true} title={"Help Konoha"}/>
     <Image/>
     </>
