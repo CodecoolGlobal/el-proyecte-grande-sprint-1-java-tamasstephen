@@ -1,5 +1,6 @@
 import React from 'react'
 import Headline from '../Headline'
+import Description from './Description'
 import Image from './Image'
 
 const CausePage = () => {
@@ -7,6 +8,7 @@ const CausePage = () => {
     <>
     <Headline isTitle={true} title={"Help Konoha"}/>
     <Image/>
+    <Description/>
     </>
   )
 }
