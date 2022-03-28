@@ -1,12 +1,12 @@
 import React from 'react'
-import Headline from '../Headline'
 import Description from './Description'
 import Image from './Image'
+import SubHeadline from './SubHeadline'
 
 const CausePage = () => {
   return (
     <>
-    <Headline isTitle={true} title={"Help Konoha"}/>
+    <SubHeadline name={"Help Konoha"}/>
     <Image/>
     <Description/>
     </>
