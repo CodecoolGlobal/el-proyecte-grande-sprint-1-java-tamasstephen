@@ -2,7 +2,7 @@ import React from "react";
 import CoinAmount from "./CoinAmount";
 import SubHeadline from "./SubHeadline";
 
-const Donation = () => {
+const DonationForm = () => {
   return (
     <>
       <SubHeadline name={"Drop Those Coins"} />
@@ -15,4 +15,4 @@ const Donation = () => {
   );
 };
 
-export default Donation;
+export default DonationForm;
