@@ -1,5 +1,6 @@
 import React from "react";
 import CardTitle from "../CardTitle";
+import Tag from "../Tag";
 
 const Cause = ({ cause }) => {
   const category = cause?.category ? cause.category : "general";
@@ -12,9 +13,9 @@ const Cause = ({ cause }) => {
       />
       <div className="p-4">
         <CardTitle title={cause?.causeName} />
-        <p className="text-slate-700">{cause?.description}</p>
+        <p className="text-slate-700 pb-2 h-12">{cause?.description}</p>
         <div>
-          <span>{category}</span>
+          <Tag title={category} />
         </div>
       </div>
     </div>
