@@ -15,6 +15,5 @@ export const fetchImages = async (listOfCauses, stateHandler) => {
     myCause["imageLink"] = imageUrl;
     newCauses.push(myCause);
   }
-  console.log(newCauses);
   stateHandler(() => [...newCauses]);
 };

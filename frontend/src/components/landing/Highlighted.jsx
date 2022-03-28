@@ -13,7 +13,7 @@ const Highlighted = () => {
       return await dataHandler.getHighlights();
     };
 
-    fetchCauses().then((data, setCause) => {
+    fetchCauses().then((data) => {
       const myData = [...data];
       myData.forEach((data) => {
         data.description = shortenDescription(data.description);
