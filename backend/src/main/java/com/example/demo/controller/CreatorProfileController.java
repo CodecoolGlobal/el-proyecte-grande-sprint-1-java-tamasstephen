@@ -24,10 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class CreatorProfileController {
@@ -61,7 +58,7 @@ public class CreatorProfileController {
         Optional<User> userOptional = userService.getUser(userId);
         if (userOptional.isPresent()){
             CreatorProfile profile = CreatorProfile.builder()
-                    .userName(name)
+                    .causeName(name)
                     .description(description)
                     .pageLink(pageLink)
                     .userId(userId)
@@ -124,6 +121,19 @@ public class CreatorProfileController {
     @GetMapping("/all-creators")
     public List<CreatorProfile> getAllCreatorProfiles(){
         return creatorProfileService.getAll();
+    }
+
+    @CrossOrigin
+    @GetMapping("/highlighted")
+    public Set<CreatorProfile> getHighlightedProfiles(){
+       Set<CreatorProfile> profileSet = new HashSet<>();
+       for (CreatorProfile profile: creatorProfileService.getAll()){
+           profileSet.add(profile);
+           if(profileSet.size() > 2){
+             return profileSet;
+           }
+       }
+       return profileSet;
     }
 
     @CrossOrigin

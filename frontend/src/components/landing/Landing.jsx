@@ -3,6 +3,7 @@ import Hero from "./Hero";
 import ImageSection from "./ImageSection";
 import Reasons from "./Reasons";
 import Highlighted from "./Highlighted";
+import Join from "./Join";
 
 const Landing = () => {
   return (
@@ -11,6 +12,7 @@ const Landing = () => {
       <ImageSection />
       <Reasons />
       <Highlighted />
+      <Join />
     </>
   );
 };

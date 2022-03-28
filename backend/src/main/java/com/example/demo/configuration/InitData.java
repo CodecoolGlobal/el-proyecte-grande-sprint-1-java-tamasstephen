@@ -27,7 +27,7 @@ public class InitData {
         for (String email: USER_EMAILS){
             User user = new User(email, "placeholder");
             CreatorProfile cause = CreatorProfile.builder()
-                    .userName(CAUSES.get(count))
+                    .causeName(CAUSES.get(count))
                     .description("placeholder description")
                     .pageLink(String.format("%d link", count))
                     .profileImage("/home/tamas/Codecool/advanced-spring/el-proyecte-grande-sprint-1-java-tamasstephen/resources/images/Placeholder/deadCells.jpg")
@@ -36,6 +36,7 @@ public class InitData {
             userService.add(user);
             cause.setUserId(user.getId());
             creatorProfileService.add(cause);
+            count ++;
         }
     }
 
