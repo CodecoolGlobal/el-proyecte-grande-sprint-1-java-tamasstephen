@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Headline from "../Headline";
 import StringInput from "./StringInput";
 import { dataHandler } from "../../data/dataHandler";
@@ -6,6 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 const Login = ({ setLoginState }) => {
   const navigate = useNavigate();
+  const [errorState, setError] = useState({
+    boxState: "hidden",
+    text: "",
+    textState: "invisible",
+  });
 
   const email = {
     name: "email",
@@ -41,13 +46,16 @@ const Login = ({ setLoginState }) => {
       setLoginState({ logout: "", login: "hidden" });
       navigate("/");
     } else {
-      alert(response.message);
+      setError({ boxState: "", text: response.message, textState: "" });
     }
   }
 
   return (
     <form onSubmit={sendLogin}>
       <Headline isTitle={false} title="Login" />
+      <div className={errorState.boxState}>
+        <p className={errorState.textState}>{errorState.text}</p>
+      </div>
       <StringInput inputProps={email} />
       <StringInput inputProps={password} />
       <button type="submit">Login</button>
