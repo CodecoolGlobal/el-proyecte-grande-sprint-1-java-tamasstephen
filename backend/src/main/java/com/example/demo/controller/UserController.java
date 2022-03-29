@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.User;
+import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +18,22 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final TmpUser tmpUser;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TmpUser tmpUser) {
         this.userService = userService;
+        this.tmpUser = tmpUser;
     }
 
+    @CrossOrigin
     @PostMapping("/user")
     public Map<String, String> add(@RequestBody User user, HttpSession session){
         if (userService.isEmailAvailable(user.getEmail())){
             Map<String, String> result = new HashMap<>();
             userService.add(user);
-            session.setAttribute("userId", user.getId());
+//            session.setAttribute("userId", user.getId());
+            tmpUser.setUser(user.getId());
             result.put("result", "ok");
             return result;
         }
@@ -44,6 +49,7 @@ public class UserController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public long login(@RequestBody User user, HttpSession session){
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
@@ -53,6 +59,15 @@ public class UserController {
             return regUser.getId();
         }
         return 0;
+    }
+
+    @CrossOrigin
+    @GetMapping("/logout")
+    public Map<String, String> logout(){
+       tmpUser.removeUser();
+       Map<String, String> resp = new HashMap<>();
+       resp.put("result", "ok");
+       return resp;
     }
 
     @GetMapping("/user/profile")
@@ -75,6 +90,7 @@ public class UserController {
         throw new UserStatusException("You have to login to update your profile!");
     }
 
+    @CrossOrigin
     @GetMapping("/creator-profile-set/")
     public boolean isUserContentSet(@RequestParam long id){
         Optional<User> userOption = userService.getUser(id);

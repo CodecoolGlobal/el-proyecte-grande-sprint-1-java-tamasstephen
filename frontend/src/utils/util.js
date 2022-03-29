@@ -17,3 +17,4 @@ export const fetchImages = async (listOfCauses, stateHandler) => {
   }
   stateHandler(() => [...newCauses]);
 };
+
