@@ -5,7 +5,10 @@ public enum Category {
     MUSIC("music"),
     DEVELOPMENT("development"),
     GAMING("gaming"),
-    SCIENCE("science");
+    SCIENCE("science"),
+    CHARITY("charity"),
+    ECOLOGY("ecology"),
+    OTHER("other");
 
     private String category;
 

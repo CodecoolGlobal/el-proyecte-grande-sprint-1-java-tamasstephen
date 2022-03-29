@@ -28,15 +28,13 @@ const CauseRegistration = () => {
     formData.append("name", event.target["causeName"].value);
     formData.append("description", event.target["description"].value);
     formData.append("pageLink", event.target["pageLink"].value);
+    formData.append("category", event.target["category"].value);
     formData.append("file", file);
-    console.log(formData);
-    console.log(file);
     const response = await dataHandler.postMultiPartForm(formData);
     if (response.result === "ok") {
       navigate("/");
     } else {
       alert(response.message);
-      console.log(response);
     }
   }
 
@@ -45,6 +43,16 @@ const CauseRegistration = () => {
       <form action="" onSubmit={sendForm}>
         <StringInput inputProps={causeInput} />
         <StringInput inputProps={pageLink} />
+        <div>
+          <label htmlFor="category">Category:</label>
+          <select name="category" id="category">
+            <option value="charity">Charity</option>
+            <option value="ecology">Ecology</option>
+            <option value="science">Science</option>
+            <option value="music">Music</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
         <div>
           <label htmlFor="description">Description</label>
           <textarea
