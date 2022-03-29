@@ -21,12 +21,12 @@ export const fetchImages = async (listOfCauses, stateHandler) => {
 
 export function handleFormResponse(
   response,
-  location,
+  route,
   errorStatusChanger,
   errorMessageChanger
 ) {
   if (response.result === "ok") {
-    window.location.href = location;
+    window.location.href = route;
   } else {
     errorStatusChanger("");
     errorMessageChanger(response.message);
