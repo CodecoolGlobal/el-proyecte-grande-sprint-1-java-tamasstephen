@@ -35,13 +35,11 @@ const Login = ({ setLoginState }) => {
       email: email,
       password: password,
     };
-
     const response = await dataHandler.login(payLoad);
-    console.log(response);
-    handleLogin(response);
+    handleLoginResponse(response);
   }
 
-  function handleLogin(response) {
+  function handleLoginResponse(response) {
     if (response.result === "ok") {
       setLoginState({ logout: "", login: "hidden" });
       navigate("/");
@@ -51,15 +49,22 @@ const Login = ({ setLoginState }) => {
   }
 
   return (
-    <form onSubmit={sendLogin}>
-      <Headline isTitle={false} title="Login" />
-      <div className={errorState.boxState}>
-        <p className={errorState.textState}>{errorState.text}</p>
-      </div>
-      <StringInput inputProps={email} />
-      <StringInput inputProps={password} />
-      <button type="submit">Login</button>
-    </form>
+    <div className="flex flex-col items-center">
+      <form
+        className="px-4 md:w-1/2 max-w-xl flex flex-col justify-center"
+        onSubmit={sendLogin}
+      >
+        <Headline isTitle={true} title="Login" />
+        <div className={errorState.boxState}>
+          <p className={errorState.textState}>{errorState.text}</p>
+        </div>
+        <div className="pt-4 md:pt-8 pb-4 md:pb-8">
+          <StringInput inputProps={email} />
+          <StringInput inputProps={password} />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 
