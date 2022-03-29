@@ -4,6 +4,7 @@ import Landing from "../components/landing/Landing";
 import App from "../components/App";
 import UserRegistration from "../components/registration/UserRegistration";
 import CauseRegistration from "../components/registration/CauseRegistration";
+import Login from "../components/registration/Login";
 
 const Router = () => {
   const [userLogin, setLoginState] = useState({
@@ -28,6 +29,7 @@ const Router = () => {
           }
         ></Route>
         <Route path="cause-registration" element={<CauseRegistration />} />
+        <Route path="login" element={<Login />} />
       </Route>
     </Routes>
   );
