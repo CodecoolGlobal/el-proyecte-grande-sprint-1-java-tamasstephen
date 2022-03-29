@@ -36,7 +36,7 @@ export const Navigation = ({ userLogin, setLoginState }) => {
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">Explore</li>
           <li className={"pl-7 " + userLogin["login"]}>
-            <Link to="/user-registration">Login</Link>
+            <Link to="/login">Login</Link>
           </li>
           <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/user-registration">Create a Cause</Link>

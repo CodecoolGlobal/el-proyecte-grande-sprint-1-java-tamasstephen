@@ -32,7 +32,6 @@ public class UserController {
         if (userService.isEmailAvailable(user.getEmail())){
             Map<String, String> result = new HashMap<>();
             userService.add(user);
-//            session.setAttribute("userId", user.getId());
             tmpUser.setUser(user.getId());
             result.put("result", "ok");
             return result;
@@ -51,14 +50,16 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public long login(@RequestBody User user, HttpSession session){
+    public Map<String, String> login(@RequestBody User user, HttpSession session){
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
         if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
+            Map<String, String> result = new HashMap<>();
             User regUser = userOptional.get();
-            session.setAttribute("userId", regUser.getId());
-            return regUser.getId();
+            tmpUser.setUser(regUser.getId());
+            result.put("result", "ok");
+            return result;
         }
-        return 0;
+       throw new UserStatusException("Wrong email or password!");
     }
 
     @CrossOrigin

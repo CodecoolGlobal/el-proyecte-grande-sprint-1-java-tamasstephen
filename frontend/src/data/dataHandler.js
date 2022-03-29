@@ -15,6 +15,10 @@ export const dataHandler = {
     return await this.getApi("logout");
   },
 
+  async login(payload) {
+    return await this.postTextJson("login", payload);
+  },
+
   async getApi(endpoint) {
     const result = await fetch(`http://localhost:8080/${endpoint}`);
     return await result.json();
