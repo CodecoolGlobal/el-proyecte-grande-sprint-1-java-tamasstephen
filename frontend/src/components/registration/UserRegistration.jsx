@@ -31,7 +31,12 @@ const UserRegistration = () => {
       required: "required",
     };
     const result = await dataHandler.registerUser(payLoad);
-    handleFormResponse(result, "/", changeErrorState, changeMessage);
+    handleFormResponse(
+      result,
+      "cause-registration",
+      changeErrorState,
+      changeMessage
+    );
   }
 
   return (

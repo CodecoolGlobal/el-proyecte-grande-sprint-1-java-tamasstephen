@@ -16,6 +16,14 @@ export const dataHandler = {
     return await result.json();
   },
 
+  async postMultiPartForm(formData) {
+    const result = await fetch("http://localhost:8080/creator-profile", {
+      method: "POST",
+      body: formData,
+    });
+    return await result.json();
+  },
+
   async postTextJson(endpoint, payload) {
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Content-Type": "application/json" },
