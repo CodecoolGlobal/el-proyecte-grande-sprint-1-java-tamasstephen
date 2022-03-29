@@ -55,7 +55,8 @@ public class UserController {
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
         if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
             User regUser = userOptional.get();
-            session.setAttribute("userId", regUser.getId());
+//            session.setAttribute("userId", regUser.getId());
+            tmpUser.setUser(regUser.getId());
             return regUser.getId();
         }
         return 0;
