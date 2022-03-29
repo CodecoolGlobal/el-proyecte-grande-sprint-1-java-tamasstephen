@@ -1,13 +1,25 @@
 import React, { useRef, useState } from "react";
 import { dataHandler } from "../data/dataHandler";
 import { handleFormResponse } from "../utils/util";
+import StringInput from "./registration/StringInput";
 
 const UserRegistration = () => {
-  const email = useRef(null);
-  const password = useRef(null);
   const errorContainer = useRef(null);
   const [errorContainerState, changeErrorState] = useState("hidden");
   const [errorMessage, changeMessage] = useState("");
+  const [emailState, changeEmailValue] = useState({
+    name: "email",
+    type: "email",
+    label: "Email:",
+    placeholder: "example@myemail.com",
+    required: "required",
+  });
+  const [passwordState, changePassword] = useState({
+    name: "password",
+    type: "password",
+    label: "Password:",
+    placeholder: "",
+  });
 
   async function registerUser(event) {
     event.preventDefault();
@@ -16,6 +28,7 @@ const UserRegistration = () => {
     const payLoad = {
       email: email,
       password: password,
+      required: "required",
     };
     const result = await dataHandler.registerUser(payLoad);
     handleFormResponse(result, "/", changeErrorState, changeMessage);
@@ -27,13 +40,9 @@ const UserRegistration = () => {
         <p ref={errorContainer} className={errorContainerState}>
           {errorMessage}
         </p>
-        <label htmlFor="email">Email:</label>
-        <input ref={email} type="email" name="email" />
       </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input ref={password} type="password" name="password" />
-      </div>
+      <StringInput inputProps={emailState} />
+      <StringInput inputProps={passwordState} />
       <button type="submit">Submit</button>
     </form>
   );
