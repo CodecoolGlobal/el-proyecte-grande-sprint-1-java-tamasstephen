@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import MenuDrawer from "./MenuDrawer";
+import { Link } from "react-router-dom";
 
 export const Navigation = () => {
   const [drawerState, changeState] = useState("translate-x-full invisible");
@@ -18,16 +19,18 @@ export const Navigation = () => {
       <MenuDrawer menuState={drawerState} stateChanger={changeMenuState} />
       <div className="p-4 flex justify-between container mx-xl xl:px-[5rem] content-center ">
         <div className="logo">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="text-xl font-bold text-indigo-900 tracking-tighter md:text-2xl"
           >
             CoinDrop
-          </a>
+          </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">Explore</li>
-          <li className="pl-7">Login</li>
+          <li className="pl-7">
+            <Link to="/user-registration">Login</Link>
+          </li>
           <li className="pl-7">Create a Cause</li>
         </ul>
         <div

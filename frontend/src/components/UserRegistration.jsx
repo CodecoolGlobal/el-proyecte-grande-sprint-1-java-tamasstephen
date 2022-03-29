@@ -1,9 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { dataHandler } from "../data/dataHandler";
+import { handleFormResponse } from "../utils/util";
 
 const UserRegistration = () => {
   const email = useRef(null);
   const password = useRef(null);
+  const errorContainer = useRef(null);
+  const [errorContainerState, changeErrorState] = useState("hidden");
+  const [errorMessage, changeMessage] = useState("");
 
   async function registerUser(event) {
     event.preventDefault();
@@ -14,12 +18,15 @@ const UserRegistration = () => {
       password: password,
     };
     const result = await dataHandler.registerUser(payLoad);
-    console.group(result);
+    handleFormResponse(result, "/", changeErrorState, changeMessage);
   }
 
   return (
     <form onSubmit={registerUser}>
       <div>
+        <p ref={errorContainer} className={errorContainerState}>
+          {errorMessage}
+        </p>
         <label htmlFor="email">Email:</label>
         <input ref={email} type="email" name="email" />
       </div>
