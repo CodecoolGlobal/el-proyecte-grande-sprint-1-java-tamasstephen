@@ -1,12 +1,12 @@
 
-const InputField = ({ setState, placeholder }) => {
-  function handleChange(event) {
-    console.log(event.currentTarget.value);
-    setState(event.currentTarget.value);
-  }
+const InputField = ({ name, placeholder }) => {
+  // function handleChange(event) {
+  //   console.log(event.currentTarget.value);
+  //   setState(event.currentTarget.value);
+  // }
 
   return (
-    <input type="text" onChange={handleChange} placeholder={placeholder} />
+    <input type="text" name={name} placeholder={placeholder} />
   );
 };
 
