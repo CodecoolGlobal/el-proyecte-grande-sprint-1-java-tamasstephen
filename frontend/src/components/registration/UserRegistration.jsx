@@ -8,7 +8,6 @@ const UserRegistration = ({ setLoginState }) => {
   const errorContainer = useRef(null);
   const [errorContainerState, changeErrorState] = useState("hidden");
   const [errorMessage, changeMessage] = useState("");
-  //TODO: remove states, simple objects are just fine
   const [emailState, changeEmailValue] = useState({
     name: "email",
     type: "email",

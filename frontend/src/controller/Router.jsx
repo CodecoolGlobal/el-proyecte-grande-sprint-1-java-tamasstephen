@@ -29,7 +29,7 @@ const Router = () => {
           }
         ></Route>
         <Route path="cause-registration" element={<CauseRegistration />} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<Login setLoginState={setLoginState} />} />
       </Route>
     </Routes>
   );

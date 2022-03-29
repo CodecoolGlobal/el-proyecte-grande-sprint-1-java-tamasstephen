@@ -1,8 +1,12 @@
 import React from "react";
 import Headline from "../Headline";
 import StringInput from "./StringInput";
+import { dataHandler } from "../../data/dataHandler";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setLoginState }) => {
+  const navigate = useNavigate();
+
   const email = {
     name: "email",
     type: "email",
@@ -18,15 +22,31 @@ const Login = () => {
     required: "required",
   };
 
-  function handleLogin(event) {
+  async function sendLogin(event) {
     event.preventDefault();
     const email = event.target["email"].value;
     const password = event.target["password"].value;
-    console.log(email, password);
+    const payLoad = {
+      email: email,
+      password: password,
+    };
+
+    const response = await dataHandler.login(payLoad);
+    console.log(response);
+    handleLogin(response);
+  }
+
+  function handleLogin(response) {
+    if (response.result === "ok") {
+      setLoginState({ logout: "", login: "hidden" });
+      navigate("/");
+    } else {
+      alert(response.message);
+    }
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={sendLogin}>
       <Headline isTitle={false} title="Login" />
       <StringInput inputProps={email} />
       <StringInput inputProps={password} />
