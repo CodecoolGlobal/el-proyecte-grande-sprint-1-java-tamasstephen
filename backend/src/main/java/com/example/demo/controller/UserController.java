@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.User;
+import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final TmpUser tmpUser;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TmpUser tmpUser) {
         this.userService = userService;
+        this.tmpUser = tmpUser;
     }
 
     @CrossOrigin
@@ -29,7 +32,8 @@ public class UserController {
         if (userService.isEmailAvailable(user.getEmail())){
             Map<String, String> result = new HashMap<>();
             userService.add(user);
-            session.setAttribute("userId", user.getId());
+//            session.setAttribute("userId", user.getId());
+            tmpUser.setUser(user.getId());
             result.put("result", "ok");
             return result;
         }
@@ -55,6 +59,15 @@ public class UserController {
             return regUser.getId();
         }
         return 0;
+    }
+
+    @CrossOrigin
+    @GetMapping("/logout")
+    public Map<String, String> logout(){
+       tmpUser.removeUser();
+       Map<String, String> resp = new HashMap<>();
+       resp.put("result", "ok");
+       return resp;
     }
 
     @GetMapping("/user/profile")

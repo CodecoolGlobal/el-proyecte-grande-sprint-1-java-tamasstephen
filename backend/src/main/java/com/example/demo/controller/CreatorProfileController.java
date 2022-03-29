@@ -8,6 +8,7 @@ import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
+import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,19 @@ public class CreatorProfileController {
     private final CreatorProfileService creatorProfileService;
     private final TipService tipService;
     private final FileHandler fileHandler;
+    private final TmpUser tmpUser;
 
     @Autowired
-    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService, FileHandler fileHandler) {
+    public CreatorProfileController(UserService userService,
+                                    CreatorProfileService creatorProfileService,
+                                    TipService tipService,
+                                    FileHandler fileHandler,
+                                    TmpUser tmpUser) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
         this.fileHandler = fileHandler;
+        this.tmpUser = tmpUser;
         new InitData(userService, creatorProfileService).initUsers();
     }
 
@@ -53,8 +60,13 @@ public class CreatorProfileController {
             @RequestPart("pageLink") String pageLink,
             HttpSession session){
 
-        Long userId = (Long) session.getAttribute("userId");
+//        Long userId = (Long) session.getAttribute("userId");
+        Long userId = tmpUser.getUser();
+        System.out.println(userId);
         Map<String, String> result = new HashMap<>();
+        if (userId == null){
+            throw new UserStatusException("You have to log in to create a cuase");
+        }
         Optional<User> userOptional = userService.getUser(userId);
         if (userOptional.isPresent()){
             CreatorProfile profile = CreatorProfile.builder()
