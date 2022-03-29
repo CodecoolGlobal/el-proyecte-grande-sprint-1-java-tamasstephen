@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import MenuDrawer from "./MenuDrawer";
 import { Link } from "react-router-dom";
+import { dataHandler } from "../data/dataHandler";
 
-export const Navigation = () => {
+export const Navigation = ({ userLogin, setLoginState }) => {
   const [drawerState, changeState] = useState("translate-x-full invisible");
 
   function changeMenuState() {
@@ -12,6 +13,12 @@ export const Navigation = () => {
         ? "left-null translate-x-0"
         : "translate-x-full invisible";
     changeState(newState);
+  }
+
+  async function logout() {
+    await dataHandler.logout();
+    console.log("here");
+    setLoginState({ logout: " hidden", login: "" });
   }
 
   return (
@@ -28,10 +35,15 @@ export const Navigation = () => {
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">Explore</li>
-          <li className="pl-7">
+          <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/user-registration">Login</Link>
           </li>
-          <li className="pl-7">Create a Cause</li>
+          <li className={"pl-7 " + userLogin["login"]}>
+            <Link to="/user-registration">Create a Cause</Link>
+          </li>
+          <li className={"pl-6 " + userLogin["logout"]} onClick={logout}>
+            Logout
+          </li>
         </ul>
         <div
           className="flex items-center hamburger md:hidden"

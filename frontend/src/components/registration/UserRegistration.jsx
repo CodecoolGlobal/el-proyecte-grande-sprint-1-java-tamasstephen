@@ -1,9 +1,10 @@
 import React, { useRef, useState } from "react";
 import { dataHandler } from "../../data/dataHandler";
-import { handleFormResponse } from "../../utils/util";
 import StringInput from "./StringInput";
+import { useNavigate } from "react-router-dom";
 
-const UserRegistration = () => {
+const UserRegistration = ({ setLoginState }) => {
+  let navigate = useNavigate();
   const errorContainer = useRef(null);
   const [errorContainerState, changeErrorState] = useState("hidden");
   const [errorMessage, changeMessage] = useState("");
@@ -31,12 +32,13 @@ const UserRegistration = () => {
       required: "required",
     };
     const result = await dataHandler.registerUser(payLoad);
-    handleFormResponse(
-      result,
-      "cause-registration",
-      changeErrorState,
-      changeMessage
-    );
+    if (result.result === "ok") {
+      setLoginState({ logout: "", login: "hidden" });
+      navigate("/cause-registration");
+    } else {
+      changeMessage(result.message);
+      changeErrorState("");
+    }
   }
 
   return (

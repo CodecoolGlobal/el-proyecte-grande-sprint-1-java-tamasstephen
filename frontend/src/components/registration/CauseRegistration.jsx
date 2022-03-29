@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import { dataHandler } from "../../data/dataHandler";
 import StringInput from "./StringInput";
+import { useNavigate } from "react-router-dom";
 
 const CauseRegistration = () => {
+  const navigate = useNavigate();
   const causeInput = {
     name: "causeName",
     type: "text",
@@ -31,7 +33,7 @@ const CauseRegistration = () => {
     console.log(file);
     const response = await dataHandler.postMultiPartForm(formData);
     if (response.result === "ok") {
-      alert("data saved");
+      navigate("/");
     } else {
       alert(response.message);
       console.log(response);
