@@ -3,6 +3,8 @@ import Headline from "../Headline";
 import StringInput from "./StringInput";
 import { dataHandler } from "../../data/dataHandler";
 import { useNavigate } from "react-router-dom";
+import Submit from "./Submit";
+import Error from "./Error";
 
 const Login = ({ setLoginState }) => {
   const navigate = useNavigate();
@@ -49,20 +51,20 @@ const Login = ({ setLoginState }) => {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pt-16">
       <form
         className="px-4 md:w-1/2 max-w-xl flex flex-col justify-center"
         onSubmit={sendLogin}
       >
         <Headline isTitle={true} title="Login" />
-        <div className={errorState.boxState}>
-          <p className={errorState.textState}>{errorState.text}</p>
+        <div className={errorState.boxState + " pt-4 md:pt-8"}>
+          <Error errorState={errorState} />
         </div>
         <div className="pt-4 md:pt-8 pb-4 md:pb-8">
           <StringInput inputProps={email} />
           <StringInput inputProps={password} />
         </div>
-        <button type="submit">Login</button>
+        <Submit title="Submit" />
       </form>
     </div>
   );
