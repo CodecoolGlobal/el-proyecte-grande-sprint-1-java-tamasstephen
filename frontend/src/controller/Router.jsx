@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Landing from "../components/landing/Landing";
 import App from "../components/App";
-import UserRegistration from "../components/UserRegistration";
+import UserRegistration from "../components/registration/UserRegistration";
 
 const Router = () => {
   return (

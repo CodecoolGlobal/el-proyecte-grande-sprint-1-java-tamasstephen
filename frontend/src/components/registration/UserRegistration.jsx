@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { dataHandler } from "../data/dataHandler";
-import { handleFormResponse } from "../utils/util";
-import StringInput from "./registration/StringInput";
+import { dataHandler } from "../../data/dataHandler";
+import { handleFormResponse } from "../../utils/util";
+import StringInput from "./StringInput";
 
 const UserRegistration = () => {
   const errorContainer = useRef(null);
