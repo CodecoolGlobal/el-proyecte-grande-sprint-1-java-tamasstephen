@@ -15,6 +15,7 @@ const StringInput = ({ inputProps }) => {
         placeholder={`${inputProps["placeholder"]}`}
         required={inputProps["required"]}
         className="rounded-lg h-10 px-4 border border-indigo-200 shadow-md shadow-indigo-400/20 hover:outline-indigo-500"
+        value={inputProps["value"]}
       />
     </div>
   );
