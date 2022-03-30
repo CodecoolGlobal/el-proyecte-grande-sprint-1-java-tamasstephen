@@ -22,8 +22,8 @@ class UserServiceTest {
 
     @BeforeEach
     void init(){
-        user = new User("hey@hey.com", "Happy Human");
-        secondUser = new User("ho@hoho.com", "Very Happy Human");
+        user = User.builder().email("hey@hey.com").password("Happy Human").build();
+        secondUser =User.builder().email("ho@hoho.com").password("Very Happy Human").build();
     }
 
     @Test
@@ -99,7 +99,7 @@ class UserServiceTest {
 
     @Test
     void update_updatesUserDetailsWithNewInformation_changesDetails(){
-        User uniqueUser = new User("unique@un.com", "unique");
+        User uniqueUser = User.builder().email("unique@un.com").password("unique").build();
         userService.add(uniqueUser);
 
         long id = uniqueUser.getId();
@@ -110,7 +110,7 @@ class UserServiceTest {
 
     @Test
     void delteUser_removesUserFromMem_removesUser(){
-        User userToDelete = new User("delete@test.com", "willBeDeleted");
+        User userToDelete =User.builder().email("delete@test.com").password("willBeDeleted").build();
         userService.add(userToDelete);
 
         int addedToList = userService.getAllUsers().size();
