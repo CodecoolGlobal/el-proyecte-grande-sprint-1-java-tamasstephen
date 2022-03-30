@@ -19,6 +19,10 @@ export const dataHandler = {
     return await this.postTextJson("login", payload);
   },
 
+  async getProfile() {
+    return await this.getApi("user-profile");
+  },
+
   async isCreatorProfileSet() {
     return await this.getApi("creator-profile-set");
   },
