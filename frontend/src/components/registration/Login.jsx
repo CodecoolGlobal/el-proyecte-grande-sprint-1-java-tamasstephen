@@ -41,10 +41,15 @@ const Login = ({ setLoginState }) => {
     handleLoginResponse(response);
   }
 
-  function handleLoginResponse(response) {
+  async function handleLoginResponse(response) {
     if (response.result === "ok") {
       setLoginState({ logout: "", login: "hidden" });
-      navigate("/");
+      const contentResponse = await dataHandler.isCreatorProfileSet();
+      if (contentResponse === "ok") {
+        navigate("/");
+      } else {
+        navigate("/cause-registration");
+      }
     } else {
       setError({ boxState: "", text: response.message, textState: "" });
     }

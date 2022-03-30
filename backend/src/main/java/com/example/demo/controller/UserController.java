@@ -91,11 +91,19 @@ public class UserController {
         throw new UserStatusException("You have to login to update your profile!");
     }
 
-    @CrossOrigin
-    @GetMapping("/creator-profile-set/")
-    public boolean isUserContentSet(@RequestParam long id){
-        Optional<User> userOption = userService.getUser(id);
-        return userOption.map(User::isCreatorProfileAvailable).orElse(false);
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/creator-profile-set")
+    public ResponseEntity<Map<String, String>> isUserContentSet(){
+        Long userId = tmpUser.getUser();
+        Optional<User> userOption = userService.getUser(userId);
+        Map<String, String> result = new HashMap<>();
+        boolean contentStatus =  userOption.map(User::isCreatorProfileAvailable).orElse(false);
+        if (contentStatus){
+            result.put("result", "ok");
+        } else {
+            result.put("result", "error");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @ExceptionHandler(UserStatusException.class)
