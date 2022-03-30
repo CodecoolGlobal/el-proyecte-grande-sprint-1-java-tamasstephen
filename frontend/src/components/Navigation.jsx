@@ -23,7 +23,7 @@ export const Navigation = ({ userLogin, setLoginState }) => {
   return (
     <nav className="flex justify-center relative ">
       <MenuDrawer menuState={drawerState} stateChanger={changeMenuState} />
-      <div className="p-4 flex justify-between container mx-xl xl:px-[5rem] content-center ">
+      <div className="p-4 flex justify-between container mx-xl  content-center md:px-0 ">
         <div className="logo">
           <Link
             to="/"
@@ -33,7 +33,9 @@ export const Navigation = ({ userLogin, setLoginState }) => {
           </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
-          <li className="pl-7">Explore</li>
+          <li className="pl-7">
+            <Link to="explore">Explore</Link>
+          </li>
           <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/login">Login</Link>
           </li>
