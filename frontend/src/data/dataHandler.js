@@ -46,6 +46,14 @@ export const dataHandler = {
     return await result.json();
   },
 
+  sendTextJson(endpoint, payload){
+    return fetch(`http://localhost:8080/${endpoint}`, {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then(res => res.json())
+  },
+
   async postTextJson(endpoint, payload) {
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Content-Type": "application/json" },
