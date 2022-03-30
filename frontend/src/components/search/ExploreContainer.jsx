@@ -9,7 +9,8 @@ const ExploreContainer = () => {
   const [causes, setCauses] = useState([]);
 
   useEffect(() => {
-    const getCauses = async (callback) => {
+    const getCauses = async () => {
+      console.log("here");
       if (searchParameter) {
         return await dataHandler.getCausesByName(searchParameter);
       } else {
@@ -27,7 +28,7 @@ const ExploreContainer = () => {
       .then((data) => fetchImages(data, setCauses));
   }, []);
 
-  return <Explore causes={causes} />;
+  return <Explore causes={causes} setCauses={setCauses} />;
 };
 
 export default ExploreContainer;
