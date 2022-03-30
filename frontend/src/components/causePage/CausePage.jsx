@@ -10,9 +10,6 @@ import { dataHandler } from "../../data/dataHandler";
 
 const CausePage = () => {
   const params = useParams();
-
-  // console.log(params.creatorLink);
-
   const [cause, setCause] = useState({});
   const [img, setImg] = useState();
   const [tips, setTips] = useState([]);
@@ -41,7 +38,6 @@ const CausePage = () => {
     };
     fetchTips().then((data) => {
       setTips(data);
-      console.log(data);
     });
   }, [params.creatorLink]);
 
@@ -55,14 +51,17 @@ const CausePage = () => {
         />
         <div className="fley flex-col md:flex md:flex-row">
           <Description description={cause.description} />
-          <DonationForm />
+          <DonationForm setTip={setTips} />
         </div>
-        { tips.length !== 0 ?
-          <SubHeadline style={"text-3xl mb-4"} name={"Latest donators"} /> : ""
-        }
+        {tips.length !== 0 ? (
+          <SubHeadline style={"text-3xl mb-4"} name={"Latest donators"} />
+        ) : (
+          ""
+        )}
         <div className="md:w-6/12">
           {tips.map((tip, index) => (
             <Donation
+            key={index}
               donator={tip.supporter}
               amount={tip.amount}
               comment={tip.comment}

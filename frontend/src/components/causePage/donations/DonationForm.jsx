@@ -3,14 +3,25 @@ import CoinAmount from "./CoinAmount";
 import SubHeadline from "../SubHeadline";
 import InputField from "./InputField";
 import Button from "./Button";
+import { useParams } from "react-router-dom";
+import { dataHandler } from "../../../data/dataHandler";
 
-const DonationForm = () => {
+const DonationForm = ({ setTip}) => {
   const [coinAmount, setCoinAmount] = useState(1);
+  const params = useParams();
 
   function handlerSubmit(event) {
     event.preventDefault();
-    console.log(event.target["comment"].value);
-    console.log(event.target["name"].value);
+    const payload = {
+      amount: coinAmount,
+      pageLink: params.creatorLink,
+      supporter: event.target["name"].value,
+      comment: event.target["comment"].value,
+    };
+    dataHandler.sendTextJson("creator/support", payload);
+    dataHandler
+      .getTipsByCreatorLink(params.creatorLink)
+      .then((tips) => setTip(tips));
   }
 
   return (

@@ -4,7 +4,7 @@ import { BsCoin } from "react-icons/bs";
 const Donation = ({ donator, amount, comment, time }) => {
   const cardTime = time ? time : "Just now...";
   return (
-    <div className="flex p-4 bg-white rounded-lg w-full shadow-lg shadow-indigo-500/30">
+    <div className="flex mb-2 p-4 bg-white rounded-lg w-full shadow-lg shadow-indigo-500/30">
       <div className="pt-1 pr-3">
         <BsCoin className="text-3xl text-indigo-500 font-bold" />
       </div>
