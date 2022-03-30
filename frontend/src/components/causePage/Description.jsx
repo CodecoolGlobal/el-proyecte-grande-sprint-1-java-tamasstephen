@@ -2,16 +2,12 @@ import React from "react";
 
 const Description = () => {
   return (
-    <p>
-      Bacon ipsum dolor amet chuck shank shankle, tenderloin spare ribs doner
-      burgdoggen. Strip steak porchetta brisket, chuck tail doner cupim. Cupim
-      corned beef ball tip pork chop meatball sirloin. Jerky andouille rump
-      bresaola turkey shank, flank ball tip strip steak venison meatball. Cupim
-      kevin leberkas landjaeger flank bacon. Ground round alcatra brisket ham
-      ball tip jerky meatloaf, salami picanha. Meatball prosciutto turducken,
-      beef short loin venison kevin andouille tri-tip chuck alcatra spare ribs
-      jowl pancetta shank.
-    </p>
+    <div className="whitespace-normal m-3 md:w-3/6 md:h-80">
+      Konohagakure (木ノ葉隠れの里, Konohagakure no Sato; literally meaning
+      "Village Hidden by Tree Leaves"), also known as "Village Hidden in the
+      Leaves" or "Hidden Leaf Village" is the hidden village of the Land of
+      Fire.
+    </div>
   );
 };
 
