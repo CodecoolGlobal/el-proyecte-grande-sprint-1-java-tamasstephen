@@ -11,10 +11,10 @@ const Cause = ({ cause }) => {
         alt=""
         className="w-full  aspect-video object-cover"
       />
-      <div className="p-4">
+      <div className="flex flex-col h-44 p-4 xl:h-36">
         <CardTitle title={cause?.causeName} />
-        <p className="text-slate-700 pb-2 h-12">{cause?.description}</p>
-        <div>
+        <p className="text-slate-700 pb-2">{cause?.description}</p>
+        <div className="">
           <Tag title={category} />
         </div>
       </div>
