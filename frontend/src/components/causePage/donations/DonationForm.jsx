@@ -14,8 +14,8 @@ const DonationForm = () => {
   }
 
   return (
-    <>
-      <SubHeadline name={"Drop Those Coins"} />
+    <div className="bg-slate-100 mt-10 mx-3 mb-8 rounded md:w-3/6 md:h-full md:mt-4">
+      <SubHeadline style={"text-xl ml-2"} name={"Drop Those Coins"} />
       <div>
         <CoinAmount amount={1} setCoinAmount={setCoinAmount} />
         <CoinAmount amount={5} setCoinAmount={setCoinAmount} />
@@ -23,14 +23,25 @@ const DonationForm = () => {
       </div>
       <form onSubmit={handlerSubmit}>
         <div>
-          <InputField name={"name"} placeholder={"Name"} />
-          <InputField name={"comment"} placeholder={"Comment.. (Optional)"} />
+          <InputField
+            style={
+              "ml-2 mb-2 mt-2 w-11/12 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            }
+            name={"name"}
+            placeholder={"Name"}
+          />
+          <InputField
+            style={
+              "ml-2 mb-4 w-11/12 h-20 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            }
+            name={"comment"}
+            placeholder={"Comment.. (Optional)"}
+          />
         </div>
-
-        <p>I want to drop ${coinAmount} for the cause</p>
+        <p className="ml-2">I want to drop ${coinAmount} for the cause</p>
         <Button moneyAmount={coinAmount} />
       </form>
-    </>
+    </div>
   );
 };
 
