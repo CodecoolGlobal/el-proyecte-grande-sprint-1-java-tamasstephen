@@ -61,8 +61,8 @@ public class CreatorProfile {
         return profileImage;
     }
 
-    public boolean hasCreatorSameName(String name){
-        return causeName.equals(name);
+    public boolean hasCauseStringFragment(String name){
+        return causeName.contains(name);
     }
 
     public boolean hasSameId(long id){
