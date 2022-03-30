@@ -35,9 +35,9 @@ public class TipService {
 //        tipDao.deleteTip(id);
 //    }
 //
-//    public List<Tip> getAll() {
-//        return tipDao.getAll();
-//    }
+    public List<Tip> getAll() {
+        return tipDao.getAll();
+    }
 //
 //    public Comment get(Tip tip) {
 //        return tipDao.get(tip);

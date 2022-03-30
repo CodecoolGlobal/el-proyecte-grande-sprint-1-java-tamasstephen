@@ -19,6 +19,18 @@ public class Tip {
         this.comment = comment;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getSupporter() {
+        return supporter;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
     public boolean isUsersDonation(long userId){
         return userId == this.userId;
     }
