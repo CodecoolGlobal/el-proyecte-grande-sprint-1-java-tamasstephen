@@ -59,8 +59,10 @@ public class CreatorProfileController {
             @RequestPart("name") String name,
             @RequestPart("description") String description,
             @RequestPart("pageLink") String pageLink,
+            @RequestPart("category") String category,
             HttpSession session){
 
+        System.out.println(category);
         Long userId = tmpUser.getUser();
         System.out.println(userId);
         Map<String, String> result = new HashMap<>();
