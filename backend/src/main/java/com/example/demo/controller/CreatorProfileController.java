@@ -8,6 +8,7 @@ import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
+import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class CreatorProfileController {
@@ -36,13 +34,19 @@ public class CreatorProfileController {
     private final CreatorProfileService creatorProfileService;
     private final TipService tipService;
     private final FileHandler fileHandler;
+    private final TmpUser tmpUser;
 
     @Autowired
-    public CreatorProfileController(UserService userService, CreatorProfileService creatorProfileService, TipService tipService, FileHandler fileHandler) {
+    public CreatorProfileController(UserService userService,
+                                    CreatorProfileService creatorProfileService,
+                                    TipService tipService,
+                                    FileHandler fileHandler,
+                                    TmpUser tmpUser) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
         this.fileHandler = fileHandler;
+        this.tmpUser = tmpUser;
         new InitData(userService, creatorProfileService).initUsers();
     }
 
@@ -56,12 +60,16 @@ public class CreatorProfileController {
             @RequestPart("pageLink") String pageLink,
             HttpSession session){
 
-        Long userId = (Long) session.getAttribute("userId");
+        Long userId = tmpUser.getUser();
+        System.out.println(userId);
         Map<String, String> result = new HashMap<>();
+        if (userId == null){
+            throw new UserStatusException("You have to log in to create a cuase");
+        }
         Optional<User> userOptional = userService.getUser(userId);
         if (userOptional.isPresent()){
             CreatorProfile profile = CreatorProfile.builder()
-                    .userName(name)
+                    .causeName(name)
                     .description(description)
                     .pageLink(pageLink)
                     .userId(userId)
@@ -127,6 +135,19 @@ public class CreatorProfileController {
     }
 
     @CrossOrigin
+    @GetMapping("/highlighted")
+    public Set<CreatorProfile> getHighlightedProfiles(){
+       Set<CreatorProfile> profileSet = new HashSet<>();
+       for (CreatorProfile profile: creatorProfileService.getAll()){
+           profileSet.add(profile);
+           if(profileSet.size() > 2){
+             return profileSet;
+           }
+       }
+       return profileSet;
+    }
+
+    @CrossOrigin
     @GetMapping("/creators")
     public List<CreatorProfile> getAllCreatorsByName(@RequestParam String name){
         List<CreatorProfile> creatorProfile = creatorProfileService.get(name);
@@ -141,7 +162,7 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PostMapping("/creator/support")
-    public void supportCreator(@RequestBody Tip tip){
+    public void supportCause(@RequestBody Tip tip){
         long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
                 .get().getUserId();
         tip.setUserId(userId);
@@ -160,6 +181,7 @@ public class CreatorProfileController {
                && creatorProfileService.isPageLinkUnique(pageLink)
                && creatorProfileService.get(userId).isEmpty();
     }
+
 
     @ExceptionHandler(UserStatusException.class)
     private ResponseEntity<Map<String, String>> handleOwnerNotFound(RuntimeException exception, WebRequest request){

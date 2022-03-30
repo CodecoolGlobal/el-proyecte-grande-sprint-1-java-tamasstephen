@@ -1,7 +1,5 @@
 package com.example.demo.model.user;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import jdk.jfr.DataAmount;
 import lombok.*;
 
 import java.util.List;
@@ -19,7 +17,7 @@ public class CreatorProfile {
     private String description;
     private String pageLink;
     private String profileImage;
-    private String userName;
+    private String causeName;
     private long userId;
 
     public CreatorProfile(Category category, List<String> contentUrls, String description, String pageLink, String profileImage, String userName) {
@@ -28,7 +26,7 @@ public class CreatorProfile {
         this.description = description;
         this.pageLink = pageLink;
         this.profileImage = profileImage;
-        this.userName = userName;
+        this.causeName = userName;
     }
 
     public String getPageLink(){
@@ -51,8 +49,8 @@ public class CreatorProfile {
         return description;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCauseName() {
+        return causeName;
     }
 
     public void setUserId(long userId) {
@@ -64,7 +62,7 @@ public class CreatorProfile {
     }
 
     public boolean hasCreatorSameName(String name){
-        return name.equals(userName);
+        return causeName.equals(name);
     }
 
     public boolean hasSameId(long id){

@@ -6,14 +6,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @ComponentScan(basePackages = "com.example.demo")
 public class Config {
 
     @Bean
-    public ArrayList<User> getUsers(){
-        return new ArrayList<>();
+    public Map<String, Long> getUser(){
+        return new HashMap<>();
     }
 }

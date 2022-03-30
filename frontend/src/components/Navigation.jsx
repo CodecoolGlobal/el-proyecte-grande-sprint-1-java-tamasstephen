@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import MenuDrawer from "./MenuDrawer";
+import { Link } from "react-router-dom";
+import { dataHandler } from "../data/dataHandler";
 
-export const Navigation = () => {
+export const Navigation = ({ userLogin, setLoginState }) => {
   const [drawerState, changeState] = useState("translate-x-full invisible");
 
   function changeMenuState() {
@@ -13,22 +15,35 @@ export const Navigation = () => {
     changeState(newState);
   }
 
+  async function logout() {
+    await dataHandler.logout();
+    console.log("here");
+    setLoginState({ logout: " hidden", login: "" });
+  }
+
   return (
     <nav className="flex justify-center relative ">
       <MenuDrawer menuState={drawerState} stateChanger={changeMenuState} />
       <div className="p-4 flex justify-between container mx-xl xl:px-[5rem] content-center ">
         <div className="logo">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="text-xl font-bold text-indigo-900 tracking-tighter md:text-2xl"
           >
             CoinDrop
-          </a>
+          </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">Explore</li>
-          <li className="pl-7">Login</li>
-          <li className="pl-7">Create a Cause</li>
+          <li className={"pl-7 " + userLogin["login"]}>
+            <Link to="/login">Login</Link>
+          </li>
+          <li className={"pl-7 " + userLogin["login"]}>
+            <Link to="/user-registration">Create a Cause</Link>
+          </li>
+          <li className={"pl-6 " + userLogin["logout"]} onClick={logout}>
+            Logout
+          </li>
         </ul>
         <div
           className="flex items-center hamburger md:hidden"
