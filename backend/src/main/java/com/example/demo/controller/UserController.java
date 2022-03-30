@@ -83,12 +83,30 @@ public class UserController {
 
     @PutMapping("/user/update")
     public void updateProfile(@RequestBody User user, HttpSession session){
-        if(session.getAttribute("userId") != null){
+        if(tmpUser.getUser() != null){
             Long id = (Long) session.getAttribute("userId");
             User prevUser = userService.getUser(id).get();
             userService.updateUser(prevUser, user);
         }
         throw new UserStatusException("You have to login to update your profile!");
+    }
+
+    //TODO: hide the logic in the service
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/user/email")
+    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail){
+        String nextEmail = myMail.get("email");
+        Long id = tmpUser.getUser();
+        if (id == null) throw new UserStatusException("You need to log in to proceed!");
+        Optional<User> userOptional = userService.getUser(id);
+        if (userOptional.isEmpty()) throw new UserStatusException("User does not exist");
+        User user = userOptional.get();
+        userService.updateEmail(user, nextEmail);
+        String newMail = userService.getUser(id).get().getEmail();
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "ok");
+        result.put("email", newMail);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
