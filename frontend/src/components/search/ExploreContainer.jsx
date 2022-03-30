@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { dataHandler } from "../../data/dataHandler";
 import Explore from "./Explore";
-import { fetchImages } from "../../utils/util";
+import { fetchImages, shortenDescription } from "../../utils/util";
 
 const ExploreContainer = () => {
   const { searchParameter } = useParams();
@@ -18,6 +18,9 @@ const ExploreContainer = () => {
     };
     getCauses(setCauses)
       .then((data) => {
+        data.forEach((cause) => {
+          cause.description = shortenDescription(cause.description);
+        });
         setCauses(data);
         return data;
       })
