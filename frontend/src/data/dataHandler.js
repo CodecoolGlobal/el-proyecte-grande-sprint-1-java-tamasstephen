@@ -1,4 +1,14 @@
 export const dataHandler = {
+  async getCreatorDataByLink(creatorLink){
+    const data = await this.getApi(`creator/${creatorLink}`);
+    return data;
+  },
+
+  async getTipsByCreatorLink(creatorLink){
+    const data = await this.getApi(`creator/tips/${creatorLink}`);
+    return data;
+  },
+
   async getHighlights() {
     return this.getApi("highlighted");
   },
@@ -50,6 +60,14 @@ export const dataHandler = {
       body: formData,
     });
     return await result.json();
+  },
+
+  sendTextJson(endpoint, payload){
+    return fetch(`http://localhost:8080/${endpoint}`, {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then(res => res.json())
   },
 
   async postTextJson(endpoint, payload) {

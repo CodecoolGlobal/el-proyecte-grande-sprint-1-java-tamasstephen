@@ -108,8 +108,8 @@ public class CreatorProfileController {
     }
 
     @CrossOrigin
-    @GetMapping("/creator")
-    public CreatorProfile getCreatorProfileByLink(@RequestParam String pageLink){
+    @GetMapping("/creator/{pageLink}")
+    public CreatorProfile getCreatorProfileByLink(@PathVariable String pageLink){
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
     }
@@ -179,16 +179,18 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PostMapping("/creator/support")
-    public void supportCause(@RequestBody Tip tip){
+    public List<Tip> supportCause(@RequestBody Tip tip){
         long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
                 .get().getUserId();
         tip.setUserId(userId);
         tipService.add(tip);
+        System.out.println(tipService.getAll());
+        return tipService.getAll();
     }
 
     @CrossOrigin
-    @GetMapping("/creator/tips")
-    public List<Tip> getTipCommentsByPageLink(String pageLink){
+    @GetMapping("/creator/tips/{pageLink}")
+    public List<Tip> getTipCommentsByPageLink(@PathVariable String pageLink){
         return tipService.getCommentsByPageLink(pageLink);
     }
 
