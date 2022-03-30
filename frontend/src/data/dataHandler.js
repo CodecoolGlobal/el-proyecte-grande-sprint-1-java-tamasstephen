@@ -1,4 +1,14 @@
 export const dataHandler = {
+  async getCreatorDataByLink(creatorLink){
+    const data = await this.getApi(`creator/${creatorLink}`);
+    return data;
+  },
+
+  async getTipsByCreatorLink(creatorLink){
+    const data = await this.getApi(`creator/tips/${creatorLink}`);
+    return data;
+  },
+
   async getHighlights() {
     return this.getApi("highlighted");
   },

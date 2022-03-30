@@ -105,8 +105,8 @@ public class CreatorProfileController {
     }
 
     @CrossOrigin
-    @GetMapping("/creator")
-    public CreatorProfile getCreatorProfileByLink(@RequestParam String pageLink){
+    @GetMapping("/creator/{pageLink}")
+    public CreatorProfile getCreatorProfileByLink(@PathVariable String pageLink){
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
     }
@@ -170,8 +170,8 @@ public class CreatorProfileController {
     }
 
     @CrossOrigin
-    @GetMapping("/creator/tips")
-    public List<Tip> getTipCommentsByPageLink(String pageLink){
+    @GetMapping("/creator/tips/{pageLink}")
+    public List<Tip> getTipCommentsByPageLink(@PathVariable String pageLink){
         return tipService.getCommentsByPageLink(pageLink);
     }
 
