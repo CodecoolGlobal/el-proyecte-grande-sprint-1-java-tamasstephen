@@ -36,7 +36,7 @@ const Router = () => {
         <Route path="login" element={<Login setLoginState={setLoginState} />} />
         <Route path="profile" element={<ProfileWrapper />} />
         <Route path="explore" element={<ExploreContainer />} />
-        <Route path="explore:searchParameter" element={<ExploreContainer />} />
+        <Route path="explore/:searchParameter" element={<ExploreContainer />} />
       </Route>
     </Routes>
   );
