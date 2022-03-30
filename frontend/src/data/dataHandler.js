@@ -19,6 +19,10 @@ export const dataHandler = {
     return await this.getApi("all-creators");
   },
 
+  async getCausesByName(name) {
+    return await this.getApi(`creators?name=${name}`);
+  },
+
   async login(payload) {
     return await this.postTextJson("login", payload);
   },
