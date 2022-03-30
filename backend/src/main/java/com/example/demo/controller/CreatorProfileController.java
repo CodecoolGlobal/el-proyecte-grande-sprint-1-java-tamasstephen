@@ -60,7 +60,6 @@ public class CreatorProfileController {
             @RequestPart("pageLink") String pageLink,
             HttpSession session){
 
-//        Long userId = (Long) session.getAttribute("userId");
         Long userId = tmpUser.getUser();
         System.out.println(userId);
         Map<String, String> result = new HashMap<>();
@@ -163,7 +162,7 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PostMapping("/creator/support")
-    public void supportCreator(@RequestBody Tip tip){
+    public void supportCause(@RequestBody Tip tip){
         long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
                 .get().getUserId();
         tip.setUserId(userId);
@@ -182,6 +181,7 @@ public class CreatorProfileController {
                && creatorProfileService.isPageLinkUnique(pageLink)
                && creatorProfileService.get(userId).isEmpty();
     }
+
 
     @ExceptionHandler(UserStatusException.class)
     private ResponseEntity<Map<String, String>> handleOwnerNotFound(RuntimeException exception, WebRequest request){
