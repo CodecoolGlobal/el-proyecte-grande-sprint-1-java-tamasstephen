@@ -17,7 +17,7 @@ public class CreatorProfileDaoMem implements CreatorProfileDao {
 
     @Override
     public List<CreatorProfile> get(String creatorName) {
-        return CREATOR_PROFILES.stream().filter(content -> content.hasCreatorSameName(creatorName)).collect(Collectors.toList());
+        return CREATOR_PROFILES.stream().filter(content -> content.hasCauseStringFragment(creatorName)).collect(Collectors.toList());
     }
 
     @Override

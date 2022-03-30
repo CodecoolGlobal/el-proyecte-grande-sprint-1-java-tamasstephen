@@ -17,14 +17,13 @@ export const Navigation = ({ userLogin, setLoginState }) => {
 
   async function logout() {
     await dataHandler.logout();
-    console.log("here");
     setLoginState({ logout: " hidden", login: "" });
   }
 
   return (
     <nav className="flex justify-center relative ">
       <MenuDrawer menuState={drawerState} stateChanger={changeMenuState} />
-      <div className="p-4 flex justify-between container mx-xl xl:px-[5rem] content-center ">
+      <div className="p-4 flex justify-between container mx-xl  content-center md:px-0 ">
         <div className="logo">
           <Link
             to="/"
@@ -34,12 +33,17 @@ export const Navigation = ({ userLogin, setLoginState }) => {
           </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
-          <li className="pl-7">Explore</li>
+          <li className="pl-7">
+            <Link to="/explore">Explore</Link>
+          </li>
           <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/login">Login</Link>
           </li>
           <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/user-registration">Create a Cause</Link>
+          </li>
+          <li className={"pl-7 " + userLogin["logout"]}>
+            <Link to="/profile">Profile</Link>
           </li>
           <li className={"pl-6 " + userLogin["logout"]} onClick={logout}>
             Logout

@@ -45,7 +45,7 @@ const Login = ({ setLoginState }) => {
     if (response.result === "ok") {
       setLoginState({ logout: "", login: "hidden" });
       const contentResponse = await dataHandler.isCreatorProfileSet();
-      if (contentResponse === "ok") {
+      if (contentResponse.result === "ok") {
         navigate("/");
       } else {
         navigate("/cause-registration");

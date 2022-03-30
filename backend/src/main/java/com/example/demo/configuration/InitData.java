@@ -26,7 +26,7 @@ public class InitData {
     public void initUsers(){
         int count = 0;
         for (String email: USER_EMAILS){
-            User user = new User(email, "placeholder");
+            User user =User.builder().email(email).password("placeholder").build();
             CreatorProfile cause = CreatorProfile.builder()
                     .causeName(CAUSES.get(count))
                     .description("placeholder description")
