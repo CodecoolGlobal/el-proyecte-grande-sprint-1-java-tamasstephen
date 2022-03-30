@@ -4,7 +4,7 @@ const Image = (props) => {
   return (
     <img
       className={props.style}
-      src={require(`${props.jpgName}`)}
+      src={`${props.jpgName}`}
       alt=""
     ></img>
   );
