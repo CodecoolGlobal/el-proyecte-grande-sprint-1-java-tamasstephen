@@ -7,8 +7,9 @@ const ExploreContainer = () => {
   console.log(searchParameter);
 
   useEffect(() => {
-    const getCauses = async (param = "") => {
+    const getCauses = async () => {
       if (searchParameter) {
+        return await dataHandler.getCausesByName(searchParameter);
       } else {
         return await dataHandler.getAllCauses();
       }
