@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.configuration.InitData;
 import com.example.demo.exception.UserStatusException;
+import com.example.demo.model.responsemodel.ProfileModel;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.user.Category;
 import com.example.demo.model.user.CreatorProfile;
@@ -109,6 +110,20 @@ public class CreatorProfileController {
     public CreatorProfile getCreatorProfileByLink(@RequestParam String pageLink){
         Optional<CreatorProfile> content = creatorProfileService.getCreatorPageByPageLink(pageLink);
         return content.isEmpty() ? null : content.get();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/user-profile")
+    public ResponseEntity<ProfileModel> getProfileData(){
+        Long userId = tmpUser.getUser();
+        if (userId == null){
+            throw new UserStatusException("Please log in to check your profile");
+        }
+        User user = userService.getUser(userId).get();
+        User userToReturn = User.builder().email(user.getEmail()).build();
+        CreatorProfile profile = creatorProfileService.get(userId).get();
+        ProfileModel model = ProfileModel.builder().user(userToReturn).profile(profile).build();
+        return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
 

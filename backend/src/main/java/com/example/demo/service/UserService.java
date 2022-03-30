@@ -46,4 +46,15 @@ public class UserService {
         userDao.update(prevUser, newUser);
     }
 
+    public void updateEmail(User prevUser, String email){
+        User newUser = User.builder()
+                .email(email)
+                .userCreatorProfile(prevUser.getUserCreatorProfile())
+                .password(prevUser.getPassword())
+                .id(prevUser.getId())
+                .build();
+        updateUser(prevUser, newUser);
+
+    }
+
 }

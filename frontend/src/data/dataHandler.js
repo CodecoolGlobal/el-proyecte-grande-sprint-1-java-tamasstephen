@@ -19,8 +19,16 @@ export const dataHandler = {
     return await this.postTextJson("login", payload);
   },
 
+  async getProfile() {
+    return await this.getApi("user-profile");
+  },
+
   async isCreatorProfileSet() {
     return await this.getApi("creator-profile-set");
+  },
+
+  async updateEmail(payLoad) {
+    return await this.putApi("user/email", payLoad);
   },
 
   async getApi(endpoint) {
@@ -41,6 +49,15 @@ export const dataHandler = {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify(payload),
+    });
+    return await result.json();
+  },
+
+  async putApi(endpoint, payLoad) {
+    const result = await fetch(`http://localhost:8080/${endpoint}`, {
+      headers: { "Content-Type": "application/json" },
+      method: "PUT",
+      body: JSON.stringify(payLoad),
     });
     return await result.json();
   },

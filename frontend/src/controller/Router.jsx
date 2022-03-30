@@ -6,6 +6,7 @@ import CausePage from "../components/causePage/CausePage";
 import UserRegistration from "../components/registration/UserRegistration";
 import CauseRegistration from "../components/registration/CauseRegistration";
 import Login from "../components/registration/Login";
+import ProfileWrapper from "../components/registration/ProfileWrapper";
 
 
 const Router = () => {
@@ -33,6 +34,7 @@ const Router = () => {
         ></Route>
         <Route path="cause-registration" element={<CauseRegistration />} />
         <Route path="login" element={<Login setLoginState={setLoginState} />} />
+        <Route path="profile" element={<ProfileWrapper />} />
       </Route>
     </Routes>
   );
