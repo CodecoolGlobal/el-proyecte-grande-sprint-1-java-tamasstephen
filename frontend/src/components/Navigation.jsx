@@ -34,7 +34,7 @@ export const Navigation = ({ userLogin, setLoginState }) => {
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
           <li className="pl-7">
-            <Link to="explore">Explore</Link>
+            <Link to="/explore">Explore</Link>
           </li>
           <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/login">Login</Link>
