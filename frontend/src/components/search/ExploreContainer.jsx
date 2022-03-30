@@ -18,7 +18,6 @@ const ExploreContainer = () => {
     };
     getCauses(setCauses)
       .then((data) => {
-        console.log(data);
         setCauses(data);
         return data;
       })
