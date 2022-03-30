@@ -1,12 +1,12 @@
 
-const InputField = ({ name, placeholder }) => {
+const InputField = ({ name, placeholder, style }) => {
   // function handleChange(event) {
   //   console.log(event.currentTarget.value);
   //   setState(event.currentTarget.value);
   // }
 
   return (
-    <input type="text" name={name} placeholder={placeholder} />
+    <input className={style} type="text" name={name} placeholder={placeholder} />
   );
 };
 
