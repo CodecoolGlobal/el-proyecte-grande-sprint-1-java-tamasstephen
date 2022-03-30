@@ -15,6 +15,10 @@ export const dataHandler = {
     return await this.getApi("logout");
   },
 
+  async getAllCauses() {
+    return await this.getApi("all-creators");
+  },
+
   async login(payload) {
     return await this.postTextJson("login", payload);
   },
