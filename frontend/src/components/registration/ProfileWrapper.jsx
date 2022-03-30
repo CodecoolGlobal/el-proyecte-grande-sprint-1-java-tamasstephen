@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { dataHandler } from "../../data/dataHandler";
+import Profile from "./Profile";
 
 const ProfileWrapper = () => {
-  const [userProfile, setUser] = useState({});
+  const [userProfile, updateUser] = useState({ email: "" });
 
   useEffect(() => {
     const getUserProfile = async () => {
@@ -10,11 +11,11 @@ const ProfileWrapper = () => {
     };
 
     getUserProfile().then((profile) => {
-      setUser(profile);
+      updateUser({ email: profile.user.email });
     });
   }, []);
 
-  return <div>ProfileWrapper</div>;
+  return <Profile userProfile={userProfile} userUpdate={updateUser} />;
 };
 
 export default ProfileWrapper;
