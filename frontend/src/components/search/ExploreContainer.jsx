@@ -1,23 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { dataHandler } from "../../data/dataHandler";
+import Explore from "./Explore";
+import { fetchImages } from "../../utils/util";
 
 const ExploreContainer = () => {
   const { searchParameter } = useParams();
-  console.log(searchParameter);
+  const [causes, setCauses] = useState([]);
 
   useEffect(() => {
-    const getCauses = async () => {
+    const getCauses = async (callback) => {
       if (searchParameter) {
         return await dataHandler.getCausesByName(searchParameter);
       } else {
         return await dataHandler.getAllCauses();
       }
     };
-    getCauses().then((data) => console.log(data));
+    getCauses(setCauses)
+      .then((data) => {
+        console.log(data);
+        setCauses(data);
+        return data;
+      })
+      .then((data) => fetchImages(data, setCauses));
   }, []);
 
-  return <div>ExploreContainer</div>;
+  return <Explore causes={causes} />;
 };
 
 export default ExploreContainer;
