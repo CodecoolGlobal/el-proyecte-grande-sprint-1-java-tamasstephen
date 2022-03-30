@@ -11,7 +11,7 @@ const CausePage = () => {
     <div className="bg-gray-200 md:flex md:flex-col md:items-center md:flex-wrap">
       <div className=" px-4 md:w-8/12 ">
         <Headline title={"Help Konoha"} isTitle={true} />
-        <Image style={"m-3 rounded-lg w-350 h-400 md:w-full md:h-650 md:pt-3 md:m-0"} jpgName={"./Konohafalu.jpg"} />
+        <Image style={"m-3 rounded-lg w-350 h-400 md:w-full md:h-650 md:pt-3 md:m-0"} jpgName={""} />
         <div className="fley flex-col md:flex md:flex-row">
           <Description />
           <DonationForm />
