@@ -162,11 +162,13 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PostMapping("/creator/support")
-    public void supportCause(@RequestBody Tip tip){
+    public List<Tip> supportCause(@RequestBody Tip tip){
         long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
                 .get().getUserId();
         tip.setUserId(userId);
         tipService.add(tip);
+        System.out.println(tipService.getAll());
+        return tipService.getAll();
     }
 
     @CrossOrigin
