@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const Image = (props) => {
   return (
-    <img src={require(`${props.jpgName}`)} alt='' width="500" height="600"></img>
-  )
-}
+    <img
+      className={props.style}
+      src={require(`${props.jpgName}`)}
+      alt=""
+    ></img>
+  );
+};
 
-export default Image
+export default Image;
