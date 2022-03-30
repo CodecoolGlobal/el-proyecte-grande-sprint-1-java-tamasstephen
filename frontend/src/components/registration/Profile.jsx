@@ -4,6 +4,7 @@ import Headline from "../Headline";
 import { dataHandler } from "../../data/dataHandler";
 import MutableInput from "./MutableInput";
 import { HiOutlineMail } from "react-icons/hi";
+import Error from "./Error";
 
 const Profile = ({ userProfile, userUpdate }) => {
   const [formVisibility, setFormVisiblity] = useState({ visible: "hidden" });
@@ -26,15 +27,26 @@ const Profile = ({ userProfile, userUpdate }) => {
     placeholder: "",
   };
 
+  const [errorState, setError] = useState({
+    boxState: "hidden",
+    text: "",
+    textState: "invisible",
+  });
+
   async function updateUserDetails(event) {
     event.preventDefault();
     const updateMail = event.target["email"].value;
     const payLoad = { email: updateMail };
     const result = await dataHandler.updateEmail(payLoad);
-    const updateState = { ...userProfile, email: result.email };
-    userUpdate(updateState);
-    setFormVisiblity({ ...formVisibility, visible: "hidden" });
-    changeButtonState({ ...buttonState, label: "Edit" });
+    if (result.result === "ok") {
+      const updateState = { ...userProfile, email: result.email };
+      userUpdate(updateState);
+      setFormVisiblity({ ...formVisibility, visible: "hidden" });
+      changeButtonState({ ...buttonState, label: "Edit" });
+      setError({ boxState: "hidden", text: "", textState: "invisible" });
+    } else {
+      setError({ boxState: "", text: result.message, textState: "" });
+    }
   }
 
   function allowUpdateFields() {
@@ -65,6 +77,9 @@ const Profile = ({ userProfile, userUpdate }) => {
             callBack={allowUpdateFields}
             secondary={true}
           />
+        </div>
+        <div className="pt-4 md:pt-8">
+          <Error errorState={errorState} />
         </div>
         <form
           action=""
