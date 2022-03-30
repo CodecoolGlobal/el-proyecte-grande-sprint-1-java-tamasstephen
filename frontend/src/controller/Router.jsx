@@ -7,7 +7,7 @@ import UserRegistration from "../components/registration/UserRegistration";
 import CauseRegistration from "../components/registration/CauseRegistration";
 import Login from "../components/registration/Login";
 import ProfileWrapper from "../components/registration/ProfileWrapper";
-
+import ExploreContainer from "../components/search/ExploreContainer";
 
 const Router = () => {
   const [userLogin, setLoginState] = useState({
@@ -22,7 +22,7 @@ const Router = () => {
         element={<App setLoginState={setLoginState} userLogin={userLogin} />}
       >
         <Route index element={<Landing />} />
-        <Route path="create-cause" element={<CausePage/>}/>
+        <Route path="create-cause" element={<CausePage />} />
         <Route
           path="user-registration"
           element={
@@ -35,6 +35,8 @@ const Router = () => {
         <Route path="cause-registration" element={<CauseRegistration />} />
         <Route path="login" element={<Login setLoginState={setLoginState} />} />
         <Route path="profile" element={<ProfileWrapper />} />
+        <Route path="explore" element={<ExploreContainer />} />
+        <Route path="explore:searchParameter" element={<ExploreContainer />} />
       </Route>
     </Routes>
   );
