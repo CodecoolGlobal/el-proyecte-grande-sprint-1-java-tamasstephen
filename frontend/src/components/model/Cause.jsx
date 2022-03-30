@@ -1,6 +1,7 @@
 import React from "react";
 import CardTitle from "../CardTitle";
 import Tag from "../Tag";
+import { Link } from "react-router-dom";
 
 const Cause = ({ cause }) => {
   console.log(cause);
@@ -13,7 +14,9 @@ const Cause = ({ cause }) => {
         className="w-full  aspect-video object-cover"
       />
       <div className="flex flex-col h-44 p-4 xl:h-36">
-        <CardTitle title={cause?.causeName} />
+        <Link to={"/" + cause?.pageLink}>
+          <CardTitle title={cause?.causeName} />
+        </Link>
         <p className="text-slate-700 pb-2">{cause?.description}</p>
         <div className="">
           <Tag title={category} />
