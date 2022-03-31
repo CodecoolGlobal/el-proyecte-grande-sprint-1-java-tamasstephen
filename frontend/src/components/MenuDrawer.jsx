@@ -1,5 +1,6 @@
 import React from "react";
 import { HiX } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const MenuDrawer = ({ menuState, stateChanger }) => {
   function closeModal() {
@@ -17,9 +18,15 @@ const MenuDrawer = ({ menuState, stateChanger }) => {
         <HiX className="text-xl" />
       </div>
       <ul className="text-slate-700 text-3xl font-bold">
-        <li>Explore</li>
-        <li className="py-4">Login</li>
-        <li>Sign Up</li>
+        <li onClick={closeModal}>
+          <Link to="/explore">Explore</Link>
+        </li>
+        <li className="py-4" onClick={closeModal}>
+          <Link to="login">Login</Link>
+        </li>
+        <li onClick={closeModal}>
+          <Link to="user-registration">Sign Up</Link>
+        </li>
       </ul>
     </div>
   );
