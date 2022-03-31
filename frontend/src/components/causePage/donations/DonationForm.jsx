@@ -29,8 +29,8 @@ const DonationForm = ({ setTip}) => {
   }
 
   return (
-    <div className="bg-white mb-8 rounded md:w-3/6 md:h-full flex flex-col items-center">
-      <div className="p-4 w-11/12">
+    <div className="bg-white mb-8 rounded md:w-3/6 md:h-full flex flex-col items-center shadow-lg shadow-indigo-500/30 ">
+      <div className="px-4 py-8 w-11/12">
         <SubHeadline
           style={"text-xl md:text-2xl font-bold text-indigo-900"}
           name={"Drop Those Coins"}
