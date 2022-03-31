@@ -2,9 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.configuration.InitData;
 import com.example.demo.exception.UserStatusException;
+import com.example.demo.model.category.CategoryFactory;
 import com.example.demo.model.responsemodel.ProfileModel;
 import com.example.demo.model.tip.Tip;
-import com.example.demo.model.user.Category;
+import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.User;
 import com.example.demo.service.CreatorProfileService;
@@ -76,6 +77,7 @@ public class CreatorProfileController {
                     .description(description)
                     .pageLink(pageLink)
                     .userId(userId)
+                    .category(CategoryFactory.getCategoryByString(category))
                     .build();
             fileHandler.createDirectory(name);
             Optional<String> filePath = fileHandler.saveFile(file, name);

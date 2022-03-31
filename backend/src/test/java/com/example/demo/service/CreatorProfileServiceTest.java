@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.user.Category;
+import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

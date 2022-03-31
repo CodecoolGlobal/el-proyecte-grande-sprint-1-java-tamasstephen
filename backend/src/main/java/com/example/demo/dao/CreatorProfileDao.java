@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.model.user.Category;
+import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
 
 import java.util.List;
