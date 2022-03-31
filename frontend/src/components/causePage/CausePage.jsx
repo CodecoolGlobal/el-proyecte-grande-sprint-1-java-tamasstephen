@@ -42,15 +42,22 @@ const CausePage = () => {
   }, [params.creatorLink]);
 
   return (
-    <div className="bg-gray-200 md:flex md:flex-col md:items-center md:flex-wrap">
-      <div className=" px-4 md:w-8/12 ">
-        <Headline title={cause.causeName} isTitle={true} />
+    <div className="bg-slate-100 md:flex md:flex-col md:items-center md:flex-wrap">
+      <div className=" px-4 md:w-8/12  max-w-6xl">
+        <div className="py-4 lg:py-8">
+          <Headline title={cause.causeName} isTitle={true} />
+        </div>
         <Image
-          style={"m-3 rounded-lg w-350 h-400 md:w-full md:h-650 md:pt-3 md:m-0"}
+          style={
+            "rounded-lg w-350 h-400 md:w-full md:h-650 md:pt-3 md:m-0 aspect-video object-cover object-center"
+          }
           jpgName={img}
         />
-        <div className="fley flex-col md:flex md:flex-row">
-          <Description description={cause.description} />
+        <div className="flex flex-col lg:flex lg:flex-row  pt-4">
+          <div className=" lg:w-8/12 pr-4 pb-4">
+            <SubHeadline style={"text-3xl py-4"} name={"Description"} />
+            <Description description={cause.description} />
+          </div>
           <DonationForm setTip={setTips} />
         </div>
         {tips.length !== 0 ? (
@@ -58,10 +65,10 @@ const CausePage = () => {
         ) : (
           ""
         )}
-        <div className="md:w-6/12">
+        <div className="md:w-6/12 pb-20">
           {tips.map((tip, index) => (
             <Donation
-            key={index}
+              key={index}
               donator={tip.supporter}
               amount={tip.amount}
               comment={tip.comment}
