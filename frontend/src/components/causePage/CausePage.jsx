@@ -62,21 +62,12 @@ const CausePage = () => {
           <DonationForm setTip={setTips} />
         </div>
         {tips.length !== 0 ? (
-          <SubHeadline style={"text-3xl mb-4"} name={"Latest donators"} />
+          <SubHeadline style={"text-3xl mb-4  py-4"} name={"Latest donators"} />
         ) : (
           ""
         )}
         <div className="md:w-6/12 pb-20">
           <Donations items={tips} />
-          {/* {tips.map((tip, index) => (
-            <Donation
-              key={index}
-              donator={tip.supporter}
-              amount={tip.amount}
-              comment={tip.comment}
-              time={tip.date}
-            />
-          ))} */}
         </div>
       </div>
     </div>
