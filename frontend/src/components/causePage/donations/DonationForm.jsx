@@ -9,8 +9,10 @@ import { dataHandler } from "../../../data/dataHandler";
 const DonationForm = ({ setTip}) => {
   const [coinAmount, setCoinAmount] = useState(1);
   const params = useParams();
+  const [inputValue, setInputValue] = useState("");
+  const [textAreaValue, setTextAreaValue] = useState("");
 
-  function handlerSubmit(event) {
+  async function handlerSubmit(event) {
     event.preventDefault();
     const payload = {
       amount: coinAmount,
@@ -18,10 +20,12 @@ const DonationForm = ({ setTip}) => {
       supporter: event.target["name"].value,
       comment: event.target["comment"].value,
     };
-    dataHandler.sendTextJson("creator/support", payload);
-    dataHandler
-      .getTipsByCreatorLink(params.creatorLink)
-      .then((tips) => setTip(tips));
+    setInputValue("");
+    setTextAreaValue("");
+    await dataHandler.sendTextJson("creator/support", payload);
+    dataHandler.getTipsByCreatorLink(params.creatorLink).then((tips) => {
+      setTip(tips);
+    });
   }
 
   return (
@@ -45,6 +49,8 @@ const DonationForm = ({ setTip}) => {
                 }
                 name={"name"}
                 placeholder={"Name"}
+                valueSetter={setInputValue}
+                inputValue={inputValue}
               />
             </div>
             <InputField
@@ -53,6 +59,8 @@ const DonationForm = ({ setTip}) => {
               }
               name={"comment"}
               placeholder={"Comment.. (Optional)"}
+              valueSetter={setTextAreaValue}
+              inputValue={textAreaValue}
             />
           </div>
           <p className="pb-2 text-slate-800">
