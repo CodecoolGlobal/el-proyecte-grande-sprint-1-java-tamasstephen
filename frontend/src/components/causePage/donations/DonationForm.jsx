@@ -25,33 +25,43 @@ const DonationForm = ({ setTip}) => {
   }
 
   return (
-    <div className="bg-slate-100 mt-10 mx-3 mb-8 rounded md:w-3/6 md:h-full md:mt-4">
-      <SubHeadline style={"text-xl ml-2"} name={"Drop Those Coins"} />
-      <div>
-        <CoinAmount amount={1} setCoinAmount={setCoinAmount} />
-        <CoinAmount amount={5} setCoinAmount={setCoinAmount} />
-        <CoinAmount amount={10} setCoinAmount={setCoinAmount} />
-      </div>
-      <form onSubmit={handlerSubmit}>
-        <div>
-          <InputField
-            style={
-              "ml-2 mb-2 mt-2 w-11/12 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            }
-            name={"name"}
-            placeholder={"Name"}
-          />
-          <InputField
-            style={
-              "ml-2 mb-4 w-11/12 h-20 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            }
-            name={"comment"}
-            placeholder={"Comment.. (Optional)"}
-          />
+    <div className="bg-white mb-8 rounded md:w-3/6 md:h-full flex flex-col items-center">
+      <div className="p-4 w-11/12">
+        <SubHeadline
+          style={"text-xl md:text-2xl font-bold text-indigo-900"}
+          name={"Drop Those Coins"}
+        />
+        <div className="grid grid-cols-3 gap-2 py-2">
+          <CoinAmount amount={1} setCoinAmount={setCoinAmount} />
+          <CoinAmount amount={5} setCoinAmount={setCoinAmount} />
+          <CoinAmount amount={10} setCoinAmount={setCoinAmount} />
         </div>
-        <p className="ml-2">I want to drop ${coinAmount} for the cause</p>
-        <Button moneyAmount={coinAmount} />
-      </form>
+        <form onSubmit={handlerSubmit}>
+          <div>
+            <div className="pb-2 pt-2">
+              <InputField
+                style={
+                  "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                }
+                name={"name"}
+                placeholder={"Name"}
+              />
+            </div>
+            <InputField
+              style={
+                "mb-4 h-20 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              }
+              name={"comment"}
+              placeholder={"Comment.. (Optional)"}
+            />
+          </div>
+          <p className="pb-2 text-slate-800">
+            I want to drop <span className="font-bold">${coinAmount}</span> for
+            the cause
+          </p>
+          <Button moneyAmount={coinAmount} />
+        </form>
+      </div>
     </div>
   );
 };

@@ -4,11 +4,15 @@ const CoinAmount = ({ amount, setCoinAmount }) => {
   const coinText = amount === 1 ? "coin" : "coins";
 
   return (
-    <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-1 ml-2" onClick={() => setCoinAmount(amount)}>
+    <button
+      className="bg-indigo-200 hover:bg-orange-400 hover:text-white text-indigo-900 font-bold py-2 px-4 rounded"
+      onClick={() => setCoinAmount(amount)}
+    >
       <div className="flex flex-row">
-        {amount} <p className="">{coinText}</p>
+        <p className="">
+          {amount} {coinText}
+        </p>
       </div>
-      
     </button>
   );
 };
