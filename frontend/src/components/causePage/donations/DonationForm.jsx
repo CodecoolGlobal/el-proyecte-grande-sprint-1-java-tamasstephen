@@ -10,7 +10,7 @@ const DonationForm = ({ setTip}) => {
   const [coinAmount, setCoinAmount] = useState(1);
   const params = useParams();
 
-  function handlerSubmit(event) {
+  async function handlerSubmit(event) {
     event.preventDefault();
     const payload = {
       amount: coinAmount,
@@ -18,10 +18,10 @@ const DonationForm = ({ setTip}) => {
       supporter: event.target["name"].value,
       comment: event.target["comment"].value,
     };
-    dataHandler.sendTextJson("creator/support", payload);
-    dataHandler
-      .getTipsByCreatorLink(params.creatorLink)
-      .then((tips) => setTip(tips));
+    await dataHandler.sendTextJson("creator/support", payload);
+    dataHandler.getTipsByCreatorLink(params.creatorLink).then((tips) => {
+      setTip(tips);
+    });
   }
 
   return (

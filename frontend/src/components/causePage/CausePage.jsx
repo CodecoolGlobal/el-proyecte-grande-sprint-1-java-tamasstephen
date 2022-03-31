@@ -7,6 +7,7 @@ import Donation from "../model/Donation";
 import Headline from "../Headline";
 import { useParams } from "react-router-dom";
 import { dataHandler } from "../../data/dataHandler";
+import Donations from "./donations/Donations";
 
 const CausePage = () => {
   const params = useParams();
@@ -66,7 +67,8 @@ const CausePage = () => {
           ""
         )}
         <div className="md:w-6/12 pb-20">
-          {tips.map((tip, index) => (
+          <Donations items={tips} />
+          {/* {tips.map((tip, index) => (
             <Donation
               key={index}
               donator={tip.supporter}
@@ -74,7 +76,7 @@ const CausePage = () => {
               comment={tip.comment}
               time={tip.date}
             />
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
