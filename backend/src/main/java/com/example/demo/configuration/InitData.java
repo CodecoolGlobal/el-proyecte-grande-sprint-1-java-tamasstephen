@@ -29,7 +29,7 @@ public class InitData {
             User user =User.builder().email(email).password("placeholder").build();
             CreatorProfile cause = CreatorProfile.builder()
                     .causeName(CAUSES.get(count))
-                    .description("placeholder description")
+                    .description("Bacon ipsum dolor amet picanha frankfurter salami meatball pork belly ham hock pork loin ham turducken chicken ribeye short ribs sausage kielbasa. Tail jowl short loin, t-bone rump pork belly flank swine pork loin meatloaf hamburger salami bacon chislic leberkas. Jerky pork belly alcatra hamburger leberkas shoulder pork ball tip ham. Tri-tip pig shoulder tongue, swine leberkas bresaola fatback short loin.")
                     .pageLink(String.format("%d link", count))
                     .profileImage(String.format("/home/tamas/Codecool/advanced-spring/el-proyecte-grande-sprint-1-java-tamasstephen/resources/images/Placeholder/%s", IMAGES.get(count)))
                     .build();
