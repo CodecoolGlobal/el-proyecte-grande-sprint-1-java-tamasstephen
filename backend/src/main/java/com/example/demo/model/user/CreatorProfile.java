@@ -1,5 +1,6 @@
 package com.example.demo.model.user;
 
+import com.example.demo.model.category.Category;
 import lombok.*;
 
 import java.util.List;

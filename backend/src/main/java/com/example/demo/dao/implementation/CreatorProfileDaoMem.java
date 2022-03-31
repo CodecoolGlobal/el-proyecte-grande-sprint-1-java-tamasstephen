@@ -1,7 +1,7 @@
 package com.example.demo.dao.implementation;
 
 import com.example.demo.dao.CreatorProfileDao;
-import com.example.demo.model.user.Category;
+import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
 import org.springframework.stereotype.Component;
 

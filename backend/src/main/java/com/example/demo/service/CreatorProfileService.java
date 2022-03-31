@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.CreatorProfileDao;
-import com.example.demo.model.user.Category;
+import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
