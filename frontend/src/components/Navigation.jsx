@@ -22,7 +22,12 @@ export const Navigation = ({ userLogin, setLoginState }) => {
 
   return (
     <nav className="flex justify-center relative ">
-      <MenuDrawer menuState={drawerState} stateChanger={changeMenuState} />
+      <MenuDrawer
+        menuState={drawerState}
+        stateChanger={changeMenuState}
+        userLogin={userLogin}
+        logout={logout}
+      />
       <div className="p-4 flex justify-between container mx-xl  content-center md:px-0 ">
         <div className="logo">
           <Link
