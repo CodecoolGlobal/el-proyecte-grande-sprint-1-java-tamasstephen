@@ -8,6 +8,7 @@ import CauseRegistration from "../components/registration/CauseRegistration";
 import Login from "../components/registration/Login";
 import ProfileWrapper from "../components/registration/ProfileWrapper";
 import ExploreContainer from "../components/search/ExploreContainer";
+import DonationSuccess from "../components/causePage/DonationSuccess";
 
 const Router = () => {
   const [userLogin, setLoginState] = useState({
@@ -22,7 +23,7 @@ const Router = () => {
         element={<App setLoginState={setLoginState} userLogin={userLogin} />}
       >
         <Route index element={<Landing />} />
-        <Route path=":creatorLink" element={<CausePage/>}/>
+        <Route path=":creatorLink" element={<CausePage />} />
         <Route
           path="user-registration"
           element={
@@ -33,6 +34,7 @@ const Router = () => {
           }
         ></Route>
         <Route path="cause-registration" element={<CauseRegistration />} />
+        <Route path="success" element={<DonationSuccess />} />
         <Route path="login" element={<Login setLoginState={setLoginState} />} />
         <Route path="profile" element={<ProfileWrapper />} />
         <Route path="explore" element={<ExploreContainer />} />
