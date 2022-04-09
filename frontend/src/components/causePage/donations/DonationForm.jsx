@@ -40,7 +40,16 @@ const DonationForm = ({ setTip}) => {
           <CoinAmount amount={5} setCoinAmount={setCoinAmount} />
           <CoinAmount amount={10} setCoinAmount={setCoinAmount} />
         </div>
-        <form onSubmit={handlerSubmit}>
+        <form
+          action={
+            "http://localhost:8080/create-checkout-session/" +
+            params.creatorLink +
+            "/" +
+            coinAmount
+          }
+          method="post"
+        >
+          {/* <form onSubmit={handlerSubmit}> */}
           <div>
             <div className="pb-2 pt-2">
               <InputField
