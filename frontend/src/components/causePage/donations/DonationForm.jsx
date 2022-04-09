@@ -6,7 +6,7 @@ import Button from "./Button";
 import { useParams } from "react-router-dom";
 import { dataHandler } from "../../../data/dataHandler";
 
-const DonationForm = ({ setTip}) => {
+const DonationForm = () => {
   const [coinAmount, setCoinAmount] = useState(1);
   const params = useParams();
   const [inputValue, setInputValue] = useState("");

@@ -59,7 +59,7 @@ const CausePage = () => {
             <SubHeadline style={"text-3xl py-4"} name={"Description"} />
             <Description description={cause.description} />
           </div>
-          <DonationForm setTip={setTips} />
+          <DonationForm />
         </div>
         {tips.length !== 0 ? (
           <SubHeadline style={"text-3xl mb-4  py-4"} name={"Latest donators"} />
