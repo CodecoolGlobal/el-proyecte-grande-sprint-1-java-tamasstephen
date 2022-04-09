@@ -6,27 +6,11 @@ import Button from "./Button";
 import { useParams } from "react-router-dom";
 import { dataHandler } from "../../../data/dataHandler";
 
-const DonationForm = ({ setTip}) => {
+const DonationForm = () => {
   const [coinAmount, setCoinAmount] = useState(1);
   const params = useParams();
   const [inputValue, setInputValue] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
-
-  async function handlerSubmit(event) {
-    event.preventDefault();
-    const payload = {
-      amount: coinAmount,
-      pageLink: params.creatorLink,
-      supporter: event.target["name"].value,
-      comment: event.target["comment"].value,
-    };
-    setInputValue("");
-    setTextAreaValue("");
-    await dataHandler.sendTextJson("creator/support", payload);
-    dataHandler.getTipsByCreatorLink(params.creatorLink).then((tips) => {
-      setTip(tips);
-    });
-  }
 
   return (
     <div className="bg-white mb-8 rounded md:w-3/6 md:h-full flex flex-col items-center shadow-lg shadow-indigo-500/30 ">
@@ -40,7 +24,16 @@ const DonationForm = ({ setTip}) => {
           <CoinAmount amount={5} setCoinAmount={setCoinAmount} />
           <CoinAmount amount={10} setCoinAmount={setCoinAmount} />
         </div>
-        <form onSubmit={handlerSubmit}>
+        <form
+          action={
+            "http://localhost:8080/create-checkout-session/" +
+            params.creatorLink +
+            "/" +
+            coinAmount
+          }
+          method="post"
+        >
+          {/* <form onSubmit={handlerSubmit}> */}
           <div>
             <div className="pb-2 pt-2">
               <InputField

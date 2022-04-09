@@ -1,10 +1,10 @@
 export const dataHandler = {
-  async getCreatorDataByLink(creatorLink){
+  async getCreatorDataByLink(creatorLink) {
     const data = await this.getApi(`creator/${creatorLink}`);
     return data;
   },
 
-  async getTipsByCreatorLink(creatorLink){
+  async getTipsByCreatorLink(creatorLink) {
     const data = await this.getApi(`creator/tips/${creatorLink}`);
     return data;
   },
@@ -62,12 +62,12 @@ export const dataHandler = {
     return await result.json();
   },
 
-  sendTextJson(endpoint, payload){
+  sendTextJson(endpoint, payload) {
     return fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify(payload),
-    }).then(res => res.json())
+    }).then((res) => res.json());
   },
 
   async postTextJson(endpoint, payload) {
