@@ -28,12 +28,13 @@ public class CheckoutController {
     public RedirectView checkout(@PathVariable String causeLink, @PathVariable String coinAmount, @ModelAttribute SupporterModel supporter) throws StripeException, IOException {
         Tip tip =  new Tip(Integer.parseInt(coinAmount), causeLink, supporter.getName(), supporter.getComment());
         Stripe.apiKey = "sk_test_51KmFQpCSqoetVktqxEKJngGzIxKP0xhouCdTmOCgyRyqJ4Nh5Vb5MjFUjzuCHEdoWzveXV2lrguF9rvMOinnw9pV005XVKYbWD";
+
         //TODO: Implement the save when the payment was successful
-        String YOUR_DOMAIN = "http://localhost:3000";
+        String YOUR_DOMAIN = "http://localhost:3000/";
         SessionCreateParams params =
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setSuccessUrl(YOUR_DOMAIN + "?success=true")
+                        .setSuccessUrl(YOUR_DOMAIN + "success")
                         .setCancelUrl(YOUR_DOMAIN + "?canceled=true")
                         .addLineItem(
                                 SessionCreateParams.LineItem.builder()
