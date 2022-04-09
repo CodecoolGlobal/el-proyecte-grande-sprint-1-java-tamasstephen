@@ -40,11 +40,21 @@ public class CheckoutController {
                                 SessionCreateParams.LineItem.builder()
                                         .setQuantity(1L)
                                         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                                        .setPrice("price_1KmJG0CSqoetVktq5sX2NLoy")
+                                        .setPrice(priceFactory(coinAmount))
                                         .build())
                         .build();
         Session session = Session.create(params);
         tipService.add(tip);
         return new RedirectView(session.getUrl());
+    }
+
+    private String priceFactory(String coinAmount){
+        switch (coinAmount){
+            case "1":
+                return "price_1KmJC0CSqoetVktqHBvZD3Es";
+            case "5":
+                return "price_1KmJFQCSqoetVktqIlq5bodX";
+        }
+        return "price_1KmJG0CSqoetVktq5sX2NLoy";
     }
 }
