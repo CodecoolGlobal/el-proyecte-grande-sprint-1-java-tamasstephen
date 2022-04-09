@@ -12,22 +12,6 @@ const DonationForm = ({ setTip}) => {
   const [inputValue, setInputValue] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
 
-  async function handlerSubmit(event) {
-    event.preventDefault();
-    const payload = {
-      amount: coinAmount,
-      pageLink: params.creatorLink,
-      supporter: event.target["name"].value,
-      comment: event.target["comment"].value,
-    };
-    setInputValue("");
-    setTextAreaValue("");
-    await dataHandler.sendTextJson("creator/support", payload);
-    dataHandler.getTipsByCreatorLink(params.creatorLink).then((tips) => {
-      setTip(tips);
-    });
-  }
-
   return (
     <div className="bg-white mb-8 rounded md:w-3/6 md:h-full flex flex-col items-center shadow-lg shadow-indigo-500/30 ">
       <div className="px-4 py-8 w-11/12">
