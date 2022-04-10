@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.UserDao;
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,15 +18,15 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void add(User user){
-        userDao.add(user);
+    public void add(UserEntity userEntity){
+        userDao.add(userEntity);
     }
 
-    public List<User> getAllUsers(){
+    public List<UserEntity> getAllUsers(){
         return userDao.getAll();
     }
 
-    public Optional<User> getUser(long id){
+    public Optional<UserEntity> getUser(long id){
         return userDao.get(id);
     }
 
@@ -34,26 +34,26 @@ public class UserService {
         return userDao.isEmailAvailable(email);
     }
 
-    public Optional<User> getUserByEmail(String email){
+    public Optional<UserEntity> getUserByEmail(String email){
         return userDao.getUserByEmail(email);
     }
 
-    public void deleteUser(User user){
-        userDao.deleteUser(user);
+    public void deleteUser(UserEntity userEntity){
+        userDao.deleteUser(userEntity);
     }
 
-    public void updateUser(User prevUser, User newUser){
-        userDao.update(prevUser, newUser);
+    public void updateUser(UserEntity prevUserEntity, UserEntity newUserEntity){
+        userDao.update(prevUserEntity, newUserEntity);
     }
 
-    public void updateEmail(User prevUser, String email){
-        User newUser = User.builder()
+    public void updateEmail(UserEntity prevUserEntity, String email){
+        UserEntity newUserEntity = UserEntity.builder()
                 .email(email)
-                .userCreatorProfile(prevUser.getUserCreatorProfile())
-                .password(prevUser.getPassword())
-                .id(prevUser.getId())
+                .userCreatorProfileId(prevUserEntity.getUserCreatorProfileId())
+                .password(prevUserEntity.getPassword())
+                .id(prevUserEntity.getId())
                 .build();
-        updateUser(prevUser, newUser);
+        updateUser(prevUserEntity, newUserEntity);
 
     }
 

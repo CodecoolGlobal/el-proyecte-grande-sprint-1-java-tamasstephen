@@ -25,7 +25,7 @@ const Router = () => {
         <Route index element={<Landing />} />
         <Route path=":creatorLink" element={<CausePage />} />
         <Route
-          path="user-registration"
+          path="userEntity-registration"
           element={
             <UserRegistration
               setLoginState={setLoginState}

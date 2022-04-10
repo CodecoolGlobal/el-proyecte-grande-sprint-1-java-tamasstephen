@@ -7,7 +7,7 @@ import com.example.demo.model.responsemodel.ProfileModel;
 import com.example.demo.model.tip.Tip;
 import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserEntity;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
 import com.example.demo.service.TmpUser;
@@ -70,7 +70,7 @@ public class CreatorProfileController {
         if (userId == null){
             throw new UserStatusException("You have to log in to create a cuase");
         }
-        Optional<User> userOptional = userService.getUser(userId);
+        Optional<UserEntity> userOptional = userService.getUser(userId);
         if (userOptional.isPresent()){
             CreatorProfile profile = CreatorProfile.builder()
                     .causeName(name)
@@ -85,7 +85,7 @@ public class CreatorProfileController {
                 profile.setProfileImage(filePath.get());
                 creatorProfileService.add(profile);
                 result.put("result", "ok");
-                userOptional.get().setContent(profile);
+                userOptional.get().setContent(profile.getId());
                 return result;
             } else {
                 throw new UserStatusException("The provided file could not be saved!");
@@ -123,10 +123,10 @@ public class CreatorProfileController {
         if (userId == null){
             throw new UserStatusException("Please log in to check your profile");
         }
-        User user = userService.getUser(userId).get();
-        User userToReturn = User.builder().email(user.getEmail()).build();
+        UserEntity userEntity = userService.getUser(userId).get();
+        UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
         CreatorProfile profile = creatorProfileService.get(userId).get();
-        ProfileModel model = ProfileModel.builder().user(userToReturn).profile(profile).build();
+        ProfileModel model = ProfileModel.builder().userEntity(userEntityToReturn).profile(profile).build();
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 

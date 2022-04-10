@@ -45,7 +45,7 @@ export const Navigation = ({ userLogin, setLoginState }) => {
             <Link to="/login">Login</Link>
           </li>
           <li className={"pl-7 " + userLogin["login"]}>
-            <Link to="/user-registration">Create a Cause</Link>
+            <Link to="/userEntity-registration">Create a Cause</Link>
           </li>
           <li className={"pl-7 " + userLogin["logout"]}>
             <Link to="/profile">Profile</Link>

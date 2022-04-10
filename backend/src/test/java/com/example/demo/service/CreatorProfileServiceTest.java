@@ -30,14 +30,12 @@ class CreatorProfileServiceTest {
     @BeforeEach
     void init(){
         profile = new CreatorProfile(Category.GAMING,
-                List.of("first", "second"),
                 "description",
                 "a link",
                 "myImage.png",
                 "username");
         profile.setUserId(USER_ID);
         secondProfile = new CreatorProfile(Category.VIDEO,
-                List.of("first", "second"),
                 "description",
                 "a link",
                 "myImage.png",
@@ -45,7 +43,6 @@ class CreatorProfileServiceTest {
         secondProfile.setUserId(SECOND_USER_ID);
         uniqueProfile = new CreatorProfile(
                 UNIQUE_CATEGORY,
-                List.of("first", "second"),
                 "description",
                 "unique_link",
                 "myImage.png",

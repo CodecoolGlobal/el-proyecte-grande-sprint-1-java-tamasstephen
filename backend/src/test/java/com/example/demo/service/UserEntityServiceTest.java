@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,23 +12,23 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserServiceTest {
+class UserEntityServiceTest {
 
     @Autowired
     private UserService userService;
 
-    private User user;
-    private User secondUser;
+    private UserEntity userEntity;
+    private UserEntity secondUserEntity;
 
     @BeforeEach
     void init(){
-        user = User.builder().email("hey@hey.com").password("Happy Human").build();
-        secondUser =User.builder().email("ho@hoho.com").password("Very Happy Human").build();
+        userEntity = UserEntity.builder().email("hey@hey.com").password("Happy Human").build();
+        secondUserEntity = UserEntity.builder().email("ho@hoho.com").password("Very Happy Human").build();
     }
 
     @Test
     void add_addsUserToUsers_userIsInTheMemory(){
-        userService.add(user);
+        userService.add(userEntity);
 
         int result = userService.getAllUsers().size();
 
@@ -37,19 +37,19 @@ class UserServiceTest {
 
     @Test
     void getAllUsers_returnsAllUsers_returnsListWithUsers(){
-        userService.add(user);
+        userService.add(userEntity);
 
-        List<User> result = userService.getAllUsers();
+        List<UserEntity> result = userService.getAllUsers();
 
         assertTrue(result.size() > 0);
     }
 
     @Test
     void getUser_returnsUserById_returnsValidUser(){
-        userService.add(secondUser);
-        long id = secondUser.getId();
+        userService.add(secondUserEntity);
+        long id = secondUserEntity.getId();
 
-        Optional<User> result = userService.getUser(id);
+        Optional<UserEntity> result = userService.getUser(id);
 
         assertTrue(result.isPresent());
     }
@@ -58,7 +58,7 @@ class UserServiceTest {
     void getUser_returnsUserById_returnsNothing(){
 
         long invalidId = 100000001;
-        Optional<User> result = userService.getUser(invalidId);
+        Optional<UserEntity> result = userService.getUser(invalidId);
 
         assertTrue(result.isEmpty());
     }
@@ -73,7 +73,7 @@ class UserServiceTest {
 
     @Test
     void isEmailAvailable_returnsTrueIfEmailDosNotExists_returnFalse(){
-        userService.add(user);
+        userService.add(userEntity);
         boolean result = userService.isEmailAvailable("hey@hey.com");
 
         assertFalse(result);
@@ -81,41 +81,41 @@ class UserServiceTest {
 
     @Test
     void getUserByEmail_returnsUserByEmail_returnsUser(){
-        userService.add(user);
+        userService.add(userEntity);
 
-        Optional<User> result = userService.getUserByEmail("hey@hey.com");
+        Optional<UserEntity> result = userService.getUserByEmail("hey@hey.com");
 
         assertTrue(result.isPresent());
     }
 
     @Test
     void getUserByEmail_returnsUserByEmail_returnsNothing(){
-        userService.add(user);
+        userService.add(userEntity);
 
-        Optional<User> result = userService.getUserByEmail("nonexisting@hey.com");
+        Optional<UserEntity> result = userService.getUserByEmail("nonexisting@hey.com");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
     void update_updatesUserDetailsWithNewInformation_changesDetails(){
-        User uniqueUser = User.builder().email("unique@un.com").password("unique").build();
-        userService.add(uniqueUser);
+        UserEntity uniqueUserEntity = UserEntity.builder().email("unique@un.com").password("unique").build();
+        userService.add(uniqueUserEntity);
 
-        long id = uniqueUser.getId();
-        userService.updateUser(uniqueUser, user);
+        long id = uniqueUserEntity.getId();
+        userService.updateUser(uniqueUserEntity, userEntity);
 
-        assertEquals(userService.getUser(id).get().getEmail(), user.getEmail());
+        assertEquals(userService.getUser(id).get().getEmail(), userEntity.getEmail());
     }
 
     @Test
     void delteUser_removesUserFromMem_removesUser(){
-        User userToDelete =User.builder().email("delete@test.com").password("willBeDeleted").build();
-        userService.add(userToDelete);
+        UserEntity userEntityToDelete = UserEntity.builder().email("delete@test.com").password("willBeDeleted").build();
+        userService.add(userEntityToDelete);
 
         int addedToList = userService.getAllUsers().size();
 
-        userService.deleteUser(userToDelete);
+        userService.deleteUser(userEntityToDelete);
 
         int result = userService.getAllUsers().size();
 
