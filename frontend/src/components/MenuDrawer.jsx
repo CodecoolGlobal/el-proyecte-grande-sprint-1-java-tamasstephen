@@ -30,7 +30,7 @@ const MenuDrawer = ({ menuState, stateChanger, userLogin, logout }) => {
           <Link to="login">Login</Link>
         </li>
         <li onClick={closeModal} className={userLogin["login"]}>
-          <Link to="user-registration">Sign Up</Link>
+          <Link to="userEntity-registration">Sign Up</Link>
         </li>
         <li onClick={closeModal} className={"py-4 " + userLogin["logout"]}>
           <Link to="/profile">Profile</Link>

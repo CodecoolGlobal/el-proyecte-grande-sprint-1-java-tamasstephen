@@ -1,26 +1,26 @@
 package com.example.demo.dao;
 
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
 
-    List<User> get(String email);
+    List<UserEntity> get(String email);
 
-    Optional<User> get(long id);
+    Optional<UserEntity> get(long id);
 
-    void add(User user);
+    void add(UserEntity userEntity);
 
-    List<User> getAll();
+    List<UserEntity> getAll();
 
     boolean isEmailAvailable(String email);
 
-    Optional<User> getUserByEmail(String email);
+    Optional<UserEntity> getUserByEmail(String email);
 
-    void deleteUser(User user);
+    void deleteUser(UserEntity userEntity);
 
-    void update(User prevUser, User nextUser);
+    void update(UserEntity prevUserEntity, UserEntity nextUserEntity);
 
 }

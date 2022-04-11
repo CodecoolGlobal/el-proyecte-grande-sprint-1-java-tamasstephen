@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.UserStatusException;
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserEntity;
 import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/user")
-    public Map<String, String> add(@RequestBody User user, HttpSession session){
-        if (userService.isEmailAvailable(user.getEmail())){
+    public Map<String, String> add(@RequestBody UserEntity userEntity, HttpSession session){
+        if (userService.isEmailAvailable(userEntity.getEmail())){
             Map<String, String> result = new HashMap<>();
-            userService.add(user);
-            tmpUser.setUser(user.getId());
+            userService.add(userEntity);
+            tmpUser.setUser(userEntity.getId());
             result.put("result", "ok");
             return result;
         }
@@ -50,12 +50,12 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody User user, HttpSession session){
-        Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
-        if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
+    public Map<String, String> login(@RequestBody UserEntity userEntity, HttpSession session){
+        Optional<UserEntity> userOptional = userService.getUserByEmail(userEntity.getEmail());
+        if (userOptional.isPresent() && userOptional.get().isValidPassword(userEntity.getPassword())){
             Map<String, String> result = new HashMap<>();
-            User regUser = userOptional.get();
-            tmpUser.setUser(regUser.getId());
+            UserEntity regUserEntity = userOptional.get();
+            tmpUser.setUser(regUserEntity.getId());
             result.put("result", "ok");
             return result;
         }
@@ -72,9 +72,9 @@ public class UserController {
     }
 
     @GetMapping("/user/profile")
-    public User getUserProfile(HttpSession session){
+    public UserEntity getUserProfile(HttpSession session){
         Long id = (Long) session.getAttribute("userId");
-        Optional<User> userOptional;
+        Optional<UserEntity> userOptional;
         if (id != null && (userOptional = userService.getUser(id)).isPresent()){
             return userOptional.get();
         }
@@ -82,11 +82,11 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public void updateProfile(@RequestBody User user, HttpSession session){
+    public void updateProfile(@RequestBody UserEntity userEntity, HttpSession session){
         if(tmpUser.getUser() != null){
             Long id = (Long) session.getAttribute("userId");
-            User prevUser = userService.getUser(id).get();
-            userService.updateUser(prevUser, user);
+            UserEntity prevUserEntity = userService.getUser(id).get();
+            userService.updateUser(prevUserEntity, userEntity);
         }
         throw new UserStatusException("You have to login to update your profile!");
     }
@@ -98,10 +98,10 @@ public class UserController {
         String nextEmail = myMail.get("email");
         Long id = tmpUser.getUser();
         if (id == null) throw new UserStatusException("You need to log in to proceed!");
-        Optional<User> userOptional = userService.getUser(id);
+        Optional<UserEntity> userOptional = userService.getUser(id);
         if (userOptional.isEmpty()) throw new UserStatusException("User does not exist");
-        User user = userOptional.get();
-        userService.updateEmail(user, nextEmail);
+        UserEntity userEntity = userOptional.get();
+        userService.updateEmail(userEntity, nextEmail);
         String newMail = userService.getUser(id).get().getEmail();
         Map<String, String> result = new HashMap<>();
         result.put("result", "ok");
@@ -113,9 +113,9 @@ public class UserController {
     @GetMapping("/creator-profile-set")
     public ResponseEntity<Map<String, String>> isUserContentSet(){
         Long userId = tmpUser.getUser();
-        Optional<User> userOption = userService.getUser(userId);
+        Optional<UserEntity> userOption = userService.getUser(userId);
         Map<String, String> result = new HashMap<>();
-        boolean contentStatus =  userOption.map(User::isCreatorProfileAvailable).orElse(false);
+        boolean contentStatus =  userOption.map(UserEntity::isCreatorProfileAvailable).orElse(false);
         if (contentStatus){
             result.put("result", "ok");
         } else {

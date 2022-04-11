@@ -1,13 +1,24 @@
 package com.example.demo.model.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Data
 @Builder
-public class User {
-    private long id;
-    private CreatorProfile userCreatorProfile;
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity {
+    @Id
+    @GeneratedValue
+    private Long id;
+    private Long userCreatorProfileId;
     private String email;
     private String password;
 
@@ -20,8 +31,8 @@ public class User {
         return this.id == id;
     }
 
-    public void setContent(CreatorProfile creatorProfile){
-        this.userCreatorProfile = creatorProfile;
+    public void setContent(Long creatorProfileId){
+        this.userCreatorProfileId = creatorProfileId;
     }
 
     public void setId(long id){
@@ -45,7 +56,7 @@ public class User {
     }
 
     public boolean isCreatorProfileAvailable(){
-        return userCreatorProfile != null;
+        return userCreatorProfileId != null;
     }
 
     public String getPassword() {

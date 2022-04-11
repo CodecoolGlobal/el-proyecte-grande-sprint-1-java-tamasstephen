@@ -1,7 +1,7 @@
 package com.example.demo.dao.implementation;
 
 import com.example.demo.dao.UserDao;
-import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,55 +12,55 @@ import java.util.stream.Collectors;
 @Component("userMem")
 public class UserDaoMem implements UserDao {
 
-    private static final ArrayList<User> users = new ArrayList<>();
+    private static final ArrayList<UserEntity> USER_ENTITIES = new ArrayList<>();
 
     @Override
-    public List<User> get(String email) {
-        return users.stream().filter(user -> user.getEmail().equals(email)).collect(Collectors.toList());
+    public List<UserEntity> get(String email) {
+        return USER_ENTITIES.stream().filter(user -> user.getEmail().equals(email)).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<User> get(long id) {
-        return users.stream().filter(user -> user.hasSameId(id)).findFirst();
+    public Optional<UserEntity> get(long id) {
+        return USER_ENTITIES.stream().filter(user -> user.hasSameId(id)).findFirst();
     }
 
 
     @Override
-    public void add(User user) {
-        long id = users.size() + 1;
-        user.setId(id);
-        users.add(user);
+    public void add(UserEntity userEntity) {
+        long id = USER_ENTITIES.size() + 1;
+        userEntity.setId(id);
+        USER_ENTITIES.add(userEntity);
     }
 
     @Override
-    public List<User> getAll() {
-        return users;
+    public List<UserEntity> getAll() {
+        return USER_ENTITIES;
     }
 
     @Override
     public boolean isEmailAvailable(String email) {
-        return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst().isEmpty();
+        return USER_ENTITIES.stream().filter(user -> user.isMatchingEmail(email)).findFirst().isEmpty();
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email) {
-        return users.stream().filter(user -> user.isMatchingEmail(email)).findFirst();
+    public Optional<UserEntity> getUserByEmail(String email) {
+        return USER_ENTITIES.stream().filter(user -> user.isMatchingEmail(email)).findFirst();
     }
 
     @Override
-    public void deleteUser(User user) {
-        Optional<User> userOptional = getUserByEmail(user.getEmail());
-        if (userOptional.isPresent() && userOptional.get().isValidPassword(user.getPassword())){
-            users.remove(userOptional.get());
+    public void deleteUser(UserEntity userEntity) {
+        Optional<UserEntity> userOptional = getUserByEmail(userEntity.getEmail());
+        if (userOptional.isPresent() && userOptional.get().isValidPassword(userEntity.getPassword())){
+            USER_ENTITIES.remove(userOptional.get());
         }
     }
 
     @Override
-    public void update(User prevUser, User nextUser){
-        long id = prevUser.getId();
-        nextUser.setId(id);
-        users.remove(prevUser);
-        users.add(nextUser);
+    public void update(UserEntity prevUserEntity, UserEntity nextUserEntity){
+        long id = prevUserEntity.getId();
+        nextUserEntity.setId(id);
+        USER_ENTITIES.remove(prevUserEntity);
+        USER_ENTITIES.add(nextUserEntity);
     }
 
 

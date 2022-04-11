@@ -3,6 +3,9 @@ package com.example.demo.model.user;
 import com.example.demo.model.category.Category;
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.List;
 
 
@@ -12,18 +15,20 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class CreatorProfile {
+    @Id
+    @GeneratedValue
+    private Long id;
     private Category category;
-    private List<String> contentUrls;
     private String description;
     private String pageLink;
     private String profileImage;
     private String causeName;
     private long userId;
 
-    public CreatorProfile(Category category, List<String> contentUrls, String description, String pageLink, String profileImage, String userName) {
+    public CreatorProfile(Category category, String description, String pageLink, String profileImage, String userName) {
         this.category = category;
-        this.contentUrls = contentUrls;
         this.description = description;
         this.pageLink = pageLink;
         this.profileImage = profileImage;
@@ -36,10 +41,6 @@ public class CreatorProfile {
 
     public Category getCategory(){
         return category;
-    }
-
-    public List<String> getContentUrls(){
-        return contentUrls;
     }
 
     public long getUserId(){
