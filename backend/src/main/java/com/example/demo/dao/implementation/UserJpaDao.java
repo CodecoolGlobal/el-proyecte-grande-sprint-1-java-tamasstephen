@@ -15,4 +15,6 @@ public interface UserJpaDao extends JpaRepository<UserEntity, Long> {
 
     void delete(UserEntity user);
 
+    Optional<UserEntity> findById(Long id);
+
 }

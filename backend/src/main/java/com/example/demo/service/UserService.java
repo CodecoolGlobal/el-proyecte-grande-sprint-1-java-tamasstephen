@@ -43,10 +43,12 @@ public class UserService {
     }
 
     public void updateUser(UserEntity prevUserEntity, UserEntity newUserEntity){
-        long id = prevUserEntity.getId();
-        newUserEntity.setId(id);
-        userDao.delete(prevUserEntity);
-        userDao.save(newUserEntity);
+        prevUserEntity.setEmail(newUserEntity.getEmail());
+        prevUserEntity.setPassword(newUserEntity.getPassword());
+        if (newUserEntity.getUserCreatorProfileId() != null){
+            prevUserEntity.setUserCreatorProfileId(newUserEntity.getUserCreatorProfileId());
+        }
+        userDao.save(prevUserEntity);
     }
 
     public void updateEmail(UserEntity prevUserEntity, String email){

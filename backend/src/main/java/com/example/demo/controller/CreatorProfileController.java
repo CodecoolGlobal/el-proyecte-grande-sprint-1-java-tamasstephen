@@ -63,8 +63,8 @@ public class CreatorProfileController {
             @RequestPart("category") String category,
             HttpSession session){
 
-        System.out.println(category);
         Long userId = tmpUser.getUser();
+        System.out.println(userId);
         System.out.println(userId);
         Map<String, String> result = new HashMap<>();
         if (userId == null){
@@ -97,7 +97,7 @@ public class CreatorProfileController {
     @CrossOrigin
     @PutMapping("/creator-profile")
     public Map<String, String> updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
-        Long userId = (Long) session.getAttribute("userId");
+        Long userId = tmpUser.getUser();
         Optional<CreatorProfile> profile;
         Map<String, String> result = new HashMap<>();
         if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
@@ -126,8 +126,10 @@ public class CreatorProfileController {
         UserEntity userEntity = userService.getUser(userId).get();
         System.out.println(userEntity.getEmail());
         UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
-        CreatorProfile profile = creatorProfileService.get(userId).get();
-        ProfileModel model = ProfileModel.builder().userEntity(userEntityToReturn).profile(profile).build();
+        Optional<CreatorProfile> profileOption = creatorProfileService.get(userId);
+        ProfileModel model = ProfileModel.builder()
+                .userEntity(userEntityToReturn).build();
+        profileOption.ifPresent(model::setProfile);
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
