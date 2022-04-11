@@ -58,7 +58,7 @@ public class CreatorProfileDaoMem implements CreatorProfileDao {
 
     @Override
     public void update(CreatorProfile oldProfile, CreatorProfile newProfile) {
-        newProfile.setUserId(oldProfile.getUserId());
+        newProfile.setUserEntity(oldProfile.getUserEntity());
         CREATOR_PROFILES.remove(oldProfile);
         CREATOR_PROFILES.add(newProfile);
     }

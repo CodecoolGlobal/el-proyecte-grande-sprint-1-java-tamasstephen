@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
+import com.example.demo.model.user.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +35,20 @@ class CreatorProfileServiceTest {
                 "a link",
                 "myImage.png",
                 "username");
-        profile.setUserId(USER_ID);
+        profile.setUserEntity(UserEntity.builder().build());
         secondProfile = new CreatorProfile(Category.VIDEO,
                 "description",
                 "a link",
                 "myImage.png",
                 "username");
-        secondProfile.setUserId(SECOND_USER_ID);
+        secondProfile.setUserEntity(UserEntity.builder().build());
         uniqueProfile = new CreatorProfile(
                 UNIQUE_CATEGORY,
                 "description",
                 "unique_link",
                 "myImage.png",
                 "username");
-        uniqueProfile.setUserId(UNIQUE_PROFILE_ID);
+        uniqueProfile.setUserEntity(UserEntity.builder().build());
     }
 
 
@@ -55,7 +56,7 @@ class CreatorProfileServiceTest {
     void add_addsNewCreator_creatorAdded(){
         creatorProfileService.add(profile);
 
-        assertEquals(creatorProfileService.get(USER_ID).get().getUserId(), USER_ID);
+        assertNotNull(creatorProfileService.getCreatorPageByPageLink("a link"));
     }
 
     @Test

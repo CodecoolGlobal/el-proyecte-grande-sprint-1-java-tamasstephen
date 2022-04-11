@@ -1,24 +1,28 @@
 package com.example.demo.model.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Data
 @Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
+@Data
 public class UserEntity {
+
     @Id
     @GeneratedValue
     private Long id;
-    private Long userCreatorProfileId;
+
+    @OneToOne
+    @JoinColumn (name="profile_id")
+    @JsonIgnore
+    private CreatorProfile causeProfile;
+
     private String email;
     private String password;
 
@@ -31,12 +35,8 @@ public class UserEntity {
         return this.id == id;
     }
 
-    public void setContent(Long creatorProfileId){
-        this.userCreatorProfileId = creatorProfileId;
-    }
-
-    public void setId(long id){
-        this.id = id;
+    public void setContent(CreatorProfile causeProfile){
+        this.causeProfile = causeProfile;
     }
 
     public String getEmail(){
@@ -51,16 +51,9 @@ public class UserEntity {
         return password.equals(this.password);
     }
 
-    public long getId() {
-        return id;
-    }
-
     public boolean isCreatorProfileAvailable(){
-        return userCreatorProfileId != null;
+        return causeProfile != null;
     }
 
-    public String getPassword() {
-        return password;
-    }
 }
 

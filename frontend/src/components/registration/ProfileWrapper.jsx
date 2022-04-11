@@ -11,7 +11,8 @@ const ProfileWrapper = () => {
     };
 
     getUserProfile().then((profile) => {
-      updateUser({ email: profile.user.email });
+      console.log(profile);
+      updateUser({ email: profile.userEntity.email });
     });
   }, []);
 

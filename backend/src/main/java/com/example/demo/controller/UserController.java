@@ -55,6 +55,7 @@ public class UserController {
         if (userOptional.isPresent() && userOptional.get().isValidPassword(userEntity.getPassword())){
             Map<String, String> result = new HashMap<>();
             UserEntity regUserEntity = userOptional.get();
+            System.out.printf("The user id is %s%n", regUserEntity.getId());
             tmpUser.setUser(regUserEntity.getId());
             result.put("result", "ok");
             return result;
@@ -97,6 +98,7 @@ public class UserController {
     public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail){
         String nextEmail = myMail.get("email");
         Long id = tmpUser.getUser();
+        System.out.println(id);
         if (id == null) throw new UserStatusException("You need to log in to proceed!");
         Optional<UserEntity> userOptional = userService.getUser(id);
         if (userOptional.isEmpty()) throw new UserStatusException("User does not exist");
