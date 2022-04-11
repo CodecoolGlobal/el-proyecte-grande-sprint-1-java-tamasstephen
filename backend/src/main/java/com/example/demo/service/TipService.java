@@ -22,33 +22,14 @@ public class TipService {
 
     public void add(Tip tip) {
         tipJpaDao.save(tip);
-//        tipDao.add(tip);
     }
 
     public List<Tip> getCommentsByPageLink(String pageLink){
         return tipJpaDao.findTipsByPageLink(pageLink);
-//        return tipDao.getCommentsByPageLink(pageLink);
     }
 
-//    public Optional<Tip> get(long id) {
-//        return tipDao.get(id);
-//    }
-//
-//    public void deleteTip(long id) {
-//        tipDao.deleteTip(id);
-//    }
-//
     public List<Tip> getAll() {
         return tipJpaDao.findAll();
-//        return tipDao.getAll();
     }
-//
-//    public Comment get(Tip tip) {
-//        return tipDao.get(tip);
-//    }
-//
-//    public String getCommentString(Comment comment) {
-//        return tipDao.getCommentString(comment);
-//    }
 
 }
