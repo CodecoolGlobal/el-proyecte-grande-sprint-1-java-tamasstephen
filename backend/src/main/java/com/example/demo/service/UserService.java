@@ -45,8 +45,8 @@ public class UserService {
     public void updateUser(UserEntity prevUserEntity, UserEntity newUserEntity){
         prevUserEntity.setEmail(newUserEntity.getEmail());
         prevUserEntity.setPassword(newUserEntity.getPassword());
-        if (newUserEntity.getUserCreatorProfileId() != null){
-            prevUserEntity.setUserCreatorProfileId(newUserEntity.getUserCreatorProfileId());
+        if (newUserEntity.getCauseProfile() != null){
+            prevUserEntity.setCauseProfile(newUserEntity.getCauseProfile());
         }
         userDao.save(prevUserEntity);
     }
@@ -54,7 +54,7 @@ public class UserService {
     public void updateEmail(UserEntity prevUserEntity, String email){
         UserEntity newUserEntity = UserEntity.builder()
                 .email(email)
-                .userCreatorProfileId(prevUserEntity.getUserCreatorProfileId())
+                .causeProfile(prevUserEntity.getCauseProfile())
                 .password(prevUserEntity.getPassword())
                 .id(prevUserEntity.getId())
                 .build();

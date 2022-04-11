@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.configuration.InitData;
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.category.CategoryFactory;
 import com.example.demo.model.responsemodel.ProfileModel;
@@ -75,16 +74,18 @@ public class CreatorProfileController {
                     .causeName(name)
                     .description(description)
                     .pageLink(pageLink)
-                    .userId(userId)
+                    .userEntity(userOptional.get())
                     .category(CategoryFactory.getCategoryByString(category))
                     .build();
             fileHandler.createDirectory(name);
             Optional<String> filePath = fileHandler.saveFile(file, name);
             if (filePath.isPresent()){
+                UserEntity myUser = userOptional.get();
                 profile.setProfileImage(filePath.get());
-                creatorProfileService.add(profile);
+                CreatorProfile savedProfile = creatorProfileService.add(profile);
                 result.put("result", "ok");
-                userOptional.get().setContent(profile.getId());
+                myUser.setContent(savedProfile);
+                userService.add(myUser);
                 return result;
             } else {
                 throw new UserStatusException("The provided file could not be saved!");
@@ -97,9 +98,10 @@ public class CreatorProfileController {
     @PutMapping("/creator-profile")
     public Map<String, String> updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
         Long userId = tmpUser.getUser();
+        Optional<UserEntity> userEntity = userService.getUser(userId);
         Optional<CreatorProfile> profile;
         Map<String, String> result = new HashMap<>();
-        if (userId != null && (profile = creatorProfileService.get(userId)).isPresent()){
+        if (userEntity.isPresent() && (profile = creatorProfileService.get(userEntity.get())).isPresent()){
             CreatorProfile prevProfile = profile.get();
             creatorProfileService.updateCreatorProfile(prevProfile, creatorProfile);
             result.put("result", "ok");
@@ -185,7 +187,7 @@ public class CreatorProfileController {
     @PostMapping("/creator/support")
     public List<Tip> supportCause(@RequestBody Tip tip){
         long userId = creatorProfileService.getCreatorPageByPageLink(tip.getPageLink())
-                .get().getUserId();
+                .get().getUserEntity().getId();
         tip.setUserId(userId);
         tipService.add(tip);
         System.out.println(tipService.getAll());
