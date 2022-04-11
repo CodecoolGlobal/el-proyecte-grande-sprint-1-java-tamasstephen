@@ -1,13 +1,27 @@
 package com.example.demo.model.tip;
 
 
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 
+@Data
+@Builder
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Tip {
+    @Id
+    @GeneratedValue
     private long id;
-    private final int amount;
+    private int amount;
     private long userId;
-    private final String pageLink;
+    private String pageLink;
     private LocalDate date;
     private String supporter;
     private String comment;
