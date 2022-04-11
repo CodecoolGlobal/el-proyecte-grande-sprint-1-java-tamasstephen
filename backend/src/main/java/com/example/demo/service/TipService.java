@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.TipDao;
+import com.example.demo.dao.implementation.TipJpaDao;
 import com.example.demo.model.tip.Comment;
 import com.example.demo.model.tip.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +13,21 @@ import java.util.Optional;
 @Component
 public class TipService {
 
-    private final TipDao tipDao;
+    private final TipJpaDao tipJpaDao;
 
     @Autowired
-    public TipService(TipDao tipDao) {
-        this.tipDao = tipDao;
+    public TipService(TipJpaDao tipJpaDao) {
+        this.tipJpaDao = tipJpaDao;
     }
 
     public void add(Tip tip) {
-        tipDao.add(tip);
+        tipJpaDao.save(tip);
+//        tipDao.add(tip);
     }
 
     public List<Tip> getCommentsByPageLink(String pageLink){
-        return tipDao.getCommentsByPageLink(pageLink);
+        return tipJpaDao.findTipsByPageLink(pageLink);
+//        return tipDao.getCommentsByPageLink(pageLink);
     }
 
 //    public Optional<Tip> get(long id) {
@@ -36,7 +39,8 @@ public class TipService {
 //    }
 //
     public List<Tip> getAll() {
-        return tipDao.getAll();
+        return tipJpaDao.findAll();
+//        return tipDao.getAll();
     }
 //
 //    public Comment get(Tip tip) {
