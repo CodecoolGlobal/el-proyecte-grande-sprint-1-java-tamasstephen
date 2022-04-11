@@ -51,7 +51,7 @@ public class UserEntity {
         return password.equals(this.password);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

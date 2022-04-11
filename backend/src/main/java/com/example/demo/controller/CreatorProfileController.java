@@ -124,6 +124,7 @@ public class CreatorProfileController {
             throw new UserStatusException("Please log in to check your profile");
         }
         UserEntity userEntity = userService.getUser(userId).get();
+        System.out.println(userEntity.getEmail());
         UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
         CreatorProfile profile = creatorProfileService.get(userId).get();
         ProfileModel model = ProfileModel.builder().userEntity(userEntityToReturn).profile(profile).build();
