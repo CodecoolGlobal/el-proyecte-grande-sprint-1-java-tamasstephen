@@ -13,10 +13,10 @@ const DonationForm = () => {
   const [textAreaValue, setTextAreaValue] = useState("");
 
   return (
-    <div className="bg-white mb-8 rounded md:w-3/6 md:h-full flex flex-col items-center shadow-lg shadow-indigo-500/30 ">
+    <div className="bg-white mb-8 rounded-lg md:w-3/6 md:h-full flex flex-col items-center shadow-md shadow-indigo-300/20 ">
       <div className="px-4 py-8 w-11/12">
         <SubHeadline
-          style={"text-xl md:text-2xl font-bold text-indigo-900"}
+          style={"text-xl md:text-2xl font-medium text-indigo-900 pb-1"}
           name={"Drop Those Coins"}
         />
         <div className="grid grid-cols-3 gap-2 py-2">
