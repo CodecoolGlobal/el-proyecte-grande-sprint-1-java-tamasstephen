@@ -54,7 +54,7 @@ const CausePage = () => {
           }
           jpgName={img}
         />
-        <div className="flex flex-col lg:flex lg:flex-row  pt-4">
+        <div className="flex flex-col lg:flex lg:flex-row  pt-4 md:pt-8">
           <div className=" lg:w-8/12 pr-4 pb-4">
             <SubHeadline style={"text-3xl py-4"} name={"Description"} />
             <Description description={cause.description} />
