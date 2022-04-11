@@ -49,7 +49,6 @@ public class CreatorProfileController {
         this.tipService = tipService;
         this.fileHandler = fileHandler;
         this.tmpUser = tmpUser;
-        new InitData(userService, creatorProfileService).initUsers();
     }
 
 //TODO: remove content url from profile class -> we are going to collect for caouses
