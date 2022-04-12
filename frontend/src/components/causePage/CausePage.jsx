@@ -45,24 +45,34 @@ const CausePage = () => {
   return (
     <div className="bg-slate-100 md:flex md:flex-col md:items-center md:flex-wrap">
       <div className=" px-4 md:w-8/12  max-w-6xl">
-        <div className="py-4 lg:py-8">
+        <div className="py-4 lg:pt-16 lg:pb-8">
           <Headline title={cause.causeName} isTitle={true} />
         </div>
         <Image
           style={
-            "rounded-lg w-350 h-400 md:w-full md:h-650 md:pt-3 md:m-0 aspect-video object-cover object-center"
+            "rounded-lg w-350 h-400 md:w-full md:h-650 md:m-0 aspect-video object-cover object-center"
           }
           jpgName={img}
         />
         <div className="flex flex-col lg:flex lg:flex-row  pt-4 md:pt-8">
           <div className=" lg:w-8/12 pr-4 pb-4">
-            <SubHeadline style={"text-3xl py-4"} name={"Description"} />
+            <SubHeadline
+              style={
+                "text-3xl py-4 text-slate-500 font-medium tracking-tighter"
+              }
+              name={"Description"}
+            />
             <Description description={cause.description} />
           </div>
           <DonationForm />
         </div>
         {tips.length !== 0 ? (
-          <SubHeadline style={"text-3xl mb-4  py-4"} name={"Latest donators"} />
+          <SubHeadline
+            style={
+              "text-3xl mb-4  py-4  text-slate-500 font-medium tracking-tighter"
+            }
+            name={"Latest donators"}
+          />
         ) : (
           ""
         )}

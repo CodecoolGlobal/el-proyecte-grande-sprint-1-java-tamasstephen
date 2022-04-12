@@ -16,7 +16,9 @@ const DonationForm = () => {
     <div className="bg-white mb-8 rounded-lg md:w-3/6 md:h-full flex flex-col items-center shadow-md shadow-indigo-300/20 ">
       <div className="px-4 py-8 w-11/12">
         <SubHeadline
-          style={"text-xl md:text-2xl font-medium text-indigo-900 pb-1"}
+          style={
+            "text-xl md:text-3xl font-medium text-slate-500 pb-2 tracking-tighter"
+          }
           name={"Drop Those Coins"}
         />
         <div className="grid grid-cols-3 gap-2 py-2">
@@ -38,7 +40,7 @@ const DonationForm = () => {
             <div className="pb-2 pt-2">
               <InputField
                 style={
-                  "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  "appearance-none border border-slate-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-indigo-400 bg-slate-100"
                 }
                 name={"name"}
                 placeholder={"Name"}
@@ -48,7 +50,7 @@ const DonationForm = () => {
             </div>
             <InputField
               style={
-                "mb-4 h-20 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                "mb-4 h-20 appearance-none border border-slate-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-indigo-400 bg-slate-100"
               }
               name={"comment"}
               placeholder={"Comment.. (Optional)"}
