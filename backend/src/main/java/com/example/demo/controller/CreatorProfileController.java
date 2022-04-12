@@ -12,6 +12,7 @@ import com.example.demo.service.TipService;
 import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.FileHandler;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -62,8 +63,6 @@ public class CreatorProfileController {
             HttpSession session){
 
         Long userId = tmpUser.getUser();
-        System.out.println(userId);
-        System.out.println(userId);
         Map<String, String> result = new HashMap<>();
         if (userId == null){
             throw new UserStatusException("You have to log in to create a cuase");
@@ -125,9 +124,8 @@ public class CreatorProfileController {
             throw new UserStatusException("Please log in to check your profile");
         }
         UserEntity userEntity = userService.getUser(userId).get();
-        System.out.println(userEntity.getEmail());
         UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
-        Optional<CreatorProfile> profileOption = creatorProfileService.get(userId);
+        Optional<CreatorProfile> profileOption = creatorProfileService.getCreatorPageByPageLink(userEntity.getCauseProfile().getPageLink());
         ProfileModel model = ProfileModel.builder()
                 .userEntity(userEntityToReturn).build();
         profileOption.ifPresent(model::setProfile);
@@ -190,7 +188,6 @@ public class CreatorProfileController {
                 .get().getUserEntity().getId();
         tip.setUserId(userId);
         tipService.add(tip);
-        System.out.println(tipService.getAll());
         return tipService.getAll();
     }
 
@@ -205,6 +202,39 @@ public class CreatorProfileController {
                && userService.getUser(userId).isPresent()
                && creatorProfileService.isPageLinkUnique(pageLink)
                && creatorProfileService.get(userId).isEmpty();
+    }
+
+    @CrossOrigin
+    @PutMapping("/user-profile/description")
+    public ResponseEntity<Map<String, String>> updateDescription(@RequestBody Map<String, String> description){
+        Map<String, String> result = new HashMap<>();
+        CreatorProfile causeProfile = getCreatorProfile();
+        creatorProfileService.updateProfileDescription(causeProfile, description.get("description"));
+        result.put("result", "ok");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @CrossOrigin
+    @PutMapping("/user-profile/title")
+    public ResponseEntity<Map<String, String>> updateTitle(@RequestBody Map<String, String> title){
+        Map<String, String> result = new HashMap<>();
+        CreatorProfile causeProfile = getCreatorProfile();
+        creatorProfileService.updateProfileTitle(causeProfile, title.get("title"));
+        result.put("result", "ok");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    private CreatorProfile getCreatorProfile() throws UserStatusException{
+        Long userId = tmpUser.getUser();
+        if (userId == null)
+            throw new UserStatusException("Please log in to continue");
+        Optional<UserEntity> userEntityOptional = userService.getUser(userId);
+        if (userEntityOptional.isEmpty())
+            throw new UserStatusException("User does not exist");
+        UserEntity userEntity = userEntityOptional.get();
+        if (userEntity.getCauseProfile() == null)
+            throw new UserStatusException("Cause does not exist");
+        return userEntity.getCauseProfile();
     }
 
 
