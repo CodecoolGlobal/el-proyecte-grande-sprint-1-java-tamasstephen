@@ -11,13 +11,13 @@ const Hero = () => {
     }
   }
   return (
-    <div className="flex flex-col items-center pt-16 md:pt-32 text-indigo-900 pb-40 bg-gradient-to-b from-slate-100 via-slate-50 to-purple-50">
-      <h1 className="text-center text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+    <div className="flex flex-col items-center pt-16 md:pt-32 xl:pt-44 text-indigo-900 pb-40 bg-gradient-to-b from-slate-100 via-slate-50 to-purple-50">
+      <h1 className="text-center text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl xl:text-7xl">
         <span className="text-purple-500">Support</span> your
         <br />
         favourite <span className="text-orange-500">cause</span>
       </h1>
-      <p className="text-center text-xl tracking-tight pb-4 pt-4 md:text-3xl md:pt-6 md:pb-6  text-slate-600">
+      <p className="text-center text-xl tracking-tight xl:tracking-tighter xl:leading-snug pb-4 pt-4 md:text-3xl xl:text-4xl md:pt-6 md:pb-6  text-slate-600">
         Drop a coin for a cause and
         <br />
         make a dream come true
