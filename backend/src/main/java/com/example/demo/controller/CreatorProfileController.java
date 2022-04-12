@@ -207,6 +207,14 @@ public class CreatorProfileController {
     @CrossOrigin
     @PutMapping("/user-profile/description")
     public ResponseEntity<Map<String, String>> updateDescription(@RequestBody Map<String, String> description){
+        Map<String, String> result = new HashMap<>();
+        CreatorProfile causeProfile = getCreatorProfile();
+        creatorProfileService.updateProfileDescription(causeProfile, description.get("description"));
+        result.put("result", "ok");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    private CreatorProfile getCreatorProfile() throws UserStatusException{
         Long userId = tmpUser.getUser();
         if (userId == null)
             throw new UserStatusException("Please log in to continue");
@@ -216,11 +224,7 @@ public class CreatorProfileController {
         UserEntity userEntity = userEntityOptional.get();
         if (userEntity.getCauseProfile() == null)
             throw new UserStatusException("Cause does not exist");
-        Map<String, String> result = new HashMap<>();
-        CreatorProfile causeProfile = userEntity.getCauseProfile();
-        creatorProfileService.updateProfileDescription(causeProfile, description.get("description"));
-        result.put("result", "ok");
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return userEntity.getCauseProfile();
     }
 
 
