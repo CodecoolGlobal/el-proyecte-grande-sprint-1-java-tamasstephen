@@ -127,7 +127,8 @@ public class CreatorProfileController {
         UserEntity userEntity = userService.getUser(userId).get();
         System.out.println(userEntity.getEmail());
         UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
-        Optional<CreatorProfile> profileOption = creatorProfileService.get(userId);
+        Optional<CreatorProfile> profileOption = creatorProfileService.getCreatorPageByPageLink(userEntity.getCauseProfile().getPageLink());
+        System.out.println(profileOption.isPresent());
         ProfileModel model = ProfileModel.builder()
                 .userEntity(userEntityToReturn).build();
         profileOption.ifPresent(model::setProfile);
@@ -205,6 +206,13 @@ public class CreatorProfileController {
                && userService.getUser(userId).isPresent()
                && creatorProfileService.isPageLinkUnique(pageLink)
                && creatorProfileService.get(userId).isEmpty();
+    }
+
+    @CrossOrigin
+    @PutMapping("/user-profile/description")
+    public ResponseEntity<Map<String, String>> updateDescription(@RequestBody Map<String, String> description){
+        System.out.println(description.get("description"));
+        return null;
     }
 
 
