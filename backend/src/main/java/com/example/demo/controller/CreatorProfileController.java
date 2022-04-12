@@ -214,6 +214,16 @@ public class CreatorProfileController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @CrossOrigin
+    @PutMapping("/user-profile/title")
+    public ResponseEntity<Map<String, String>> updateTitle(@RequestBody Map<String, String> title){
+        Map<String, String> result = new HashMap<>();
+        CreatorProfile causeProfile = getCreatorProfile();
+        creatorProfileService.updateProfileTitle(causeProfile, title.get("title"));
+        result.put("result", "ok");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     private CreatorProfile getCreatorProfile() throws UserStatusException{
         Long userId = tmpUser.getUser();
         if (userId == null)
