@@ -67,4 +67,9 @@ public class CreatorProfileService {
         creatorProfileDao.saveAndFlush(oldProfile);
     }
 
+    public void updateProfileDescription(CreatorProfile profile, String description){
+        profile.setDescription(description);
+        creatorProfileDao.saveAndFlush(profile);
+    }
+
 }
