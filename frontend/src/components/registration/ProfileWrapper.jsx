@@ -20,7 +20,8 @@ const ProfileWrapper = () => {
     });
   }, []);
 
-  return <Profile userProfile={userProfile} description={description} causeTitle={causeTitle} userUpdate={updateUser} />;
+  return <Profile userProfile={userProfile} description={description} causeTitle={causeTitle} userUpdate={updateUser}
+          updateCauseTitle={updateCauseTitle} descriptionUpdate={updateDescription} />;
 };
 
 export default ProfileWrapper;
