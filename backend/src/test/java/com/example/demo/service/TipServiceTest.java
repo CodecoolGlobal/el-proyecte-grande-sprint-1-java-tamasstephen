@@ -1,19 +1,26 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.implementation.TipJpaDao;
 import com.example.demo.model.tip.Tip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class TipServiceTest {
 
-    @Autowired
+    @Mock
+    TipJpaDao tipJpaDao;
+
     private TipService tipService;
 
     private Tip firstTip;
@@ -37,29 +44,34 @@ class TipServiceTest {
                 MOST_POPULAR,
                 "Georg Lucas",
                 "I am great!");
+
+        tipService = new TipService(tipJpaDao);
     }
 
     @Test
     void add_addsNewTipToTips_AddsTip(){
-        firstTip.setUserId(1);
+        when(tipJpaDao.save(firstTip)).thenReturn(firstTip);
+
         tipService.add(firstTip);
 
-        List<Tip> result = tipService.getCommentsByPageLink(POPULAR_SITE);
-
-        assertTrue(result.size() > 0);
+        verify(tipJpaDao, atLeastOnce()).save(firstTip);
     }
 
     @Test
     void getCommentsByPageLink_returnsComments_returnsValidNumberOfComments(){
-
-        secondTip.setUserId(2);
-        tipService.add(secondTip);
-        thirdTip.setUserId(3);
-        tipService.add(thirdTip);
+        when(tipJpaDao.findTipsByPageLink(MOST_POPULAR)).thenReturn(List.of(firstTip, secondTip));
 
         List<Tip> result = tipService.getCommentsByPageLink(MOST_POPULAR);
 
         assertEquals(result.size(),  2);
+    }
 
+    @Test
+    void getAll_returnsAllTips_returnsTips(){
+        when(tipJpaDao.findAll()).thenReturn(List.of(firstTip, secondTip, thirdTip));
+
+        List<Tip> result = tipService.getAll();
+
+        assertEquals(result.size(), 3);
     }
 }
