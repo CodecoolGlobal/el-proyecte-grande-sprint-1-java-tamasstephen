@@ -188,6 +188,12 @@ const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
           hidden={descriptionFormVisibility.visible}
           className="pt-8"
         >
+          <label
+        className="pb-1 font-medium text-slate-600"
+        htmlFor={`${descriptionInput["name"]}`}
+      >
+        {descriptionInput.label}
+      </label>
           <textarea
             name="description"
             placeholder="The new cause description comes here..."
