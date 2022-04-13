@@ -5,11 +5,31 @@ import { dataHandler } from "../../data/dataHandler";
 import MutableInput from "./MutableInput";
 import { HiOutlineMail } from "react-icons/hi";
 import Error from "./Error";
+import Description from "../causePage/Description";
+import { MdOutlineTitle, MdDescription } from "react-icons/md";
 
-const Profile = ({ userProfile, userUpdate }) => {
+const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
+  // console.log(description);
+
   const [formVisibility, setFormVisiblity] = useState({ visible: "hidden" });
 
-  const [buttonState, changeButtonState] = useState({
+  const [descriptionFormVisibility, setDescriptionFormVisiblity] = useState({
+    visible: "hidden",
+  });
+
+  const [causeTitleFormVisibility, setCauseTitleFormVisiblity] = useState({
+    visible: "hidden",
+  });
+
+  const [buttonStateEmail, changeButtonStateEmail] = useState({
+    label: "Edit",
+    type: "button",
+  });
+  const [buttonStateTitle, changeButtonStateTitle] = useState({
+    label: "Edit",
+    type: "button",
+  });
+  const [buttonStateDescription, changeButtonStateDescription] = useState({
     label: "Edit",
     type: "button",
   });
@@ -27,15 +47,31 @@ const Profile = ({ userProfile, userUpdate }) => {
     placeholder: "",
   };
 
+  const descriptionInput = {
+    type: "description",
+    name: "description",
+    required: "required",
+    label: "New Description",
+    placeholder: "",
+  };
+
+  const causeTitleInput = {
+    type: "causeTitle",
+    name: "causeTitle",
+    required: "required",
+    label: "New Cause Title",
+    placeholder: "",
+  };
+
   const [errorState, setError] = useState({
     boxState: "hidden",
     text: "",
     textState: "invisible",
   });
 
-  async function updateUserDetails(event) {
+  async function updateUserDetails(event, changeButtonState, buttonState, targetValue) {
     event.preventDefault();
-    const updateMail = event.target["email"].value;
+    const updateMail = event.target[targetValue].value;
     const payLoad = { email: updateMail };
     const result = await dataHandler.updateEmail(payLoad);
     if (result.result === "ok") {
@@ -49,7 +85,12 @@ const Profile = ({ userProfile, userUpdate }) => {
     }
   }
 
-  function allowUpdateFields() {
+  function allowUpdateFields(
+    setFormVisiblity,
+    formVisibility,
+    buttonState,
+    changeButtonState
+  ) {
     formVisibility.visible === "hidden"
       ? setFormVisiblity({ ...formVisibility, visible: "" })
       : setFormVisiblity({ ...formVisibility, visible: "hidden" });
@@ -73,9 +114,12 @@ const Profile = ({ userProfile, userUpdate }) => {
             </p>
           </div>
           <ButtonMid
-            buttonState={buttonState}
+            buttonState={buttonStateEmail}
             callBack={allowUpdateFields}
             secondary={true}
+            updateFormFUnction={setFormVisiblity}
+            formVisibility={formVisibility}
+            changeButtonState={changeButtonStateEmail}
           />
         </div>
         <div className="pt-4 md:pt-8">
@@ -83,7 +127,7 @@ const Profile = ({ userProfile, userUpdate }) => {
         </div>
         <form
           action=""
-          onSubmit={updateUserDetails}
+          onSubmit={(event) =>updateUserDetails(event, changeButtonStateEmail, buttonStateEmail, "email")}
           hidden={formVisibility.visible}
           className="pt-8"
         >
@@ -92,9 +136,70 @@ const Profile = ({ userProfile, userUpdate }) => {
             <ButtonMid buttonState={submitButtonState} secondary={false} />
           </div>
         </form>
-        <div>
-          <form action=""></form>
+        <div className="md:flex justify-between pt-8">
+          <div className="pb-4 md:pb-0 flex items-center">
+            <MdOutlineTitle className="text-indigo-400 font-bold text-2xl md:text-3xl" />
+            <p>{causeTitle.causeTitle}</p>
+          </div>
+          <ButtonMid
+            buttonState={buttonStateTitle}
+            callBack={allowUpdateFields}
+            secondary={true}
+            updateFormFUnction={setCauseTitleFormVisiblity}
+            formVisibility={causeTitleFormVisibility}
+            changeButtonState={changeButtonStateTitle}
+          />
         </div>
+        <form
+          action=""
+          onSubmit={(event) =>updateUserDetails(event, changeButtonStateTitle, buttonStateTitle, "causeTitle")}
+          hidden={causeTitleFormVisibility.visible}
+          className="pt-8"
+        >
+          <MutableInput inputProps={causeTitleInput} />
+          <div className="flex">
+            <ButtonMid buttonState={submitButtonState} secondary={false} />
+          </div>
+        </form>
+
+        <div className="md:flex justify-between pt-8">
+          <div className="pb-4 md:pb-0 flex items-center">
+            <MdDescription className="text-indigo-400 font-bold text-2xl md:text-3xl" />
+            <div className="w-4/5">
+              <Description description={description.description} />
+            </div>
+          </div>
+          <div >
+            <div className="md:pt-32">
+              <ButtonMid
+              buttonState={buttonStateDescription}
+              callBack={allowUpdateFields}
+              secondary={true}
+              updateFormFUnction={setDescriptionFormVisiblity}
+              formVisibility={descriptionFormVisibility}
+              changeButtonState={changeButtonStateDescription}
+            />
+            </div>
+          </div>
+        </div>
+        <form
+          action=""
+          onSubmit={(event) =>updateUserDetails(event, changeButtonStateDescription, buttonStateDescription, "description")}
+          hidden={descriptionFormVisibility.visible}
+          className="pt-8"
+        >
+          <textarea
+            name="description"
+            placeholder="The new cause description comes here..."
+            minLength="400"
+            rows="6"
+            className="rounded-lg p-4 border border-indigo-200 w-full shadow-md shadow-indigo-400/20 hover:outline-indigo-500"
+            required
+          ></textarea>
+          <div className="flex">
+            <ButtonMid buttonState={submitButtonState} secondary={false} />
+          </div>
+        </form>
       </div>
     </div>
   );
