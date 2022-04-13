@@ -1,11 +1,26 @@
 import React from "react";
 import Headline from "../Headline";
 import ReasonBox from "./ReasonBox";
+import { usePageSectionReveal } from "../../utils/customHooks";
 
 const Reasons = () => {
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.5,
+  };
+
+  const [wrapper, isVisible] = usePageSectionReveal(options);
+
   return (
-    <section className="bg-gradient-to-b from-slate-200 px-4 md:px-0 pb-20 md:pb-40">
-      <div className="flex flex-col items-center">
+    <section className="bg-gradient-to-b from-slate-200 via-indigo-100 to-slate-200 px-4 md:px-0 pb-20 md:pb-40">
+      <div
+        ref={wrapper}
+        className={
+          "flex flex-col items-center transition-all duration-500 ease-in " +
+          isVisible
+        }
+      >
         <div className="flex justify-center pb-6">
           <Headline isTitle={false} title={"Your support matters!"} />
         </div>

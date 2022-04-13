@@ -4,7 +4,7 @@ import Donation from "../../model/Donation";
 const Donations = ({ items }) => {
   console.log(items);
   return (
-    <ul>
+    <ul className="flex flex-col gap-2 lg:gap-4">
       {items?.map((tip, index) => (
         <Donation
           key={index}

@@ -1,12 +1,19 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.implementation.CauseProfileJpaDao;
 import com.example.demo.model.category.Category;
 import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +21,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CreatorProfileServiceTest {
 
-    @Autowired
+//    @Autowired
+    @Mock
+    CauseProfileJpaDao causeProfileJpaDao;
     private CreatorProfileService creatorProfileService;
     private CreatorProfile profile;
     private CreatorProfile secondProfile;
@@ -30,6 +40,7 @@ class CreatorProfileServiceTest {
 
     @BeforeEach
     void init(){
+        creatorProfileService = new CreatorProfileService(causeProfileJpaDao);
         profile = new CreatorProfile(Category.GAMING,
                 "description",
                 "a link",
@@ -54,34 +65,24 @@ class CreatorProfileServiceTest {
 
     @Test
     void add_addsNewCreator_creatorAdded(){
-        creatorProfileService.add(profile);
+        when(causeProfileJpaDao.saveAndFlush(profile)).thenReturn(profile);
+        CreatorProfile p = creatorProfileService.add(profile);
 
-        assertNotNull(creatorProfileService.getCreatorPageByPageLink("a link"));
+        assertNotNull(p);
     }
 
     @Test
     void get_getCreatorsByName_returnsCreators(){
-        creatorProfileService.add(profile);
-        creatorProfileService.add(secondProfile);
 
+        when(causeProfileJpaDao.findAll()).thenReturn(List.of(profile, secondProfile));
         List<CreatorProfile> creators = creatorProfileService.get("username");
 
         assertTrue(creators.size() > 1);
     }
 
     @Test
-    void get_getCreatorsByName_doesNotReturnCreator(){
-        creatorProfileService.add(profile);
-        creatorProfileService.add(secondProfile);
-
-        List<CreatorProfile> creators = creatorProfileService.get("hey");
-
-        assertTrue(creators.size() < 1);
-    }
-
-    @Test
-    void get_getCreatorByUserId_returnsCreator(){
-        creatorProfileService.add(profile);
+    void get_getCreatorById_returnsCreator(){
+        when(causeProfileJpaDao.findById((long)1)).thenReturn(Optional.of(profile));
 
         Optional<CreatorProfile> result = creatorProfileService.get(USER_ID);
 
@@ -89,16 +90,8 @@ class CreatorProfileServiceTest {
     }
 
     @Test
-    void get_getCreatorByUserId_returnsNothing(){
-
-        Optional<CreatorProfile> result = creatorProfileService.get(NON_EXISTING_USER_ID);
-
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
     void getCreatorPageByLink_returnsCreator_returnsInvalidCreator(){
-        creatorProfileService.add(profile);
+        when(causeProfileJpaDao.findByPageLink("link")).thenReturn(Optional.empty());
 
         Optional<CreatorProfile> result = creatorProfileService.getCreatorPageByPageLink("link");
 
@@ -107,7 +100,7 @@ class CreatorProfileServiceTest {
 
     @Test
     void getCreatorPageByLink_returnsCreator_returnsValidCreator(){
-        creatorProfileService.add(profile);
+        when(causeProfileJpaDao.findByPageLink("a link")).thenReturn(Optional.of(profile));
 
         Optional<CreatorProfile> result = creatorProfileService.getCreatorPageByPageLink("a link");
 
@@ -116,7 +109,7 @@ class CreatorProfileServiceTest {
 
     @Test
     void getContentByCategory_returnsListWithCreators_returnsList(){
-        creatorProfileService.add(profile);
+        when(causeProfileJpaDao.findByCategory(Category.GAMING)).thenReturn(List.of(profile));
 
         List<CreatorProfile> result = creatorProfileService.getContentsByCategory(Category.GAMING);
 
@@ -124,18 +117,8 @@ class CreatorProfileServiceTest {
     }
 
     @Test
-    void getContentByCategory_returnsListWithCreators_returnsNothing(){
-        creatorProfileService.add(profile);
-
-        List<CreatorProfile> result = creatorProfileService.getContentsByCategory(Category.SCIENCE);
-
-        assertFalse(result.size() > 0);
-    }
-
-    @Test
     void getAll_returnsAllCreators_returnsCreators(){
-        creatorProfileService.add(profile);
-        creatorProfileService.add(secondProfile);
+        when(causeProfileJpaDao.findAll()).thenReturn(List.of(profile, secondProfile));
 
         List<CreatorProfile> result = creatorProfileService.getAll();
 
@@ -144,7 +127,7 @@ class CreatorProfileServiceTest {
 
     @Test
     void isPageLinkUnique_checksIfLinkAlReadyExists_returnsTrue(){
-        creatorProfileService.add(profile);
+        when(causeProfileJpaDao.findByPageLink("beautiful")).thenReturn(Optional.empty());
 
         boolean result = creatorProfileService.isPageLinkUnique("beautiful");
 
@@ -154,7 +137,7 @@ class CreatorProfileServiceTest {
 
     @Test
     void isPageLinkUnique_checksIfLinkAlReadyExists_returnsFalse(){
-        creatorProfileService.add(profile);
+        when(causeProfileJpaDao.findByPageLink("a link")).thenReturn(Optional.of(profile));
 
         boolean result = creatorProfileService.isPageLinkUnique("a link");
 
@@ -162,13 +145,31 @@ class CreatorProfileServiceTest {
     }
 
     @Test
-    void updateCreatorProfile_replacesCreatorDetailsWithNewOnes_changesSuccessFull(){
-        creatorProfileService.add(uniqueProfile);
-        creatorProfileService.updateCreatorProfile(uniqueProfile, profile);
+    void updateDescription_updatesProfileDescription_descriptionUpdated(){
+        when(causeProfileJpaDao.saveAndFlush(profile)).thenReturn(profile);
 
-        CreatorProfile result = creatorProfileService.get(UNIQUE_PROFILE_ID).get();
+        creatorProfileService.updateProfileDescription(profile, "desc");
 
-        assertNotSame(result.getCategory(), UNIQUE_CATEGORY);
+        Mockito.verify(causeProfileJpaDao, atLeastOnce()).saveAndFlush(profile);
+    }
+
+    @Test
+    void updateTitle_updatesProfileTitle_titleUpdated(){
+        when(causeProfileJpaDao.saveAndFlush(profile)).thenReturn(profile);
+
+        creatorProfileService.updateProfileTitle(profile, "title");
+
+        Mockito.verify(causeProfileJpaDao, atLeastOnce()).saveAndFlush(profile);
+    }
+
+    @Test
+    void updateCreatorProfile_updatesProfile_profileUpdated(){
+        when(causeProfileJpaDao.saveAndFlush(profile)).thenReturn(profile);
+
+        creatorProfileService.updateCreatorProfile(profile, secondProfile);
+
+        Mockito.verify(causeProfileJpaDao, atLeastOnce()).saveAndFlush(profile);
+
     }
 
 
