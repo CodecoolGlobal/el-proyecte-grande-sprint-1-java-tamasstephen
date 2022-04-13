@@ -1,22 +1,28 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.implementation.UserJpaDao;
 import com.example.demo.model.user.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UserEntityServiceTest {
 
-    @Autowired
-    private UserService userService;
+    @Mock
+    UserJpaDao userJpaDao;
 
+    private UserService userService;
     private UserEntity userEntity;
     private UserEntity secondUserEntity;
 
@@ -24,20 +30,20 @@ class UserEntityServiceTest {
     void init(){
         userEntity = UserEntity.builder().email("hey@hey.com").password("Happy Human").build();
         secondUserEntity = UserEntity.builder().email("ho@hoho.com").password("Very Happy Human").build();
+        userService = new UserService(userJpaDao);
     }
 
     @Test
     void add_addsUserToUsers_userIsInTheMemory(){
+        when(userJpaDao.save(userEntity)).thenReturn(userEntity);
         userService.add(userEntity);
 
-        int result = userService.getAllUsers().size();
-
-        assertTrue(result > 0);
+        verify(userJpaDao, atLeastOnce()).save(userEntity);
     }
 
     @Test
     void getAllUsers_returnsAllUsers_returnsListWithUsers(){
-        userService.add(userEntity);
+        when(userJpaDao.findAll()).thenReturn(List.of(userEntity, secondUserEntity));
 
         List<UserEntity> result = userService.getAllUsers();
 
@@ -46,8 +52,10 @@ class UserEntityServiceTest {
 
     @Test
     void getUser_returnsUserById_returnsValidUser(){
-        userService.add(secondUserEntity);
-        long id = secondUserEntity.getId();
+
+        long id = 2;
+
+        when(userJpaDao.findById(id)).thenReturn(Optional.of(secondUserEntity));
 
         Optional<UserEntity> result = userService.getUser(id);
 
@@ -58,6 +66,7 @@ class UserEntityServiceTest {
     void getUser_returnsUserById_returnsNothing(){
 
         long invalidId = 100000001;
+        when(userJpaDao.findById(invalidId)).thenReturn(Optional.empty());
         Optional<UserEntity> result = userService.getUser(invalidId);
 
         assertTrue(result.isEmpty());
@@ -65,7 +74,12 @@ class UserEntityServiceTest {
 
     @Test
     void isEmailAvailable_returnsTrueIfEmailDosNotExists_returnTrue(){
-        boolean result = userService.isEmailAvailable("aValidOption@option.com");
+
+        String email = "validEmail";
+
+        when(userJpaDao.findByEmail(email)).thenReturn(Optional.empty());
+
+        boolean result = userService.isEmailAvailable(email);
 
         assertTrue(result);
     }
@@ -73,53 +87,60 @@ class UserEntityServiceTest {
 
     @Test
     void isEmailAvailable_returnsTrueIfEmailDosNotExists_returnFalse(){
-        userService.add(userEntity);
-        boolean result = userService.isEmailAvailable("hey@hey.com");
+        String email = "validEmail";
+
+        when(userJpaDao.findByEmail(email)).thenReturn(Optional.of(userEntity));
+
+        boolean result = userService.isEmailAvailable(email);
 
         assertFalse(result);
     }
 
     @Test
     void getUserByEmail_returnsUserByEmail_returnsUser(){
-        userService.add(userEntity);
+        String email = "validEmail";
 
-        Optional<UserEntity> result = userService.getUserByEmail("hey@hey.com");
+        when(userJpaDao.findByEmail(email)).thenReturn(Optional.of(userEntity));
+
+        Optional<UserEntity> result = userService.getUserByEmail(email);
 
         assertTrue(result.isPresent());
     }
 
     @Test
     void getUserByEmail_returnsUserByEmail_returnsNothing(){
-        userService.add(userEntity);
+        String email = "validEmail";
 
-        Optional<UserEntity> result = userService.getUserByEmail("nonexisting@hey.com");
+        when(userJpaDao.findByEmail(email)).thenReturn(Optional.empty());
+
+        Optional<UserEntity> result = userService.getUserByEmail(email);
 
         assertTrue(result.isEmpty());
     }
 
     @Test
     void update_updatesUserDetailsWithNewInformation_changesDetails(){
-        UserEntity uniqueUserEntity = UserEntity.builder().email("unique@un.com").password("unique").build();
-        userService.add(uniqueUserEntity);
+        when(userJpaDao.save(userEntity)).thenReturn(userEntity);
 
-        long id = uniqueUserEntity.getId();
-        userService.updateUser(uniqueUserEntity, userEntity);
+        userService.updateUser(secondUserEntity, userEntity);
 
-        assertEquals(userService.getUser(id).get().getEmail(), userEntity.getEmail());
+        verify(userJpaDao, atLeastOnce()).save(secondUserEntity);
     }
 
     @Test
-    void delteUser_removesUserFromMem_removesUser(){
-        UserEntity userEntityToDelete = UserEntity.builder().email("delete@test.com").password("willBeDeleted").build();
-        userService.add(userEntityToDelete);
+    void deleteUser_removesUserFromMem_removesUser(){
 
-        int addedToList = userService.getAllUsers().size();
+        userService.deleteUser(userEntity);
 
-        userService.deleteUser(userEntityToDelete);
+        verify(userJpaDao, atLeastOnce()).delete(userEntity);
+    }
 
-        int result = userService.getAllUsers().size();
+    @Test
+    void updateEmail_updatesUserEmail_updatesMail(){
 
-        assertTrue(addedToList > result);
+        userService.updateUser(userEntity, secondUserEntity);
+
+        verify(userJpaDao, atLeastOnce()).save(userEntity);
     }
 
 }
