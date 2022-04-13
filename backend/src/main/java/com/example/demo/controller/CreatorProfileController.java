@@ -216,6 +216,7 @@ public class CreatorProfileController {
         CreatorProfile causeProfile = getCreatorProfile();
         creatorProfileService.updateProfileDescription(causeProfile, description.get("description"));
         result.put("result", "ok");
+        result.put("description", getCreatorProfile().getDescription());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -226,6 +227,7 @@ public class CreatorProfileController {
         CreatorProfile causeProfile = getCreatorProfile();
         creatorProfileService.updateProfileTitle(causeProfile, title.get("title"));
         result.put("result", "ok");
+        result.put("title", getCreatorProfile().getCauseName());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

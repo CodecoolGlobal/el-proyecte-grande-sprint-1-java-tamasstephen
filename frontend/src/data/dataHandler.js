@@ -48,6 +48,12 @@ export const dataHandler = {
   async updateEmail(payLoad) {
     return await this.putApi("user/email", payLoad);
   },
+  async updateCauseTitle(payload){
+    return await this.putApi("user-profile/title", payload);
+  },
+  async updateCauseDescription(payload){
+    return await this.putApi("user-profile/description", payload);
+  },
 
   async getApi(endpoint) {
     const result = await fetch(`http://localhost:8080/${endpoint}`);
