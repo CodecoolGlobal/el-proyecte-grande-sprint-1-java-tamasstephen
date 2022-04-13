@@ -63,6 +63,7 @@ public class CreatorProfileController {
             HttpSession session){
 
         Long userId = tmpUser.getUser();
+
         Map<String, String> result = new HashMap<>();
         if (userId == null){
             throw new UserStatusException("You have to log in to create a cuase");
@@ -125,10 +126,14 @@ public class CreatorProfileController {
         }
         UserEntity userEntity = userService.getUser(userId).get();
         UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
-        Optional<CreatorProfile> profileOption = creatorProfileService.getCreatorPageByPageLink(userEntity.getCauseProfile().getPageLink());
+
+        CreatorProfile profileOption = userEntity.getCauseProfile();
+
         ProfileModel model = ProfileModel.builder()
                 .userEntity(userEntityToReturn).build();
-        profileOption.ifPresent(model::setProfile);
+        if(profileOption != null){
+            model.setProfile(profileOption);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
