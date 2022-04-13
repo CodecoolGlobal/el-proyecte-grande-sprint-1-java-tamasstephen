@@ -7,10 +7,16 @@ import { HiOutlineMail } from "react-icons/hi";
 import Error from "./Error";
 import Description from "../causePage/Description";
 import { MdOutlineTitle, MdDescription } from "react-icons/md";
+import { data } from "autoprefixer";
 
-const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
-  // console.log(description);
-
+const Profile = ({
+  userProfile,
+  userUpdate,
+  description,
+  descriptionUpdate,
+  causeTitle,
+  updateCauseTitle,
+}) => {
   const [formVisibility, setFormVisiblity] = useState({ visible: "hidden" });
 
   const [descriptionFormVisibility, setDescriptionFormVisiblity] = useState({
@@ -69,19 +75,75 @@ const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
     textState: "invisible",
   });
 
-  async function updateUserDetails(event, changeButtonState, buttonState, targetValue) {
+  async function updateUserDetails(
+    event,
+    changeButtonState,
+    buttonState,
+    targetValue,
+    userUpdate,
+    formVisibility,
+    setFormVisiblity
+  ) {
     event.preventDefault();
     const updateMail = event.target[targetValue].value;
-    const payLoad = { email: updateMail };
-    const result = await dataHandler.updateEmail(payLoad);
+    const payLoad = setPayLoadByName(targetValue, updateMail);
+    // try {
+    //   const result = await apiCallDecider(targetValue, payLoad);
+    //   console.log(result)
+    //   let updateState = updateStateByName(targetValue, result);
+    //   userUpdate(updateState);
+    //   setFormVisiblity({ ...formVisibility, visible: "hidden" });
+    //   changeButtonState({ ...buttonState, label: "Edit" });
+    //   setError({ boxState: "hidden", text: "", textState: "invisible" });
+    // } catch (error) {
+    //   console.log(error)
+    //   setError({ boxState: "", text: error.result, textState: "" });
+    // }
+    const result = await apiCallDecider(targetValue, payLoad);
+
+    let updateState = updateStateByName(targetValue, result);
     if (result.result === "ok") {
-      const updateState = { ...userProfile, email: result.email };
       userUpdate(updateState);
       setFormVisiblity({ ...formVisibility, visible: "hidden" });
       changeButtonState({ ...buttonState, label: "Edit" });
       setError({ boxState: "hidden", text: "", textState: "invisible" });
     } else {
       setError({ boxState: "", text: result.message, textState: "" });
+    }
+  }
+
+  function setPayLoadByName(name, updateMail) {
+    // console.log({[name]: updateMail})
+    // return {[name]: updateMail}
+    switch (name) {
+      case "email":
+        return { email: updateMail };
+      case "causeTitle":
+        return { title: updateMail };
+      case "description":
+        return { description: updateMail };
+    }
+  }
+
+  function updateStateByName(name, result) {
+    switch (name) {
+      case "email":
+        return { ...userProfile, email: result.email };
+      case "causeTitle":
+        return { ...causeTitle, causeTitle: result.title };
+      case "description":
+        return { ...description, description: result.description };
+    }
+  }
+
+  async function apiCallDecider(name, payload) {
+    switch (name) {
+      case "email":
+        return await dataHandler.updateEmail(payload);
+      case "causeTitle":
+        return await dataHandler.updateCauseTitle(payload);
+      case "description":
+        return await dataHandler.updateCauseDescription(payload);
     }
   }
 
@@ -127,7 +189,17 @@ const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
         </div>
         <form
           action=""
-          onSubmit={(event) =>updateUserDetails(event, changeButtonStateEmail, buttonStateEmail, "email")}
+          onSubmit={(event) =>
+            updateUserDetails(
+              event,
+              changeButtonStateEmail,
+              buttonStateEmail,
+              "email",
+              userUpdate,
+              formVisibility,
+              setFormVisiblity
+            )
+          }
           hidden={formVisibility.visible}
           className="pt-8"
         >
@@ -152,7 +224,17 @@ const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
         </div>
         <form
           action=""
-          onSubmit={(event) =>updateUserDetails(event, changeButtonStateTitle, buttonStateTitle, "causeTitle")}
+          onSubmit={(event) =>
+            updateUserDetails(
+              event,
+              changeButtonStateTitle,
+              buttonStateTitle,
+              "causeTitle",
+              updateCauseTitle,
+              causeTitleFormVisibility,
+              setCauseTitleFormVisiblity
+            )
+          }
           hidden={causeTitleFormVisibility.visible}
           className="pt-8"
         >
@@ -169,31 +251,41 @@ const Profile = ({ userProfile, userUpdate, description, causeTitle }) => {
               <Description description={description.description} />
             </div>
           </div>
-          <div >
+          <div>
             <div className="md:pt-32">
               <ButtonMid
-              buttonState={buttonStateDescription}
-              callBack={allowUpdateFields}
-              secondary={true}
-              updateFormFUnction={setDescriptionFormVisiblity}
-              formVisibility={descriptionFormVisibility}
-              changeButtonState={changeButtonStateDescription}
-            />
+                buttonState={buttonStateDescription}
+                callBack={allowUpdateFields}
+                secondary={true}
+                updateFormFUnction={setDescriptionFormVisiblity}
+                formVisibility={descriptionFormVisibility}
+                changeButtonState={changeButtonStateDescription}
+              />
             </div>
           </div>
         </div>
         <form
           action=""
-          onSubmit={(event) =>updateUserDetails(event, changeButtonStateDescription, buttonStateDescription, "description")}
+          onSubmit={(event) =>
+            updateUserDetails(
+              event,
+              changeButtonStateDescription,
+              buttonStateDescription,
+              "description",
+              descriptionUpdate,
+              descriptionFormVisibility,
+              setDescriptionFormVisiblity
+            )
+          }
           hidden={descriptionFormVisibility.visible}
           className="pt-8"
         >
           <label
-        className="pb-1 font-medium text-slate-600"
-        htmlFor={`${descriptionInput["name"]}`}
-      >
-        {descriptionInput.label}
-      </label>
+            className="pb-1 font-medium text-slate-600"
+            htmlFor={`${descriptionInput["name"]}`}
+          >
+            {descriptionInput.label}
+          </label>
           <textarea
             name="description"
             placeholder="The new cause description comes here..."
