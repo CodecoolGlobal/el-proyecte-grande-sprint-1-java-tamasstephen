@@ -33,7 +33,6 @@ const DonationForm = () => {
           }
           method="post"
         >
-          {/* <form onSubmit={handlerSubmit}> */}
           <div>
             <div className="pb-2 pt-2">
               <InputField
