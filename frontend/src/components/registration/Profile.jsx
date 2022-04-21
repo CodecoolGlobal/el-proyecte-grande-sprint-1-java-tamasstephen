@@ -14,7 +14,7 @@ const Profile = ({
   userUpdate,
   description,
   descriptionUpdate,
-  causeTitle,
+  title,
   updateCauseTitle,
 }) => {
   const [formVisibility, setFormVisiblity] = useState({ visible: "hidden" });
@@ -62,8 +62,8 @@ const Profile = ({
   };
 
   const causeTitleInput = {
-    type: "causeTitle",
-    name: "causeTitle",
+    type: "title",
+    name: "title",
     required: "required",
     label: "New Cause Title",
     placeholder: "",
@@ -113,24 +113,15 @@ const Profile = ({
   }
 
   function setPayLoadByName(name, updateMail) {
-    // console.log({[name]: updateMail})
-    // return {[name]: updateMail}
-    switch (name) {
-      case "email":
-        return { email: updateMail };
-      case "causeTitle":
-        return { title: updateMail };
-      case "description":
-        return { description: updateMail };
-    }
+    return {[name]: updateMail}
   }
 
   function updateStateByName(name, result) {
     switch (name) {
       case "email":
         return { ...userProfile, email: result.email };
-      case "causeTitle":
-        return { ...causeTitle, causeTitle: result.title };
+      case "title":
+        return { ...title, title: result.title };
       case "description":
         return { ...description, description: result.description };
     }
@@ -140,7 +131,7 @@ const Profile = ({
     switch (name) {
       case "email":
         return await dataHandler.updateEmail(payload);
-      case "causeTitle":
+      case "title":
         return await dataHandler.updateCauseTitle(payload);
       case "description":
         return await dataHandler.updateCauseDescription(payload);
@@ -211,7 +202,7 @@ const Profile = ({
         <div className="md:flex justify-between pt-8">
           <div className="pb-4 md:pb-0 flex items-center">
             <MdOutlineTitle className="text-indigo-400 font-bold text-2xl md:text-3xl" />
-            <p>{causeTitle.causeTitle}</p>
+            <p>{title.title}</p>
           </div>
           <ButtonMid
             buttonState={buttonStateTitle}
@@ -229,7 +220,7 @@ const Profile = ({
               event,
               changeButtonStateTitle,
               buttonStateTitle,
-              "causeTitle",
+              "title",
               updateCauseTitle,
               causeTitleFormVisibility,
               setCauseTitleFormVisiblity
