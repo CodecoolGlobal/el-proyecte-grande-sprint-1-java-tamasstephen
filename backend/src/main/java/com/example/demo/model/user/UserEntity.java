@@ -2,8 +2,13 @@ package com.example.demo.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Builder
 @Entity
@@ -12,7 +17,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Data
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -25,7 +30,11 @@ public class UserEntity {
 
     private String email;
     private String password;
-
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
+    private GrantedAuthority grantedAuthorities;
 
     public void payUser(){
         //TODO: implement payment
@@ -55,5 +64,34 @@ public class UserEntity {
         return causeProfile != null;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(grantedAuthorities);
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 }
 
