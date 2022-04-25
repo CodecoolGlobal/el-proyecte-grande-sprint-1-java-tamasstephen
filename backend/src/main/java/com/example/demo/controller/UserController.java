@@ -2,13 +2,17 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.UserEntity;
+import com.example.demo.security.jwt.JwtUtil;
 import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +23,13 @@ public class UserController {
 
     private final UserService userService;
     private final TmpUser tmpUser;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserService userService, TmpUser tmpUser) {
+    public UserController(UserService userService, TmpUser tmpUser, JwtUtil jwtUtil) {
         this.userService = userService;
         this.tmpUser = tmpUser;
+        this.jwtUtil = jwtUtil;
     }
 
     @CrossOrigin
@@ -50,15 +56,16 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody UserEntity userEntity, HttpSession session){
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserEntity userEntity, HttpServletResponse response){
         Optional<UserEntity> userOptional = userService.getUserByEmail(userEntity.getEmail());
         if (userOptional.isPresent() && userOptional.get().isValidPassword(userEntity.getPassword())){
             Map<String, String> result = new HashMap<>();
-            UserEntity regUserEntity = userOptional.get();
-            System.out.printf("The user id is %s%n", regUserEntity.getId());
-            tmpUser.setUser(regUserEntity.getId());
+            UserDetails regUserEntity = userOptional.get();
+            String token = jwtUtil.generateToken(regUserEntity);
             result.put("result", "ok");
-            return result;
+            result.put("token", token);
+//            tmpUser.setUser(regUserEntity.getId());
+            return ResponseEntity.ok().body(result);
         }
        throw new UserStatusException("Wrong email or password!");
     }
