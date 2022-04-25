@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Component("userDetailsService")
 public class UserService implements UserDetailsService {
 
     private final UserJpaDao userDao;
