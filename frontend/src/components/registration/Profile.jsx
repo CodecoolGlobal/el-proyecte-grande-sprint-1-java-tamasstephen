@@ -87,18 +87,6 @@ const Profile = ({
     event.preventDefault();
     const updateMail = event.target[targetValue].value;
     const payLoad = setPayLoadByName(targetValue, updateMail);
-    // try {
-    //   const result = await apiCallDecider(targetValue, payLoad);
-    //   console.log(result)
-    //   let updateState = updateStateByName(targetValue, result);
-    //   userUpdate(updateState);
-    //   setFormVisiblity({ ...formVisibility, visible: "hidden" });
-    //   changeButtonState({ ...buttonState, label: "Edit" });
-    //   setError({ boxState: "hidden", text: "", textState: "invisible" });
-    // } catch (error) {
-    //   console.log(error)
-    //   setError({ boxState: "", text: error.result, textState: "" });
-    // }
     const result = await apiCallDecider(targetValue, payLoad);
 
     let updateState = updateStateByName(targetValue, result);
@@ -113,7 +101,7 @@ const Profile = ({
   }
 
   function setPayLoadByName(name, updateMail) {
-    return {[name]: updateMail}
+    return { [name]: updateMail };
   }
 
   function updateStateByName(name, result) {
