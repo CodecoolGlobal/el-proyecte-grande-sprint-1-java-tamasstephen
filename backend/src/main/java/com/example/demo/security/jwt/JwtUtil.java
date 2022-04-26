@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class JwtUtil {
         }
         //for retrieveing any information from token we will need the secret key
         private Claims getAllClaimsFromToken(String token) {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            return Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token).getBody();
         }
 
         //check if the token has expired
@@ -69,7 +70,7 @@ public class JwtUtil {
         //validate token
         public Boolean validateToken(String token) {
             try {
-                Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+                Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token);
                 return true;
             } catch (SignatureException e) {
                 System.out.println(String.format("Invalid JWT signature: {}", e.getMessage()));
