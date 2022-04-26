@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 @Component
 public class CreatorProfileService {
 
-    private final CauseProfileJpaDao creatorProfileDao;
+    private final CreatorProfileDao creatorProfileDao;
 
     @Autowired
-    public CreatorProfileService(CauseProfileJpaDao creatorProfileDao) {
+    public CreatorProfileService(CreatorProfileDao creatorProfileDao) {
         this.creatorProfileDao = creatorProfileDao;
     }
 
     public List<CreatorProfile> get(String creatorName){
-        return creatorProfileDao.findAll()
+        return creatorProfileDao.getAll()
                 .stream()
                 .filter(cause -> cause.getCauseName()
                         .contains(creatorName))
@@ -31,32 +31,33 @@ public class CreatorProfileService {
     }
 
     public Optional<CreatorProfile> get(long userId){
-        return creatorProfileDao.findById(userId);
+        return creatorProfileDao.get(userId);
     }
 
     public Optional<CreatorProfile> get(UserEntity user){
-        return creatorProfileDao.findByUserEntity(user);
+        return Optional.of(user.getCauseProfile());
     }
 
     public Optional<CreatorProfile> getCreatorPageByPageLink(String pageLink){
-        return creatorProfileDao.findByPageLink(pageLink);
+        return creatorProfileDao.getCreatorPageByPageLink(pageLink);
     }
 
     public List<CreatorProfile> getContentsByCategory(Category category){
-        return creatorProfileDao.findByCategory(category);
+        return creatorProfileDao.getContentsByCategory(category);
     }
 
     public CreatorProfile add(CreatorProfile creatorProfile){
-        return creatorProfileDao.saveAndFlush(creatorProfile);
+        creatorProfileDao.add(creatorProfile);
+        return creatorProfile;
     }
 
     public List<CreatorProfile> getAll(){
-        return creatorProfileDao.findAll();
+        return creatorProfileDao.getAll();
     }
 
     public boolean isPageLinkUnique(String pageLink){
         // TODO: return findByPageLink().isEmpty();
-        return creatorProfileDao.findByPageLink(pageLink).isEmpty();
+        return creatorProfileDao.getCreatorPageByPageLink(pageLink).isEmpty();
     }
 
     // TODO: create profile update
@@ -64,18 +65,33 @@ public class CreatorProfileService {
     public void updateCreatorProfile(CreatorProfile oldProfile, CreatorProfile newProfile){
         oldProfile.setCauseName(newProfile.getCauseName());
         oldProfile.setDescription(newProfile.getDescription());
-        creatorProfileDao.saveAndFlush(oldProfile);
+        creatorProfileDao.update(oldProfile, newProfile);
     }
 
     public void updateProfileDescription(CreatorProfile profile, String description){
-        profile.setDescription(description);
-        creatorProfileDao.saveAndFlush(profile);
+            CreatorProfile newProfile = CreatorProfile.builder()
+                    .description(description)
+                    .causeName(profile.getCauseName())
+                    .profileImage(profile.getProfileImage())
+                    .id(profile.getId())
+                    .category(profile.getCategory())
+                    .build();
+            creatorProfileDao.deleteCreatorProfile(profile);
+            creatorProfileDao.add(newProfile);
+
     }
 
     public void updateProfileTitle(CreatorProfile profile, String title){
-        profile.setCauseName(title);
-        creatorProfileDao.saveAndFlush(profile);
+        CreatorProfile newProfile = CreatorProfile.builder()
+                .description(profile.getDescription())
+                .causeName(title)
+                .profileImage(profile.getProfileImage())
+                .id(profile.getId())
+                .category(profile.getCategory())
+                .build();
+        creatorProfileDao.deleteCreatorProfile(profile);
+        creatorProfileDao.add(newProfile);
 
     }
 
-}
+            }

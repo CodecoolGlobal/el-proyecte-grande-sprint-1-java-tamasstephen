@@ -13,23 +13,23 @@ import java.util.Optional;
 @Component
 public class TipService {
 
-    private final TipJpaDao tipJpaDao;
+    private final TipDao tipJpaDao;
 
     @Autowired
-    public TipService(TipJpaDao tipJpaDao) {
+    public TipService(TipDao tipJpaDao) {
         this.tipJpaDao = tipJpaDao;
     }
 
     public void add(Tip tip) {
-        tipJpaDao.save(tip);
+        tipJpaDao.add(tip);
     }
 
     public List<Tip> getCommentsByPageLink(String pageLink){
-        return tipJpaDao.findTipsByPageLink(pageLink);
+        return tipJpaDao.getCommentsByPageLink(pageLink);
     }
 
     public List<Tip> getAll() {
-        return tipJpaDao.findAll();
+        return tipJpaDao.getAll();
     }
 
 }

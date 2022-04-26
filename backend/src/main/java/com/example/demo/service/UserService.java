@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.UserDao;
 import com.example.demo.dao.implementation.UserJpaDao;
 import com.example.demo.model.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +12,35 @@ import java.util.Optional;
 @Component
 public class UserService {
 
-    private final UserJpaDao userDao;
+    private final UserDao userDao;
 
     @Autowired
-    public UserService(UserJpaDao userDao) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
 
     public void add(UserEntity userEntity){
-        userDao.save(userEntity);
+        userDao.add(userEntity);
     }
 
     public List<UserEntity> getAllUsers(){
-        return userDao.findAll();
+        return userDao.getAll();
     }
 
     public Optional<UserEntity> getUser(long id){
-        return userDao.findById(id);
+        return userDao.get(id);
     }
 
     public boolean isEmailAvailable(String email){
-        return userDao.findByEmail(email).isEmpty();
+        return userDao.getUserByEmail(email).isEmpty();
     }
 
     public Optional<UserEntity> getUserByEmail(String email){
-        return userDao.findByEmail(email);
+        return userDao.getUserByEmail(email);
     }
 
     public void deleteUser(UserEntity userEntity){
-        userDao.delete(userEntity);
+        userDao.deleteUser(userEntity);
     }
 
     public void updateUser(UserEntity prevUserEntity, UserEntity newUserEntity){
@@ -48,7 +49,7 @@ public class UserService {
         if (newUserEntity.getCauseProfile() != null){
             prevUserEntity.setCauseProfile(newUserEntity.getCauseProfile());
         }
-        userDao.save(prevUserEntity);
+        userDao.add(prevUserEntity);
     }
 
     public void updateEmail(UserEntity prevUserEntity, String email){
