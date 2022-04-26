@@ -1,3 +1,5 @@
+import { getTokenFromLocalStorage } from "../utils/util.js";
+
 export const dataHandler = {
   async getCreatorDataByLink(creatorLink) {
     const data = await this.getApi(`creator/${creatorLink}`);
@@ -42,7 +44,7 @@ export const dataHandler = {
   },
 
   async isCreatorProfileSet() {
-    return await this.getApi("creator-profile-set");
+    return await this.getApiWithBearerToken("creator-profile-set");
   },
 
   async updateEmail(payLoad) {
@@ -81,6 +83,13 @@ export const dataHandler = {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify(payload),
+    });
+    return await result.json();
+  },
+
+  async getApiWithBearerToken(endpoint){
+    const result = await fetch(`http://localhost:8080/${endpoint}`, {
+      headers: { "Authorization": `${getTokenFromLocalStorage()}` }
     });
     return await result.json();
   },
