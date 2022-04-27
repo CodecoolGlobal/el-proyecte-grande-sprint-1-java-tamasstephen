@@ -3,13 +3,17 @@ package com.example.demo.service;
 import com.example.demo.dao.implementation.UserJpaDao;
 import com.example.demo.model.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
-public class UserService {
+@Component("userDetailsService")
+public class UserService implements UserDetailsService {
 
     private final UserJpaDao userDao;
 
@@ -18,8 +22,10 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void add(UserEntity userEntity){
-        userDao.save(userEntity);
+    public UserEntity add(UserEntity userEntity){
+        userEntity.setGrantedAuthorities(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        UserEntity user = userDao.save(userEntity);
+        return user;
     }
 
     public List<UserEntity> getAllUsers(){
@@ -62,4 +68,8 @@ public class UserService {
 
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userDao.findByEmail(username).orElse(null);
+    }
 }

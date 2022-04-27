@@ -44,6 +44,7 @@ const Login = ({ setLoginState }) => {
   async function handleLoginResponse(response) {
     if (response.result === "ok") {
       setLoginState({ logout: "", login: "hidden" });
+      localStorage.setItem("login_token", response.token);
       const contentResponse = await dataHandler.isCreatorProfileSet();
       if (contentResponse.result === "ok") {
         navigate("/");

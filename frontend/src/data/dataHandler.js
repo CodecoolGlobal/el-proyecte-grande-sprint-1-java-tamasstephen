@@ -1,3 +1,5 @@
+import { getTokenFromLocalStorage } from "../utils/util.js";
+
 export const dataHandler = {
   async getCreatorDataByLink(creatorLink) {
     const data = await this.getApi(`creator/${creatorLink}`);
@@ -22,7 +24,7 @@ export const dataHandler = {
   },
 
   async logout() {
-    return await this.getApi("logout");
+    return await this.getApiWithBearerToken("logmeout");
   },
 
   async getAllCauses() {
@@ -38,20 +40,20 @@ export const dataHandler = {
   },
 
   async getProfile() {
-    return await this.getApi("user-profile");
+    return await this.getApiWithBearerToken("user-profile");
   },
 
   async isCreatorProfileSet() {
-    return await this.getApi("creator-profile-set");
+    return await this.getApiWithBearerToken("creator-profile-set");
   },
 
   async updateEmail(payLoad) {
     return await this.putApi("user/email", payLoad);
   },
-  async updateCauseTitle(payload){
+  async updateCauseTitle(payload) {
     return await this.putApi("user-profile/title", payload);
   },
-  async updateCauseDescription(payload){
+  async updateCauseDescription(payload) {
     return await this.putApi("user-profile/description", payload);
   },
 
@@ -64,11 +66,12 @@ export const dataHandler = {
     const result = await fetch("http://localhost:8080/creator-profile", {
       method: "POST",
       body: formData,
+      headers: { Authorization: `${getTokenFromLocalStorage()}` },
     });
     return await result.json();
   },
 
-  sendTextJson(endpoint, payload) {
+  async sendTextJson(endpoint, payload) {
     return fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Content-Type": "application/json" },
       method: "POST",
@@ -85,9 +88,20 @@ export const dataHandler = {
     return await result.json();
   },
 
+  async getApiWithBearerToken(endpoint) {
+    console.log(`http://localhost:8080/${endpoint}`);
+    const result = await fetch(`http://localhost:8080/${endpoint}`, {
+      headers: { Authorization: `${getTokenFromLocalStorage()}` },
+    });
+    return await result.json();
+  },
+
   async putApi(endpoint, payLoad) {
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${getTokenFromLocalStorage()}`,
+      },
       method: "PUT",
       body: JSON.stringify(payLoad),
     });

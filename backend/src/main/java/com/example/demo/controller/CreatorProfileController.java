@@ -9,21 +9,20 @@ import com.example.demo.model.user.CreatorProfile;
 import com.example.demo.model.user.UserEntity;
 import com.example.demo.service.CreatorProfileService;
 import com.example.demo.service.TipService;
-import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.FileHandler;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -36,19 +35,17 @@ public class CreatorProfileController {
     private final CreatorProfileService creatorProfileService;
     private final TipService tipService;
     private final FileHandler fileHandler;
-    private final TmpUser tmpUser;
 
     @Autowired
     public CreatorProfileController(UserService userService,
                                     CreatorProfileService creatorProfileService,
                                     TipService tipService,
-                                    FileHandler fileHandler,
-                                    TmpUser tmpUser) {
+                                    FileHandler fileHandler
+                                    ) {
         this.userService = userService;
         this.creatorProfileService = creatorProfileService;
         this.tipService = tipService;
         this.fileHandler = fileHandler;
-        this.tmpUser = tmpUser;
     }
 
 //TODO: remove content url from profile class -> we are going to collect for caouses
@@ -60,10 +57,9 @@ public class CreatorProfileController {
             @RequestPart("description") String description,
             @RequestPart("pageLink") String pageLink,
             @RequestPart("category") String category,
-            HttpSession session){
+            Authentication authentication){
 
-        Long userId = tmpUser.getUser();
-
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         Map<String, String> result = new HashMap<>();
         if (userId == null){
             throw new UserStatusException("You have to log in to create a cuase");
@@ -96,8 +92,8 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PutMapping("/creator-profile")
-    public Map<String, String> updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, HttpSession session){
-        Long userId = tmpUser.getUser();
+    public Map<String, String> updateCreatorProfile(@RequestBody CreatorProfile creatorProfile, Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         Optional<UserEntity> userEntity = userService.getUser(userId);
         Optional<CreatorProfile> profile;
         Map<String, String> result = new HashMap<>();
@@ -119,8 +115,8 @@ public class CreatorProfileController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/user-profile")
-    public ResponseEntity<ProfileModel> getProfileData(){
-        Long userId = tmpUser.getUser();
+    public ResponseEntity<ProfileModel> getProfileData(Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         if (userId == null){
             throw new UserStatusException("Please log in to check your profile");
         }
@@ -134,6 +130,7 @@ public class CreatorProfileController {
         if(profileOption != null){
             model.setProfile(profileOption);
         }
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
@@ -211,28 +208,28 @@ public class CreatorProfileController {
 
     @CrossOrigin
     @PutMapping("/user-profile/description")
-    public ResponseEntity<Map<String, String>> updateDescription(@RequestBody Map<String, String> description){
+    public ResponseEntity<Map<String, String>> updateDescription(@RequestBody Map<String, String> description, Authentication authentication){
         Map<String, String> result = new HashMap<>();
-        CreatorProfile causeProfile = getCreatorProfile();
+        CreatorProfile causeProfile = getCreatorProfile(authentication);
         creatorProfileService.updateProfileDescription(causeProfile, description.get("description"));
         result.put("result", "ok");
-        result.put("description", getCreatorProfile().getDescription());
+        result.put("description", getCreatorProfile(authentication).getDescription());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @CrossOrigin
     @PutMapping("/user-profile/title")
-    public ResponseEntity<Map<String, String>> updateTitle(@RequestBody Map<String, String> title){
+    public ResponseEntity<Map<String, String>> updateTitle(@RequestBody Map<String, String> title, Authentication authentication){
         Map<String, String> result = new HashMap<>();
-        CreatorProfile causeProfile = getCreatorProfile();
+        CreatorProfile causeProfile = getCreatorProfile(authentication);
         creatorProfileService.updateProfileTitle(causeProfile, title.get("title"));
         result.put("result", "ok");
-        result.put("title", getCreatorProfile().getCauseName());
+        result.put("title", getCreatorProfile(authentication).getCauseName());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    private CreatorProfile getCreatorProfile() throws UserStatusException{
-        Long userId = tmpUser.getUser();
+    private CreatorProfile getCreatorProfile(Authentication authentication) throws UserStatusException{
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         if (userId == null)
             throw new UserStatusException("Please log in to continue");
         Optional<UserEntity> userEntityOptional = userService.getUser(userId);

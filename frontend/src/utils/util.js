@@ -18,3 +18,8 @@ export const fetchImages = async (listOfCauses, stateHandler) => {
   stateHandler(() => [...newCauses]);
 };
 
+export function getTokenFromLocalStorage(){
+    const token = localStorage.getItem("login_token");
+    return "Bearer " + token;
+}
+

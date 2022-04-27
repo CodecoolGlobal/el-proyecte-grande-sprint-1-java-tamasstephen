@@ -2,13 +2,20 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.UserEntity;
+import com.example.demo.security.jwt.JwtUtil;
 import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +25,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final TmpUser tmpUser;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserService userService, TmpUser tmpUser) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
-        this.tmpUser = tmpUser;
+        this.jwtUtil = jwtUtil;
     }
 
     @CrossOrigin
@@ -31,9 +38,10 @@ public class UserController {
     public Map<String, String> add(@RequestBody UserEntity userEntity, HttpSession session){
         if (userService.isEmailAvailable(userEntity.getEmail())){
             Map<String, String> result = new HashMap<>();
-            userService.add(userEntity);
-            tmpUser.setUser(userEntity.getId());
+            UserEntity myUser = userService.add(userEntity);
             result.put("result", "ok");
+            String token = jwtUtil.generateToken(myUser);
+            result.put("token", token);
             return result;
         }
         throw new UserStatusException("The provided email is already taken.");
@@ -50,23 +58,26 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody UserEntity userEntity, HttpSession session){
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserEntity userEntity, HttpServletResponse response){
         Optional<UserEntity> userOptional = userService.getUserByEmail(userEntity.getEmail());
         if (userOptional.isPresent() && userOptional.get().isValidPassword(userEntity.getPassword())){
             Map<String, String> result = new HashMap<>();
-            UserEntity regUserEntity = userOptional.get();
-            System.out.printf("The user id is %s%n", regUserEntity.getId());
-            tmpUser.setUser(regUserEntity.getId());
+            UserDetails regUserEntity = userOptional.get();
+            String token = jwtUtil.generateToken(regUserEntity);
             result.put("result", "ok");
-            return result;
+            result.put("token", token);
+            return ResponseEntity.ok().body(result);
         }
        throw new UserStatusException("Wrong email or password!");
     }
 
     @CrossOrigin
-    @GetMapping("/logout")
-    public Map<String, String> logout(){
-       tmpUser.removeUser();
+    @GetMapping("/logmeout")
+    public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response){
+       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+       if(authentication != null){
+           new SecurityContextLogoutHandler().logout(request, response, authentication);
+       }
        Map<String, String> resp = new HashMap<>();
        resp.put("result", "ok");
        return resp;
@@ -83,10 +94,10 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public void updateProfile(@RequestBody UserEntity userEntity, HttpSession session){
-        if(tmpUser.getUser() != null){
-            Long id = (Long) session.getAttribute("userId");
-            UserEntity prevUserEntity = userService.getUser(id).get();
+    public void updateProfile(@RequestBody UserEntity userEntity, Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
+        if(userId != null){
+            UserEntity prevUserEntity = userService.getUser(userId).get();
             userService.updateUser(prevUserEntity, userEntity);
         }
         throw new UserStatusException("You have to login to update your profile!");
@@ -95,9 +106,9 @@ public class UserController {
     //TODO: hide the logic in the service
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/user/email")
-    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail){
+    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail, Authentication authentication){
         String nextEmail = myMail.get("email");
-        Long id = tmpUser.getUser();
+        Long id = userService.getUserByEmail(authentication.getName()).get().getId();
         System.out.println(id);
         if (id == null) throw new UserStatusException("You need to log in to proceed!");
         Optional<UserEntity> userOptional = userService.getUser(id);
@@ -113,8 +124,8 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/creator-profile-set")
-    public ResponseEntity<Map<String, String>> isUserContentSet(){
-        Long userId = tmpUser.getUser();
+    public ResponseEntity<Map<String, String>> isUserContentSet(Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         Optional<UserEntity> userOption = userService.getUser(userId);
         Map<String, String> result = new HashMap<>();
         boolean contentStatus =  userOption.map(UserEntity::isCreatorProfileAvailable).orElse(false);

@@ -39,6 +39,7 @@ const UserRegistration = ({ setLoginState }) => {
     const result = await dataHandler.registerUser(payLoad);
     if (result.result === "ok") {
       setLoginState({ logout: "", login: "hidden" });
+      localStorage.setItem("login_token", result.token);
       navigate("/cause-registration");
     } else {
       setError({ boxState: "", text: result.message, textState: "" });

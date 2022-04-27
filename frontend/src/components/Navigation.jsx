@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import MenuDrawer from "./MenuDrawer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dataHandler } from "../data/dataHandler";
 
 export const Navigation = ({ userLogin, setLoginState }) => {
+
+  const navigate = useNavigate();
+
   const [drawerState, changeState] = useState("translate-x-full invisible");
 
   function changeMenuState() {
@@ -17,7 +20,9 @@ export const Navigation = ({ userLogin, setLoginState }) => {
 
   async function logout() {
     await dataHandler.logout();
+    localStorage.removeItem("login_token");
     setLoginState({ logout: " hidden", login: "" });
+    navigate("/");
   }
 
   return (
