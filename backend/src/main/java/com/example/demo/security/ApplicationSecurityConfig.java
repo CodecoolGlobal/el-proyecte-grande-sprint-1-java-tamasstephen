@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -49,9 +50,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user",
                         "/login",
                         "/creator-profile").permitAll()
-                .antMatchers("/creator-profile-set").hasAnyRole("CUSTOMER")
+                .antMatchers("/creator-profile-set",
+                        "/user-profile",
+                        "/logout").hasAnyRole("CUSTOMER")
+
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .logout()
+                .permitAll();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
