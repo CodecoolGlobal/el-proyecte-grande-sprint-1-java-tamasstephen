@@ -50,10 +50,10 @@ export const dataHandler = {
   async updateEmail(payLoad) {
     return await this.putApi("user/email", payLoad);
   },
-  async updateCauseTitle(payload){
+  async updateCauseTitle(payload) {
     return await this.putApi("user-profile/title", payload);
   },
-  async updateCauseDescription(payload){
+  async updateCauseDescription(payload) {
     return await this.putApi("user-profile/description", payload);
   },
 
@@ -71,7 +71,7 @@ export const dataHandler = {
     return await result.json();
   },
 
-  sendTextJson(endpoint, payload) {
+  async sendTextJson(endpoint, payload) {
     return fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Content-Type": "application/json" },
       method: "POST",
@@ -88,17 +88,20 @@ export const dataHandler = {
     return await result.json();
   },
 
-  async getApiWithBearerToken(endpoint){
+  async getApiWithBearerToken(endpoint) {
     console.log(`http://localhost:8080/${endpoint}`);
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
-      headers: { "Authorization": `${getTokenFromLocalStorage()}` }
+      headers: { Authorization: `${getTokenFromLocalStorage()}` },
     });
     return await result.json();
   },
 
   async putApi(endpoint, payLoad) {
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${getTokenFromLocalStorage()}`,
+      },
       method: "PUT",
       body: JSON.stringify(payLoad),
     });
