@@ -24,7 +24,7 @@ export const dataHandler = {
   },
 
   async logout() {
-    return await this.getApi("logout");
+    return await this.getApiWithBearerToken("logout");
   },
 
   async getAllCauses() {
@@ -40,7 +40,7 @@ export const dataHandler = {
   },
 
   async getProfile() {
-    return await this.getApi("user-profile");
+    return await this.getApiWithBearerToken("user-profile");
   },
 
   async isCreatorProfileSet() {
@@ -88,6 +88,7 @@ export const dataHandler = {
   },
 
   async getApiWithBearerToken(endpoint){
+    console.log(endpoint);
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Authorization": `${getTokenFromLocalStorage()}` }
     });
