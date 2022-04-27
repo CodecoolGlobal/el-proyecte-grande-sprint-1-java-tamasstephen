@@ -8,10 +8,14 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -72,8 +76,12 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/logout")
-    public Map<String, String> logout(){
-       tmpUser.removeUser();
+    public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("Tomi mindig csinos és egy kis cica");
+       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+       if(authentication != null){
+           new SecurityContextLogoutHandler().logout(request, response, authentication);
+       }
        Map<String, String> resp = new HashMap<>();
        resp.put("result", "ok");
        return resp;
@@ -120,8 +128,8 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/creator-profile-set")
-    public ResponseEntity<Map<String, String>> isUserContentSet(){
-        Long userId = tmpUser.getUser();
+    public ResponseEntity<Map<String, String>> isUserContentSet(Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         Optional<UserEntity> userOption = userService.getUser(userId);
         Map<String, String> result = new HashMap<>();
         boolean contentStatus =  userOption.map(UserEntity::isCreatorProfileAvailable).orElse(false);
