@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @CrossOrigin
-    @GetMapping("/logout")
+    @GetMapping("/logmeout")
     public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response){
         System.out.println("Tomi mindig csinos és egy kis cica");
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

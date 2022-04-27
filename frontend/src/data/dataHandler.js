@@ -24,7 +24,7 @@ export const dataHandler = {
   },
 
   async logout() {
-    return await this.getApiWithBearerToken("logout");
+    return await this.getApiWithBearerToken("logmeout");
   },
 
   async getAllCauses() {
@@ -88,7 +88,7 @@ export const dataHandler = {
   },
 
   async getApiWithBearerToken(endpoint){
-    console.log(endpoint);
+    console.log(`http://localhost:8080/${endpoint}`);
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
       headers: { "Authorization": `${getTokenFromLocalStorage()}` }
     });

@@ -21,7 +21,7 @@ export const Navigation = ({ userLogin, setLoginState }) => {
   async function logout() {
     await dataHandler.logout();
     setLoginState({ logout: " hidden", login: "" });
-    navigate("/");
+    //navigate("/");
   }
 
   return (
