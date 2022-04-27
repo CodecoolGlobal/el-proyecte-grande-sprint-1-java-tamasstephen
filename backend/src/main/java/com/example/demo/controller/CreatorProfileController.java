@@ -19,6 +19,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -119,8 +121,8 @@ public class CreatorProfileController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/user-profile")
-    public ResponseEntity<ProfileModel> getProfileData(){
-        Long userId = tmpUser.getUser();
+    public ResponseEntity<ProfileModel> getProfileData(Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
         if (userId == null){
             throw new UserStatusException("Please log in to check your profile");
         }
@@ -134,6 +136,7 @@ public class CreatorProfileController {
         if(profileOption != null){
             model.setProfile(profileOption);
         }
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
