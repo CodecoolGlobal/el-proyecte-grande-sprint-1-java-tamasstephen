@@ -20,8 +20,9 @@ export const Navigation = ({ userLogin, setLoginState }) => {
 
   async function logout() {
     await dataHandler.logout();
+    localStorage.removeItem("login_token");
     setLoginState({ logout: " hidden", login: "" });
-    //navigate("/");
+    navigate("/");
   }
 
   return (

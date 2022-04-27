@@ -66,6 +66,7 @@ export const dataHandler = {
     const result = await fetch("http://localhost:8080/creator-profile", {
       method: "POST",
       body: formData,
+      headers: { Authorization: `${getTokenFromLocalStorage()}` },
     });
     return await result.json();
   },

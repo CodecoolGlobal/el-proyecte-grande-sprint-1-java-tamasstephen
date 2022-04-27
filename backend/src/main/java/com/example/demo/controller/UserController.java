@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,13 +25,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final TmpUser tmpUser;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserService userService, TmpUser tmpUser, JwtUtil jwtUtil) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
-        this.tmpUser = tmpUser;
         this.jwtUtil = jwtUtil;
     }
 
@@ -41,9 +38,10 @@ public class UserController {
     public Map<String, String> add(@RequestBody UserEntity userEntity, HttpSession session){
         if (userService.isEmailAvailable(userEntity.getEmail())){
             Map<String, String> result = new HashMap<>();
-            userService.add(userEntity);
-            tmpUser.setUser(userEntity.getId());
+            UserEntity myUser = userService.add(userEntity);
             result.put("result", "ok");
+            String token = jwtUtil.generateToken(myUser);
+            result.put("token", token);
             return result;
         }
         throw new UserStatusException("The provided email is already taken.");
@@ -68,7 +66,6 @@ public class UserController {
             String token = jwtUtil.generateToken(regUserEntity);
             result.put("result", "ok");
             result.put("token", token);
-//            tmpUser.setUser(regUserEntity.getId());
             return ResponseEntity.ok().body(result);
         }
        throw new UserStatusException("Wrong email or password!");
@@ -77,7 +74,6 @@ public class UserController {
     @CrossOrigin
     @GetMapping("/logmeout")
     public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("Tomi mindig csinos és egy kis cica");
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
        if(authentication != null){
            new SecurityContextLogoutHandler().logout(request, response, authentication);
@@ -98,10 +94,10 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public void updateProfile(@RequestBody UserEntity userEntity, HttpSession session){
-        if(tmpUser.getUser() != null){
-            Long id = (Long) session.getAttribute("userId");
-            UserEntity prevUserEntity = userService.getUser(id).get();
+    public void updateProfile(@RequestBody UserEntity userEntity, Authentication authentication){
+        Long userId = userService.getUserByEmail(authentication.getName()).get().getId();
+        if(userId != null){
+            UserEntity prevUserEntity = userService.getUser(userId).get();
             userService.updateUser(prevUserEntity, userEntity);
         }
         throw new UserStatusException("You have to login to update your profile!");
@@ -110,9 +106,9 @@ public class UserController {
     //TODO: hide the logic in the service
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/user/email")
-    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail){
+    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail, Authentication authentication){
         String nextEmail = myMail.get("email");
-        Long id = tmpUser.getUser();
+        Long id = userService.getUserByEmail(authentication.getName()).get().getId();
         System.out.println(id);
         if (id == null) throw new UserStatusException("You need to log in to proceed!");
         Optional<UserEntity> userOptional = userService.getUser(id);

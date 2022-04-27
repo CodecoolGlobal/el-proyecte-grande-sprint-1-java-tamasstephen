@@ -22,9 +22,10 @@ public class UserService implements UserDetailsService {
         this.userDao = userDao;
     }
 
-    public void add(UserEntity userEntity){
+    public UserEntity add(UserEntity userEntity){
         userEntity.setGrantedAuthorities(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
-        userDao.save(userEntity);
+        UserEntity user = userDao.save(userEntity);
+        return user;
     }
 
     public List<UserEntity> getAllUsers(){
