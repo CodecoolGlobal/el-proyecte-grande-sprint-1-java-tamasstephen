@@ -1,6 +1,7 @@
 import { data } from 'autoprefixer';
 import React, { useEffect, useState } from 'react'
 import { dataHandler } from '../data/dataHandler';
+import User from './model/User';
 
 const UserPage = () => {
   const [users, setUsers] = useState({});
@@ -17,7 +18,11 @@ const UserPage = () => {
 
 
   return (
-    <div>users</div>
+    <div>
+      {users.map((user, index) => (
+        <User key={index} user={user}/>
+      ))}
+    </div>
   )
 }
 

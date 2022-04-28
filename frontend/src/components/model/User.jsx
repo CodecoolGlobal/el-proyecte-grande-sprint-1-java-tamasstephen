@@ -1,8 +1,12 @@
 import React from 'react'
 
-const User = () => {
+const User = ({user}) => {
   return (
-    <div>User</div>
+    <div>
+      <p>
+        {user}
+      </p>
+    </div>
   )
 }
 
