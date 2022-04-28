@@ -47,7 +47,7 @@ const Login = ({ setLoginState }) => {
       localStorage.setItem("login_token", response.token);
       localStorage.setItem("isAdmin", response.isAdmin);
       const contentResponse = await dataHandler.isCreatorProfileSet();
-      if (contentResponse.result === "ok") {
+      if (contentResponse.result && response.isAdmin === false === "ok") {
         navigate("/");
       } else {
         navigate("/cause-registration");
