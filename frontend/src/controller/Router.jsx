@@ -17,24 +17,23 @@ const Router = () => {
     login: "",
   });
 
-  // 'hi'.length === 2 ? 'hello world' : 'test'
-  
-  const [adminState, setAdminState] = useState(
-    localStorage.isAdmin === true
-      ? { btnForAdmin: "", btnForUser: "hidden" }
-      : { btnForAdmin: "hidden", btnForUser: "" }
-  );
-
-  // console.log(adminState);
-  // console.log(adminState.btnForAdmin);
-  // console.log(adminState.btnForUser);
-  // console.log(adminState.btnForAdmin);
+  const [adminState, setAdminState] = useState({
+    btnForAdmin: "hidden",
+    btnForUser: "",
+  });
 
   return (
     <Routes>
       <Route
         path="/"
-        element={<App setLoginState={setLoginState} userLogin={userLogin} adminState={adminState} />}
+        element={
+          <App
+            setLoginState={setLoginState}
+            userLogin={userLogin}
+            adminState={adminState}
+            setAdminState={setAdminState}
+          />
+        }
       >
         <Route index element={<Landing />} />
         <Route path=":creatorLink" element={<CausePage />} />
@@ -49,7 +48,7 @@ const Router = () => {
         ></Route>
         <Route path="cause-registration" element={<CauseRegistration />} />
         <Route path="success" element={<DonationSuccess />} />
-        <Route path="login" element={<Login setLoginState={setLoginState} />} />
+        <Route path="login" element={<Login setLoginState={setLoginState} setAdminState={setAdminState} />} />
         <Route path="profile" element={<ProfileWrapper />} />
         <Route path="explore" element={<ExploreContainer />} />
         <Route path="explore/:searchParameter" element={<ExploreContainer />} />
