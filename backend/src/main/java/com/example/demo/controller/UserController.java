@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.UserEntity;
 import com.example.demo.security.jwt.JwtUtil;
-import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -134,6 +134,16 @@ public class UserController {
         } else {
             result.put("result", "error");
         }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @CrossOrigin
+    @GetMapping("/admin/users")
+    public ResponseEntity<Map<String, List<String>>> getUsers(){
+        List<String> customers = userService.getAllCustomers();
+        System.out.println("omg");
+        Map<String, List<String>> result = new HashMap<>();
+        result.put("customers", customers);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
