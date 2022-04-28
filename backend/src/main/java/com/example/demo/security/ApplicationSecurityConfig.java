@@ -49,6 +49,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/creator/{pageLink}",
                         "/user",
                         "/login",
+                        "/admin/users",
                         "/creator-profile").permitAll()
                 .antMatchers("/creator-profile-set",
                         "/user-profile",

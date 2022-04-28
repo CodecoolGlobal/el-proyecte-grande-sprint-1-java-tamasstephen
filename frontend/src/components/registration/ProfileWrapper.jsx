@@ -14,7 +14,7 @@ const ProfileWrapper = () => {
 
     getUserProfile().then((profile) => {
       console.log(profile);
-      updateUser({ email: profile.userEntity.email });
+      updateUser({ email: profile.email });
       updateDescription({description: profile.profile.description})
       updateCauseTitle({title: profile.profile.causeName})
     });

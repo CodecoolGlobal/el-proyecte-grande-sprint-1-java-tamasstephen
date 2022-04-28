@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.configuration.AdminInit;
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.UserEntity;
 import com.example.demo.security.jwt.JwtUtil;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -28,9 +30,10 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserService userService, JwtUtil jwtUtil) {
+    public UserController(UserService userService, JwtUtil jwtUtil, AdminInit adminInit) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        adminInit.initAdmin();
     }
 
     @CrossOrigin
@@ -64,8 +67,10 @@ public class UserController {
             Map<String, String> result = new HashMap<>();
             UserDetails regUserEntity = userOptional.get();
             String token = jwtUtil.generateToken(regUserEntity);
+            boolean isAdmin = userOptional.get().isAdmin();
             result.put("result", "ok");
             result.put("token", token);
+            result.put("isAdmin", String.valueOf(isAdmin));
             return ResponseEntity.ok().body(result);
         }
        throw new UserStatusException("Wrong email or password!");

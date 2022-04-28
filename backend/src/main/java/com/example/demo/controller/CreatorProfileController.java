@@ -121,12 +121,12 @@ public class CreatorProfileController {
             throw new UserStatusException("Please log in to check your profile");
         }
         UserEntity userEntity = userService.getUser(userId).get();
-        UserEntity userEntityToReturn = UserEntity.builder().email(userEntity.getEmail()).build();
+        String email = userEntity.getEmail();
 
         CreatorProfile profileOption = userEntity.getCauseProfile();
 
         ProfileModel model = ProfileModel.builder()
-                .userEntity(userEntityToReturn).build();
+                .email(email).build();
         if(profileOption != null){
             model.setProfile(profileOption);
         }

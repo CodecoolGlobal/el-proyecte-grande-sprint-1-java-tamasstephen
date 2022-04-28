@@ -29,6 +29,12 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public UserEntity addAdmin(UserEntity userEntity){
+        userEntity.setGrantedAuthorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        UserEntity user = userDao.save(userEntity);
+        return user;
+    }
+
     public List<UserEntity> getAllUsers(){
         return userDao.findAll();
     }
@@ -71,6 +77,10 @@ public class UserService implements UserDetailsService {
     public List<String> getAllCustomers(){
         return userDao.findByGrantedAuthorities(new SimpleGrantedAuthority("ROLE_CUSTOMER"))
                 .stream().map(UserEntity::getEmail).collect(Collectors.toList());
+    }
+
+    public boolean isAdminCreated(){
+        return userDao.findAll().stream().anyMatch(UserEntity::isAdmin);
     }
 
     @Override

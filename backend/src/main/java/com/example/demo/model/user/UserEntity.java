@@ -64,6 +64,10 @@ public class UserEntity implements UserDetails {
         return causeProfile != null;
     }
 
+    public boolean isAdmin(){
+        return grantedAuthorities.getAuthority().equals("ROLE_ADMIN");
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return grantedAuthorities == null ? List.of() : List.of(grantedAuthorities);

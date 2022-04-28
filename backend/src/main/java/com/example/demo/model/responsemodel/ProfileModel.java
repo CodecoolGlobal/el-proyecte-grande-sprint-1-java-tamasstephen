@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class ProfileModel {
 
-    private UserEntity userEntity;
+    private String email;
     private CreatorProfile profile;
 
 }
