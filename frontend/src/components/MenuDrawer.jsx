@@ -22,7 +22,10 @@ const MenuDrawer = ({ menuState, stateChanger, userLogin, logout }) => {
       <div className="absolute top-6 right-6" onClick={closeModal}>
         <HiX className="text-xl" />
       </div>
-      <ul className="text-slate-700 text-3xl font-bold">
+      <ul className={"text-slate-700 text-3xl font-bold" + "isAdminState"}>
+        <li className={"py-4 " + "isAdminState"}>
+          <Link to="users">Users</Link>
+        </li>
         <li onClick={closeModal}>
           <Link to="/explore">Explore</Link>
         </li>
