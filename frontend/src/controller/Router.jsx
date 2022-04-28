@@ -40,7 +40,7 @@ const Router = () => {
         <Route path="profile" element={<ProfileWrapper />} />
         <Route path="explore" element={<ExploreContainer />} />
         <Route path="explore/:searchParameter" element={<ExploreContainer />} />
-        <Route path="user" element={<UserPage/>}/>
+        <Route path="users" element={<UserPage/>}/>
       </Route>
     </Routes>
   );
