@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const User = ({user}) => {
+const User = ({ user }) => {
   return (
-    <div>
-      <p>
-        {user}
-      </p>
+    <div >
+      <li className="mb-4 font-medium text-lg md:text-xl text-indigo-900 pl-1 rounded-md	">{user}</li>
     </div>
-  )
-}
+  );
+};
 
-export default User
+export default User;
