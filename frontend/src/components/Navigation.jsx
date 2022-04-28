@@ -4,7 +4,7 @@ import MenuDrawer from "./MenuDrawer";
 import { Link, useNavigate } from "react-router-dom";
 import { dataHandler } from "../data/dataHandler";
 
-export const Navigation = ({ userLogin, setLoginState, adminState }) => {
+export const Navigation = ({ userLogin, setLoginState, adminState, setAdminState }) => {
   const navigate = useNavigate();
 
   const [drawerState, changeState] = useState("translate-x-full invisible");
@@ -20,7 +20,9 @@ export const Navigation = ({ userLogin, setLoginState, adminState }) => {
   async function logout() {
     await dataHandler.logout();
     localStorage.removeItem("login_token");
+    localStorage.removeItem("isAdmin");
     setLoginState({ logout: " hidden", login: "" });
+    setAdminState({ btnForAdmin: "hidden", btnForUser: "" });
     navigate("/");
   }
 
@@ -44,7 +46,7 @@ export const Navigation = ({ userLogin, setLoginState, adminState }) => {
           </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
-          <li className={"pl-7" + adminState["btnForAdmin"]}>
+          <li className={"pl-7 " + adminState["btnForAdmin"]}>
             <Link to="users">Users</Link>
           </li>
           <li className="pl-7">
@@ -56,7 +58,7 @@ export const Navigation = ({ userLogin, setLoginState, adminState }) => {
           <li className={"pl-7 " + userLogin["login"]}>
             <Link to="/userEntity-registration">Create a Cause</Link>
           </li>
-          <li className={"pl-7 " + userLogin["logout"]}>
+          <li className={"pl-7 " + userLogin["logout"] + " "  + adminState["btnForUser"]}>
             <Link to="/profile">Profile</Link>
           </li>
           <li className={"pl-6 " + userLogin["logout"]} onClick={logout}>

@@ -11,6 +11,7 @@ const MenuDrawer = ({ menuState, stateChanger, userLogin, logout, adminState }) 
     logout();
     closeModal();
   }
+  console.log(adminState["btnForUser"])
 
   return (
     <div
@@ -35,7 +36,7 @@ const MenuDrawer = ({ menuState, stateChanger, userLogin, logout, adminState }) 
         <li onClick={closeModal} className={userLogin["login"]}>
           <Link to="userEntity-registration">Sign Up</Link>
         </li>
-        <li onClick={closeModal} className={"py-4 " + userLogin["logout"]}>
+        <li onClick={closeModal} className={"py-4 " + userLogin["logout"] +  + adminState["btnForUser"]}>
           <Link to="/profile">Profile</Link>
         </li>
         <li className={userLogin["logout"]}>
