@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { dataHandler } from "../data/dataHandler";
 
 export const Navigation = ({ userLogin, setLoginState }) => {
-
   const navigate = useNavigate();
 
   const [drawerState, changeState] = useState("translate-x-full invisible");
@@ -43,6 +42,9 @@ export const Navigation = ({ userLogin, setLoginState }) => {
           </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
+          <li className={"pl-7" + "isAdminState"}>
+            <Link to="users">Users</Link>
+          </li>
           <li className="pl-7">
             <Link to="/explore">Explore</Link>
           </li>
