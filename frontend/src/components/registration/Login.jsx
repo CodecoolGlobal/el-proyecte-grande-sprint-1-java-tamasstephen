@@ -45,6 +45,7 @@ const Login = ({ setLoginState }) => {
     if (response.result === "ok") {
       setLoginState({ logout: "", login: "hidden" });
       localStorage.setItem("login_token", response.token);
+      localStorage.setItem("isAdmin", response.isAdmin);
       const contentResponse = await dataHandler.isCreatorProfileSet();
       if (contentResponse.result === "ok") {
         navigate("/");
