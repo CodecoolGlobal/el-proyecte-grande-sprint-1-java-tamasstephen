@@ -56,6 +56,9 @@ export const dataHandler = {
   async updateCauseDescription(payload) {
     return await this.putApi("user-profile/description", payload);
   },
+  async getAllUser(){
+    return await this.getApiWithBearerToken("admin/users");
+  },
 
   async getApi(endpoint) {
     const result = await fetch(`http://localhost:8080/${endpoint}`);
