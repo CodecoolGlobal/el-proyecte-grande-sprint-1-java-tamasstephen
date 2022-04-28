@@ -109,7 +109,6 @@ public class UserController {
     public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail, Authentication authentication){
         String nextEmail = myMail.get("email");
         Long id = userService.getUserByEmail(authentication.getName()).get().getId();
-        System.out.println(id);
         if (id == null) throw new UserStatusException("You need to log in to proceed!");
         Optional<UserEntity> userOptional = userService.getUser(id);
         if (userOptional.isEmpty()) throw new UserStatusException("User does not exist");
@@ -141,7 +140,6 @@ public class UserController {
     @GetMapping("/admin/users")
     public ResponseEntity<Map<String, List<String>>> getUsers(){
         List<String> customers = userService.getAllCustomers();
-        System.out.println("omg");
         Map<String, List<String>> result = new HashMap<>();
         result.put("customers", customers);
         return ResponseEntity.status(HttpStatus.OK).body(result);
