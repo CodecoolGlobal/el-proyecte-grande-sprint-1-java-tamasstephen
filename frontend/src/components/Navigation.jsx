@@ -4,7 +4,7 @@ import MenuDrawer from "./MenuDrawer";
 import { Link, useNavigate } from "react-router-dom";
 import { dataHandler } from "../data/dataHandler";
 
-export const Navigation = ({ userLogin, setLoginState }) => {
+export const Navigation = ({ userLogin, setLoginState, adminState }) => {
   const navigate = useNavigate();
 
   const [drawerState, changeState] = useState("translate-x-full invisible");
@@ -31,6 +31,8 @@ export const Navigation = ({ userLogin, setLoginState }) => {
         stateChanger={changeMenuState}
         userLogin={userLogin}
         logout={logout}
+        adminState={adminState}
+
       />
       <div className="p-4 flex justify-between container mx-xl  content-center md:px-0 ">
         <div className="logo">
@@ -42,7 +44,7 @@ export const Navigation = ({ userLogin, setLoginState }) => {
           </Link>
         </div>
         <ul className="hidden md:flex text-indigo-900 font-bold tracking-tight">
-          <li className={"pl-7" + "isAdminState"}>
+          <li className={"pl-7" + adminState["btnForAdmin"]}>
             <Link to="users">Users</Link>
           </li>
           <li className="pl-7">
