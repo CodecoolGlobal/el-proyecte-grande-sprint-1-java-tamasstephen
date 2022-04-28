@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component("userDetailsService")
 public class UserService implements UserDetailsService {
@@ -65,7 +66,11 @@ public class UserService implements UserDetailsService {
                 .id(prevUserEntity.getId())
                 .build();
         updateUser(prevUserEntity, newUserEntity);
+    }
 
+    public List<String> getAllCustomers(){
+        return userDao.findByGrantedAuthorities(new SimpleGrantedAuthority("ROLE_CUSTOMER"))
+                .stream().map(UserEntity::getEmail).collect(Collectors.toList());
     }
 
     @Override
