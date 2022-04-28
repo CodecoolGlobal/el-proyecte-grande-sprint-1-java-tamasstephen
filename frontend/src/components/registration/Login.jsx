@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Submit from "./Submit";
 import Error from "./Error";
 
-const Login = ({ setLoginState }) => {
+const Login = ({ setLoginState, setAdminState }) => {
   const navigate = useNavigate();
   const [errorState, setError] = useState({
     boxState: "hidden",
@@ -47,9 +47,14 @@ const Login = ({ setLoginState }) => {
       localStorage.setItem("login_token", response.token);
       localStorage.setItem("isAdmin", response.isAdmin);
       const contentResponse = await dataHandler.isCreatorProfileSet();
-      if (contentResponse.result && response.isAdmin === false === "ok") {
+      // debugger;
+      if (
+        contentResponse.result === "error" ||
+        localStorage.getItem("isAdmin") === "true"
+      ) {
+        setAdminState({ btnForAdmin: "", btnForUser: "hidden" });
         navigate("/");
-      } else {
+      } else if(contentResponse.result === "ok"){
         navigate("/cause-registration");
       }
     } else {
