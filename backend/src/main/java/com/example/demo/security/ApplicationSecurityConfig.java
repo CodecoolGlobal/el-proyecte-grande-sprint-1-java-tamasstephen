@@ -53,8 +53,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/creator-profile-set",
                         "/user-profile",
                         "/logout").hasAnyRole("CUSTOMER")
-                .antMatchers("/admin/users")
-                .hasAnyRole("ADMIN")
+                .antMatchers("/creator-profile-set", "/admin/users")
+                .hasAnyRole("ADMIN", "CUSTOMER")
                 .anyRequest()
                 .authenticated()
                 .and()
