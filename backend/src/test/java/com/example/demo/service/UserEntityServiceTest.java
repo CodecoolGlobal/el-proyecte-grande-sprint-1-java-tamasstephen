@@ -22,6 +22,7 @@ class UserEntityServiceTest {
     @Mock
     UserJpaDao userJpaDao;
 
+
     private UserService userService;
     private UserEntity userEntity;
     private UserEntity secondUserEntity;

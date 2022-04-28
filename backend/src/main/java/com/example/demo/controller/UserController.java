@@ -1,14 +1,15 @@
 package com.example.demo.controller;
 
+import com.example.demo.configuration.AdminInit;
 import com.example.demo.exception.UserStatusException;
 import com.example.demo.model.user.UserEntity;
 import com.example.demo.security.jwt.JwtUtil;
-import com.example.demo.service.TmpUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,9 +30,10 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserService userService, JwtUtil jwtUtil) {
+    public UserController(UserService userService, JwtUtil jwtUtil, AdminInit adminInit) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        adminInit.initAdmin();
     }
 
     @CrossOrigin
@@ -64,8 +67,10 @@ public class UserController {
             Map<String, String> result = new HashMap<>();
             UserDetails regUserEntity = userOptional.get();
             String token = jwtUtil.generateToken(regUserEntity);
+            boolean isAdmin = userOptional.get().isAdmin();
             result.put("result", "ok");
             result.put("token", token);
+            result.put("isAdmin", String.valueOf(isAdmin));
             return ResponseEntity.ok().body(result);
         }
        throw new UserStatusException("Wrong email or password!");
@@ -109,7 +114,6 @@ public class UserController {
     public ResponseEntity<Map<String, String>> updateEmail(@RequestBody Map<String, String> myMail, Authentication authentication){
         String nextEmail = myMail.get("email");
         Long id = userService.getUserByEmail(authentication.getName()).get().getId();
-        System.out.println(id);
         if (id == null) throw new UserStatusException("You need to log in to proceed!");
         Optional<UserEntity> userOptional = userService.getUser(id);
         if (userOptional.isEmpty()) throw new UserStatusException("User does not exist");
@@ -134,6 +138,15 @@ public class UserController {
         } else {
             result.put("result", "error");
         }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @CrossOrigin
+    @GetMapping("/admin/users")
+    public ResponseEntity<Map<String, List<String>>> getUsers(){
+        List<String> customers = userService.getAllCustomers();
+        Map<String, List<String>> result = new HashMap<>();
+        result.put("customers", customers);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
