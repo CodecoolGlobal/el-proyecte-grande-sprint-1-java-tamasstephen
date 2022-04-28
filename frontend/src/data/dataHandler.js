@@ -92,7 +92,6 @@ export const dataHandler = {
   },
 
   async getApiWithBearerToken(endpoint) {
-    console.log(`http://localhost:8080/${endpoint}`);
     const result = await fetch(`http://localhost:8080/${endpoint}`, {
       headers: { Authorization: `${getTokenFromLocalStorage()}` },
     });
