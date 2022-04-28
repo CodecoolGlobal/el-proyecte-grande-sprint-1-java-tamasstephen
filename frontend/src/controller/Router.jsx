@@ -9,6 +9,7 @@ import Login from "../components/registration/Login";
 import ProfileWrapper from "../components/registration/ProfileWrapper";
 import ExploreContainer from "../components/search/ExploreContainer";
 import DonationSuccess from "../components/causePage/DonationSuccess";
+import UserPage from "../components/UserPage";
 
 const Router = () => {
   const [userLogin, setLoginState] = useState({
@@ -39,6 +40,7 @@ const Router = () => {
         <Route path="profile" element={<ProfileWrapper />} />
         <Route path="explore" element={<ExploreContainer />} />
         <Route path="explore/:searchParameter" element={<ExploreContainer />} />
+        <Route path="user" element={<UserPage/>}/>
       </Route>
     </Routes>
   );
