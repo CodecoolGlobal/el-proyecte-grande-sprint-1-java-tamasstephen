@@ -1,0 +1,15 @@
+FROM maven:3.8.5-openjdk-18 as builder
+
+WORKDIR /app-src
+
+COPY backend /app-src
+
+RUN mvn clean package -Dmaven.test.skip=true -DskipTests=true
+
+FROM openjdk:17-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app-src/target/demo-0.0.1-SNAPSHOT.jar /app
+
+ENTRYPOINT java -jar demo-0.0.1-SNAPSHOT.jar
